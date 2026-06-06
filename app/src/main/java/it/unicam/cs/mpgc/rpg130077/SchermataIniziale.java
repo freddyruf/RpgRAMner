@@ -23,7 +23,7 @@ public class SchermataIniziale {
         Parent nuovaSchermata=null;
 
         try { //se esiste apro il file.fxlm
-            nuovaSchermata = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/SceltaHack.fxml"));
+            nuovaSchermata = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/SceltaArmamento.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
