@@ -6,13 +6,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SceltaHack {
+public class SceltaArmamento {
 
     @FXML
     private Label Label1;
@@ -25,6 +24,9 @@ public class SceltaHack {
 
     @FXML
     private Label Label4;
+
+    @FXML
+    private Label LabelArma;
 
     @FXML
     private void GoSchermataIniziale(ActionEvent event) {
@@ -50,8 +52,11 @@ public class SceltaHack {
         else if(menuButton.getId().equals("MenuButton3")){
             label=Label3;
         }
-        else{
+        else if (menuButton.getId().equals("MenuButton4")){
             label=Label4;
+        }
+        else{
+            label=LabelArma;
         }
 
         if(menuButton.getText().equals("Fireball")){
@@ -69,15 +74,22 @@ public class SceltaHack {
         else if(menuButton.getText().equals("RAM:Reverse")){
             label.setText("Inverte l'ordine dei programmi nella RAM");
         }
+        else if(menuButton.getText().equals("Pistola")){
+            label.setText("Spara un colpo singolo");
+        }
+        else if(menuButton.getText().equals("Mitragliatrice")){
+            label.setText("Spara colpi a raffica");
+        }
+
+
 
 
     }
     @FXML
-    private void SelezionaHack(ActionEvent event) {
+    private void SelezionaNelMenu(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
         MenuButton menuButton = (MenuButton) menuItem.getParentPopup().getOwnerNode();
         menuButton.setText(menuItem.getText());
-
         CambiaLabel(menuButton);
 
     }
