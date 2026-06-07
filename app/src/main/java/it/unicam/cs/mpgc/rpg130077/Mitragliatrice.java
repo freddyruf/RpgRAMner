@@ -2,11 +2,11 @@ package it.unicam.cs.mpgc.rpg130077;
 
 public class Mitragliatrice implements Arma {
 
-    String nome = null;
-    int maxCaricatore= 0;
-    int caricatore=0;
-    int danno=0;
-    int critChance=0;
+    String nome;
+    int maxCaricatore;
+    int caricatore;
+    int danno;
+    int critChance;
 
     public Mitragliatrice(String nome, int maxCaricatore, int caricatore, int danno, int critChance) {
         this.nome = nome;
