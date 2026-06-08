@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.model.Entita;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ public class NPC extends Entita {
     int dannoAttaccoASorpresa;
     double chanceAttaccoASorpresa; // Min 0 MAX 1.0
 
-    public NPC(String nome, int MaxPV, Image image, int spazioRAM, ArrayList<Hack> hacks, Arma arma,  int dannoAttaccoASorpresa, double chanceAttaccoASorpresa) {
+    public NPC(String nome, int MaxPV, Image image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma);
         if(chanceAttaccoASorpresa>1 ){
             throw new IllegalArgumentException("Chance attacco ASorpresa non valido");
