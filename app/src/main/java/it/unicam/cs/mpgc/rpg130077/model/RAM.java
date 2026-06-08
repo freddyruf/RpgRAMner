@@ -1,10 +1,14 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.model;
+
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 
 import java.util.LinkedList;
 
-public class RAM extends LinkedList<QueuedHack> {
+public class RAM {
 
     private int spazioMassimoInSecondi;
+    private LinkedList<QueuedHack> hacks;
 
     public RAM(int spazioMassimoInSecondi){  // ← no void!
         super();
@@ -13,7 +17,7 @@ public class RAM extends LinkedList<QueuedHack> {
 
     public int getSpazioOccupato(){
         int spazioOccupato = 0;
-        for(QueuedHack qh : this){
+        for(QueuedHack qh : hacks){
             spazioOccupato += qh.getHack().getDurata();
         }
         return spazioOccupato;
@@ -27,9 +31,19 @@ public class RAM extends LinkedList<QueuedHack> {
             throw new IllegalAccessException("Hack troppo grande per essere inserita");
         }
         else{
-            this.offer(new QueuedHack(hack));
+            hacks.offer(new QueuedHack(hack));
         }
     }
+
+    public QueuedHack rimuovi() { //TO DO: rimuoverlo solo o anche returnarlo?
+        return hacks.poll();
+    }
+
+    public QueuedHack visualizza(){
+        return hacks.peek();
+    }
+
+
 
 
 }

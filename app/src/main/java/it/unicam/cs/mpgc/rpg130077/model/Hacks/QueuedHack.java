@@ -1,8 +1,9 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
 public class QueuedHack {
     Hack hack;
     int thickInCoda;
+
 
     public QueuedHack(Hack hack){
         this.hack = hack;

@@ -13,7 +13,7 @@ public class App extends Application {
     public void start(Stage stage) {
         Parent root = null;
         try { //se esiste apro il file.fxlm
-            root = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/SchermataIniziale.fxml"));
+            root = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

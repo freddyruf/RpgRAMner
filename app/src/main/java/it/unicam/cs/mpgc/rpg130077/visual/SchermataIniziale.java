@@ -1,5 +1,6 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.visual;
 
+import it.unicam.cs.mpgc.rpg130077.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,7 @@ public class SchermataIniziale {
         Parent nuovaSchermata=null;
 
         try { //se esiste apro il file.fxlm
-            nuovaSchermata = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/SceltaArmamento.fxml"));
+            nuovaSchermata = FXMLLoader.load(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SceltaArmamento.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

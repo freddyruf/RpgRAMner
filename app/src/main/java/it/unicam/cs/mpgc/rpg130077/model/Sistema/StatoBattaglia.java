@@ -1,6 +1,10 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
-public class Battaglia {
+import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
+import it.unicam.cs.mpgc.rpg130077.model.RAM;
+
+public class StatoBattaglia {
     private Giocatore giocatore;
     private NPC avversario;
     private RAM ram;
@@ -9,7 +13,7 @@ public class Battaglia {
 
     private boolean turno; //0 giocatore 1 avversario
 
-    public Battaglia(Giocatore giocatore, NPC avversario, int clock, double velocita) {
+    public StatoBattaglia(Giocatore giocatore, NPC avversario, int clock, double velocita) {
         // Controllo che i parametri non sono nulli
         if(giocatore == null || avversario == null) {
             throw new NullPointerException("I parametri non possono essere nulli");

@@ -1,14 +1,16 @@
-package it.unicam.cs.mpgc.rpg130077;
+package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
-public class Mitragliatrice implements Arma {
-
+public abstract class Arma implements Equipaggiamento {
     String nome;
     int maxCaricatore;
     int caricatore;
     int danno;
     double critChance; //min 0 max 1
 
-    public Mitragliatrice(String nome, int maxCaricatore, int caricatore, int danno, double critChance) {
+    protected Arma(String nome, int maxCaricatore, int caricatore, int danno, double critChance) {
+        if(nome == null) {
+            throw new NullPointerException("Il nome non può essere nullo");
+        }
         this.nome = nome;
         this.maxCaricatore = maxCaricatore;
         this.caricatore = caricatore;
@@ -21,32 +23,26 @@ public class Mitragliatrice implements Arma {
         return nome;
     }
 
-    @Override
+
     public int getCaricatore() {
         return caricatore;
     }
 
-    @Override
+
     public int getMaxCaricatore() {
         return maxCaricatore;
     }
 
-    @Override
+
     public int getDanno() {
         return danno;
     }
 
 
-    @Override
-    public int calcolaDanno() {
-        int dannoCalcolato=0;
-        for (int i=0;i<5; i++){ //dato che è una mitragliatrice, spara piu volte
-            if(Math.random()<critChance){
-                dannoCalcolato=+danno*2;
-            }
-            else dannoCalcolato=+danno;
-        }
-        return dannoCalcolato;
+    public int calcolaDanno() { //TO DO: returna 0 o si puo fare in un modo diverso?
+        return 0;
     }
+
+
 
 }
