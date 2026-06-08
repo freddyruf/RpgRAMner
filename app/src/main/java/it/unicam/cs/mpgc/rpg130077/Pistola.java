@@ -36,11 +36,16 @@ public class Pistola implements Arma {
     public int getDanno() {
         return danno;
     }
-    /*
-    @Override
-    public void Sparare(Entita e) {
 
+    @Override
+    public int calcolaDanno() {
+        int dannoCalcolato=0;
+        if(Math.random()<critChance){
+            dannoCalcolato=+danno*2;
+        }
+        else dannoCalcolato=+danno;
+        return dannoCalcolato;
     }
-    */
+
 
 }

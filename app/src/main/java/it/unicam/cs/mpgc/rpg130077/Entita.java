@@ -5,13 +5,13 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 
 public abstract class Entita {
-    String nome;
-    int PV;
-    int MaxPV;
-    Image image;
-    int spazioRAM;
-    ArrayList<Hack> hacks;
-    Arma arma;
+    private String nome;
+    private int PV;
+    private int MaxPV;
+    private Image image;
+    private int spazioRAM;
+    private ArrayList<Hack> hacks;
+    private Arma arma;
 
     public Entita(String nome, int MaxPV, Image image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
         if(nome == null || image == null || hacks == null || arma == null) {
@@ -47,17 +47,14 @@ public abstract class Entita {
         return arma;
     }
 
-    private void setPV(int PV) {
+    public void setPV(int PV) {
         if(PV > MaxPV) throw new IllegalArgumentException();
         this.PV = PV;
     }
 
     public void spara(Entita e) {
         if(e==null) throw new NullPointerException();
-    }
-
-    public void uploadHack(Hack hack) {
-        if(hack==null) throw new NullPointerException();
+        e.setPV(e.getPV()-this.arma.calcolaDanno());
     }
 
 }

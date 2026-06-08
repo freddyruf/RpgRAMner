@@ -6,9 +6,9 @@ public class Mitragliatrice implements Arma {
     int maxCaricatore;
     int caricatore;
     int danno;
-    int critChance;
+    double critChance; //min 0 max 1
 
-    public Mitragliatrice(String nome, int maxCaricatore, int caricatore, int danno, int critChance) {
+    public Mitragliatrice(String nome, int maxCaricatore, int caricatore, int danno, double critChance) {
         this.nome = nome;
         this.maxCaricatore = maxCaricatore;
         this.caricatore = caricatore;
@@ -31,16 +31,22 @@ public class Mitragliatrice implements Arma {
         return maxCaricatore;
     }
 
-
     @Override
     public int getDanno() {
         return danno;
     }
 
-    /*
-    @Override
-    public void Sparare(Entita e) {
 
+    @Override
+    public int calcolaDanno() {
+        int dannoCalcolato=0;
+        for (int i=0;i<5; i++){ //dato che è una mitragliatrice, spara piu volte
+            if(Math.random()<critChance){
+                dannoCalcolato=+danno*2;
+            }
+            else dannoCalcolato=+danno;
+        }
+        return dannoCalcolato;
     }
-    */
+
 }
