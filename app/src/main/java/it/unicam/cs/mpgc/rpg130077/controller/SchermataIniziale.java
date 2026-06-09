@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130077.visual;
+package it.unicam.cs.mpgc.rpg130077.controller;
 
 import it.unicam.cs.mpgc.rpg130077.App;
 import javafx.event.ActionEvent;

@@ -35,11 +35,11 @@ public class RAM {
         }
     }
 
-    public QueuedHack rimuovi() { //TO DO: rimuoverlo solo o anche returnarlo?
+    public QueuedHack rimuovi() { //FIXME: rimuoverlo solo o anche returnarlo?
         return hacks.poll();
     }
 
-    public QueuedHack visualizza(){
+    public QueuedHack visualizzaTesta(){
         return hacks.peek();
     }
 
