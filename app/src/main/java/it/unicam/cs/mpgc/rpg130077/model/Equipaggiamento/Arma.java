@@ -7,13 +7,13 @@ public abstract class Arma implements Equipaggiamento {
     int danno;
     double critChance; //min 0 max 1
 
-    protected Arma(String nome, int maxCaricatore, int caricatore, int danno, double critChance) {
+    protected Arma(String nome, int maxCaricatore, int danno, double critChance) {
         if(nome == null) {
             throw new NullPointerException("Il nome non può essere nullo");
         }
         this.nome = nome;
         this.maxCaricatore = maxCaricatore;
-        this.caricatore = caricatore;
+        this.caricatore = maxCaricatore;
         this.danno = danno;
         this.critChance = critChance;
     }
@@ -39,7 +39,7 @@ public abstract class Arma implements Equipaggiamento {
     }
 
 
-    public int calcolaDanno() { //TO DO: returna 0 o si puo fare in un modo diverso?
+    public int calcolaDanno() { //FIXME returna 0 o si puo fare in un modo diverso?
         return 0;
     }
 
