@@ -39,8 +39,8 @@ public abstract class Arma implements Equipaggiamento {
     }
 
 
-    public int calcolaDanno() { //FIXME returna 0 o si puo fare in un modo diverso?
-        return 0;
+    public int calcolaDanno() {
+        throw new RuntimeException("Not implemented yet");
     }
 
 
