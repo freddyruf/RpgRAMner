@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130077.controller.SceltaArmamento">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130077.controller.SceltaArmamentoFXML_JSON">
    <children>
       <MenuButton fx:id="MenuButton1" layoutX="255.0" layoutY="16.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 1">
         <items>
@@ -82,7 +82,7 @@
             <Font size="40.0" />
          </font>
       </Label>
-      <Button layoutX="23.0" layoutY="61.0" mnemonicParsing="false" onAction="#GoSchermataIniziale" prefHeight="100.0" prefWidth="178.0" text="Indietro">
+      <Button layoutX="23.0" layoutY="61.0" mnemonicParsing="false" onAction="#PulsanteEsci" prefHeight="100.0" prefWidth="178.0" text="Indietro">
          <font>
             <Font size="32.0" />
          </font>

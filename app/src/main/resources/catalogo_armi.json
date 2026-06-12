@@ -1,0 +1,16 @@
+[
+    {
+        "tipo": "Pistola",
+        "nome": "Pistola",
+        "maxCaricatore": 6,
+        "danno": 30,
+        "critChance": 0.3
+    },
+    {
+        "tipo": "Mitragliatrice",
+        "nome": "Mitragliatrice",
+        "maxCaricatore": 60,
+        "danno": 5,
+        "critChance": 0.1
+    }
+]
