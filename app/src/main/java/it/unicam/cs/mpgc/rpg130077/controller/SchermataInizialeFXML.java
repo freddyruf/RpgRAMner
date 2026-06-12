@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class SchermataIniziale {
+public class SchermataInizialeFXML {
     @FXML
     private void ExitWindow(ActionEvent event) {
         // Chiude semplicemente l'applicazione

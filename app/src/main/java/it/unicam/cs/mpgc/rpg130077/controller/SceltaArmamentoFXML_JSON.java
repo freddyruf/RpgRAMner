@@ -1,6 +1,9 @@
 package it.unicam.cs.mpgc.rpg130077.controller;
 import it.unicam.cs.mpgc.rpg130077.App;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
+import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamentoJSON;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +13,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SceltaArmamento {
+public class SceltaArmamentoFXML_JSON {
 
     @FXML
     private Label Label1;
@@ -28,11 +34,47 @@ public class SceltaArmamento {
     private Label Label4;
 
     @FXML
-    private Label LabelArma;
-
-    private GestoreArmamento gestore = new GestoreArmamento();
+    private MenuButton MenuButtonArma;
 
     @FXML
+    private Label LabelArma;
+
+    Pistola pistola = new Pistola("Colpisci teschi", 6,40, 0.3);
+    Mitragliatrice mitragliatrice = new Mitragliatrice("Squarciagole", 50, 8, 0.1);
+
+    private GestoreArmamento gestore = new GestoreArmamento(new persistenzaArmamentoJSON(), "data/Armamento.json");
+
+
+    private ArrayList<MenuButton> getAllMenuButtonsFromEvent(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Pane pane = (Pane) source.getScene().getRoot();
+
+        ArrayList<MenuButton> menuButtons = new ArrayList<>();
+        for (javafx.scene.Node child : pane.getChildren()) {
+            if (child instanceof MenuButton) {
+                menuButtons.add((MenuButton) child);
+            }
+        }
+        return menuButtons;
+    }
+
+    private ArrayList<String> getMenuButtonNames(ArrayList<MenuButton> menuButtons) {
+        ArrayList<String> menuButtonNames = new ArrayList<>();
+        for (MenuButton menuButton : menuButtons) {
+            menuButtonNames.add(menuButton.getText());
+        }
+        return menuButtonNames;
+    }
+
+
+    @FXML
+    private void PulsanteEsci(ActionEvent event) {
+        gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
+
+        GoSchermataIniziale(event);
+    }
+
+
     private void GoSchermataIniziale(ActionEvent event) {
         Parent nuovaSchermata = null;
 
