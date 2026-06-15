@@ -1,32 +1,65 @@
 [
-    {
-        "tipo": "Acid",
-        "nome": "Acid",
-        "descrizione": "Infligge 10 di danno ogni tick.",
-        "durata": 5
-    },
-    {
-        "tipo": "Fireball",
-        "nome": "Fireball",
-        "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
-        "durata": 4
-    },
-    {
-        "tipo": "Firewall",
-        "nome": "Firewall",
-        "descrizione": "Cura il giocatore",
-        "durata": 4
-    },
-    {
-        "tipo": "RAM:Reverse",
-        "nome": "RAM:Reverse",
-        "descrizione": "Inverte il flusso dei dati in memoria.",
-        "durata": 2
-    },
-    {
-        "tipo": "RAM:Sort",
-        "nome": "RAM:Sort",
-        "descrizione": "Riordina le Hack nella RAM.",
-        "durata": 2
-    }
+  {
+    "tipo": "Acid",
+    "nome": "Acid",
+    "descrizione": "Infligge 10 di danno ogni tick.",
+    "durata": 5,
+    "effetti": [
+      {
+        "tipoEffetto": "Danno",
+        "danno": 10,
+        "conclusive": false
+      }
+    ]
+  },
+  {
+    "tipo": "Fireball",
+    "nome": "Fireball",
+    "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+    "durata": 4,
+    "effetti": [
+      {
+        "tipoEffetto": "Danno",
+        "danno": 50,
+        "conclusive": true
+      }
+    ]
+  },
+  {
+    "tipo": "Firewall",
+    "nome": "Firewall",
+    "descrizione": "Cura il giocatore",
+    "durata": 4,
+    "effetti": [
+      {
+        "tipoEffetto": "Cura",
+        "cura": 30,
+        "conclusive": true
+      }
+    ]
+  },
+  {
+    "tipo": "RAM:Reverse",
+    "nome": "RAM:Reverse",
+    "descrizione": "Inverte il flusso dei dati in memoria.",
+    "durata": 2,
+    "effetti": [
+      {
+        "tipoEffetto": "Reverse",
+        "conclusive": true
+      }
+    ]
+  },
+  {
+    "tipo": "RAM:Sort",
+    "nome": "RAM:Sort",
+    "descrizione": "Riordina le Hack nella RAM.",
+    "durata": 2,
+    "effetti": [
+      {
+        "tipoEffetto": "Sort",
+        "conclusive": true
+      }
+    ]
+  }
 ]

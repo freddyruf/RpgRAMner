@@ -1,17 +1,16 @@
 package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
-public class Acid extends Hack implements HackContinua {
+public class Acid extends Hack {
 
     public Acid(String nome, String descrizione, int durata) {
         super(nome,descrizione, durata);
+        effetti.add(new EffettoDanno(10,false));
     }
 
-    @Override
-    public void EseguiAvanzamento(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
-        //10 di danno ogni thick
-    }
+
 
 }

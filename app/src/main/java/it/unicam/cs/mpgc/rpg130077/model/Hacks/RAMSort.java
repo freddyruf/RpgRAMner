@@ -1,16 +1,16 @@
 package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoSort;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
-public class RAMSort extends Hack implements HackConclusiva {
+import java.util.Comparator;
 
-    public RAMSort(String nome, String descrizione, int durata) {
+public class RAMSort extends Hack {
+
+    public RAMSort(String nome, String descrizione, int durata, Comparator<QueuedHack> comparator) {
         super(nome,descrizione, durata);
-    }
-
-    @Override
-    public void Esegui(StatoBattaglia b, Entita lanciatore, Entita bersagliob) {
-        //Riordina la coda in ordine crescente
+        effetti.add(new EffettoSort(true, comparator));
     }
 }
