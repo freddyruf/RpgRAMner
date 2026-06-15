@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130077.model;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class RAM {
@@ -41,6 +42,18 @@ public class RAM {
 
     public QueuedHack visualizzaTesta(){
         return hacks.peek();
+    }
+
+    public void sort(Comparator<QueuedHack> comparator){
+        hacks.sort(comparator);
+    }
+
+    public void reverse(){
+        LinkedList<QueuedHack> reversed = new LinkedList<>();
+        for (int i = hacks.size() - 1; i >= 0; i--) {
+            reversed.add(hacks.get(i));
+        }
+        hacks = reversed;
     }
 
 

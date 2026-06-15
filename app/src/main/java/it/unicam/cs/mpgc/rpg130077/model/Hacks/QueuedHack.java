@@ -10,6 +10,11 @@ public class QueuedHack {
         this.thickInCoda = hack.getDurata();
     }
 
+    public int getThickInCoda() {
+        return thickInCoda;
+    }
+
+
     public Hack getHack(){
         return hack;
     }

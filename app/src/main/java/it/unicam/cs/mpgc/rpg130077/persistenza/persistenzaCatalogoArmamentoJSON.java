@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130077.persistenza;
 
 import com.google.gson.Gson;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.*;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
@@ -64,8 +65,15 @@ public class persistenzaCatalogoArmamentoJSON {
                 .registerSubtype(RAMReverse.class, "RAM:Reverse")
                 .registerSubtype(RAMSort.class, "RAM:Sort");
 
+        RuntimeTypeAdapterFactory<Effetto> effettoAdapter = RuntimeTypeAdapterFactory.of(Effetto.class, "tipoEffetto")
+                .registerSubtype(EffettoDanno.class, "Danno")
+                .registerSubtype(EffettoCura.class, "Cura")
+                .registerSubtype(EffettoReverse.class, "Reverse")
+                .registerSubtype(EffettoSort.class, "Sort");
+
         Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(hackAdapter)
+                .registerTypeAdapterFactory(effettoAdapter)
                 .create();
 
         Type tipoListaHack = new TypeToken<ArrayList<Hack>>(){}.getType();
