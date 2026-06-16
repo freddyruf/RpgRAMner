@@ -1,5 +1,10 @@
 
 package it.unicam.cs.mpgc.rpg130077;
+import it.unicam.cs.mpgc.rpg130077.controller.SchermataInizialeFXML;
+import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
+import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
+import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamentoJSON;
+import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaCatalogoArmamentoJSON;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,16 +16,25 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     public void start(Stage stage) {
-        Parent root = null;
-        try { //se esiste apro il file.fxlm
-            root = FXMLLoader.load(App.class.getResource("visual/SchermataIniziale.fxml"));
+        try {
+            // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
+            persistenzaArmamento persistenza = new persistenzaArmamentoJSON();
+            CaricatoreCatalogo catalogo = new persistenzaCatalogoArmamentoJSON();
+
+            // Carica l'FXML
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
+            Parent root = loader.load();
+
+            // passo le dipendenze
+            SchermataInizialeFXML controller = loader.getController();
+            controller.setPersistenze(persistenza, catalogo);
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        //imposto la scena e la visualizzo
-        stage.setScene(new Scene(root));
-        stage.show();
     }
 
     public static void main(String[] args) {

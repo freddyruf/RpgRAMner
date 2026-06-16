@@ -1,71 +1,65 @@
 package it.unicam.cs.mpgc.rpg130077.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
-import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
-import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
+import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaCatalogoArmamentoJSON;
 
-import java.awt.event.ActionEvent;
-import java.io.*;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GestoreArmamento {
     private final ArrayList<Arma> catalogoArmi;
     private final ArrayList<Hack> catalogoHacks;
     private final persistenzaArmamento gestoreSalvataggi;
-    private String FILE;
 
-    public GestoreArmamento(persistenzaArmamento gestoreSalvataggi, String FILE) {
-        this.catalogoArmi = gestoreSalvataggi.CaricamentoCatalogoArmi();
-        this.catalogoHacks = gestoreSalvataggi.CaricamentoCatalogoHacks();
+    // Il costruttore ora accetta ENTRAMBE le interfacce (Massimo SOLID!)
+    public GestoreArmamento(persistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
+        this.catalogoArmi = caricatoreCatalogo.CaricamentoCatalogoArmi();
+        this.catalogoHacks = caricatoreCatalogo.CaricamentoCatalogoHack();
         this.gestoreSalvataggi = gestoreSalvataggi;
-        this.FILE = FILE;
     }
+
+    /**
+     *
+     * @param nomeItem nome del item
+     * @return descrizione del item
+     */
+    public String getDescrizioneItem(String nomeItem) {
+        for (Hack hack : catalogoHacks) {
+            if (hack.getNome().equals(nomeItem)) return hack.getDescrizione();
+        }
+        for (Arma arma : catalogoArmi) {
+            if (arma.getNome().equals(nomeItem)) return arma.getDescrizione();
+        }
+        return "Descrizione non disponibile";
+    }
+
+
+    /**
+     *
+     * @param setupScelto Lista di nomi di Hack e Armi scelte
+     */
 
     public void salva(ArrayList<String> setupScelto) {
         ArrayList<Hack> hacks = new ArrayList<>();
         ArrayList<Arma> armi = new ArrayList<>();
 
-        System.out.println("Armi: "+ catalogoArmi.toString());
-        System.out.println("Hacks: "+ catalogoHacks.toString());
-
+        // Trasformo le stringhe negli oggetti corrispondenti
         for (String s : setupScelto) {
-            for(Hack hack : catalogoHacks){
-                if(s.equals(hack.getNome())){
-                    System.out.println(hack.getNome());
-                    System.out.println(s);
+            for (Hack hack : catalogoHacks) {
+                if (s.equals(hack.getNome())) {
                     hacks.add(hack);
                 }
             }
-            for(Arma arma : catalogoArmi){
-                if(s.equals(arma.getNome())){
+            for (Arma arma : catalogoArmi) {
+                if (s.equals(arma.getNome())) {
                     armi.add(arma);
                 }
             }
         }
-        Map<String, Object> datiDaSalvare = new HashMap<>();
-        datiDaSalvare.put("armi", armi);
-        datiDaSalvare.put("hacks", hacks);
 
-
-        try {
-            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(FILE));
-            new Gson().toJson(datiDaSalvare, out);
-            out.close();
-
-        } catch (IOException e) {
-            // Se il file non esiste (es. prima partita), restituisce una lista vuota invece di crashare
-            System.out.println("FILE non trovato");
-        }
-
+        // Delego tutto al nuovo metodo unificato!
+        gestoreSalvataggi.salvaEquipaggiamentoScelto(armi, hacks);
     }
-
-
-
 }

@@ -10,12 +10,12 @@ public abstract class Entita {
     private String nome;
     private int PV;
     private int MaxPV;
-    private Image image;
+    private String image;
     private int spazioRAM;
     private ArrayList<Hack> hacks;
     private Arma arma;
 
-    public Entita(String nome, int MaxPV, Image image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
+    public Entita(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
         if(nome == null || image == null || hacks == null || arma == null) {
             throw new NullPointerException("I parametri non possono essere nulli");
         }
@@ -36,7 +36,7 @@ public abstract class Entita {
     public int getMaxPV() {
         return MaxPV;
     }
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
     public int getSpazioRAM() {

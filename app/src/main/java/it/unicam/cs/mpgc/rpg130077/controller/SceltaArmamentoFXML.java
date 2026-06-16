@@ -1,0 +1,115 @@
+package it.unicam.cs.mpgc.rpg130077.controller;
+import it.unicam.cs.mpgc.rpg130077.App;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class SceltaArmamentoFXML extends SceltaArmamento {
+
+
+    /**
+        @param event un evento di JAVAFX
+        @return un ArrayList di MenuButton presenti nella scena a cui è associato l'evento
+     */
+    private ArrayList<MenuButton> getAllMenuButtonsFromEvent(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Pane pane = (Pane) source.getScene().getRoot();
+
+        ArrayList<MenuButton> menuButtons = new ArrayList<>();
+        for (javafx.scene.Node child : pane.getChildren()) {
+            if (child instanceof MenuButton) {
+                menuButtons.add((MenuButton) child);
+            }
+        }
+        return menuButtons;
+    }
+
+    /**
+
+      @param menuButtons un array di menu buttons
+      @return ArrayList di stringhe contenenti i nomi contenuti nei menu button
+     */
+    private ArrayList<String> getMenuButtonNames(ArrayList<MenuButton> menuButtons) {
+        ArrayList<String> menuButtonNames = new ArrayList<>();
+        for (MenuButton menuButton : menuButtons) {
+            menuButtonNames.add(menuButton.getText());
+        }
+        return menuButtonNames;
+    }
+
+    /**
+     *
+     * salva il setup scelto e esce
+     */
+    @FXML
+    private void PulsanteEsci(ActionEvent event) {
+        gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
+        GoSchermataIniziale(event);
+    }
+
+    /**
+     * vado alla schermata iniziale e passo le dipendenze alla schermata iniziale, cosi che non le perdo
+     */
+    private void GoSchermataIniziale(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
+            Parent nuovaSchermata = loader.load();
+
+            SchermataInizialeFXML controller = loader.getController();
+            controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(nuovaSchermata));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *
+     * @param menuButton menu button la cui descrizione(Nella label) va cambiata
+     */
+    private void CambiaLabel(MenuButton menuButton) {
+        String idBottone = menuButton.getId();
+
+        String idLabelAttesa = idBottone.replace("MenuButton", "Label");
+
+        //Cerco la Label dinamicamente nella scena (serve il casting a Label)
+        Label label = (Label) menuButton.getScene().lookup("#" + idLabelAttesa);
+
+        // Se ho trovato la label, le assegno la descrizione presa dal Model
+        if (label != null) {
+            String nomeItem = menuButton.getText(); // Es: "Fireball"
+            String testoDescrizione = gestore.getDescrizioneItem(nomeItem);
+            label.setText(testoDescrizione);
+        } else {
+            throw new RuntimeException("Errore: Label con ID #" + idLabelAttesa + " non trovata nella scena.");
+        }
+    }
+
+
+    /** Si attiva quando un Menu button viene cambiato, aggiorna la Label**/
+    @FXML
+    private void SelezionaNelMenu(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+        MenuButton menuButton = (MenuButton) menuItem.getParentPopup().getOwnerNode();
+        menuButton.setText(menuItem.getText());
+        CambiaLabel(menuButton);
+
+    }
+
+    //TODO: caricare nei menu button le armi e hack che sono salvate
+    }
+
+
+
