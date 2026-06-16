@@ -19,7 +19,7 @@ import it.unicam.cs.mpgc.rpg130077.util.RuntimeTypeAdapterFactory;
 
 import java.lang.reflect.Type;
 
-public class persistenzaCatalogoArmamentoJSON {
+public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
     private static InputStreamReader fileReaderArmi;
     private static InputStreamReader fileReaderHacks;
 
@@ -40,7 +40,9 @@ public class persistenzaCatalogoArmamentoJSON {
         }
     }
 
-    public static ArrayList<Arma> CaricamentoCatalogoArmi() {
+    //TODO: cambiare metodo per i principi SOLID
+
+    public ArrayList<Arma> CaricamentoCatalogoArmi() {
         RuntimeTypeAdapterFactory<Arma> armaAdapter = RuntimeTypeAdapterFactory.of(Arma.class, "tipo")
                 .registerSubtype(Pistola.class, "Pistola")
                 .registerSubtype(Mitragliatrice.class, "Mitragliatrice");
@@ -54,10 +56,8 @@ public class persistenzaCatalogoArmamentoJSON {
         return catalogoArmi != null ? catalogoArmi : new ArrayList<>();
     }
 
-    /**
-     * Carica il catalogo degli hack dal file JSON e gestisce il polimorfismo delle sue sottoclassi
-     */
-    public static ArrayList<Hack> CaricamentoCatalogoHack() {
+    //TODO: cambiare metodo per i principi SOLID
+    public ArrayList<Hack> CaricamentoCatalogoHack() {
         RuntimeTypeAdapterFactory<Hack> hackAdapter = RuntimeTypeAdapterFactory.of(Hack.class, "tipo")
                 .registerSubtype(Acid.class, "Acid")
                 .registerSubtype(Fireball.class, "Fireball")

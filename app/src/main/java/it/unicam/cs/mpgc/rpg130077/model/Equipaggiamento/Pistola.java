@@ -2,8 +2,8 @@ package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
 public class Pistola extends Arma {
 
-    public Pistola(String nome, int maxCaricatore, int danno, double critChance) {
-        super(nome, maxCaricatore, danno, critChance);
+    public Pistola(String nome, String Descrizione, int maxCaricatore, int danno, double critChance) {
+        super(nome, Descrizione, maxCaricatore, danno, critChance);
     }
 
     @Override

@@ -2,12 +2,13 @@ package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
 public abstract class Arma implements Equipaggiamento {
     String nome;
+    String descrizione;
     int maxCaricatore;
     int caricatore;
     int danno;
     double critChance; //min 0 max 1
 
-    protected Arma(String nome, int maxCaricatore, int danno, double critChance) {
+    protected Arma(String nome,String descrizione, int maxCaricatore, int danno, double critChance) {
         if(nome == null) {
             throw new NullPointerException("Il nome non può essere nullo");
         }
@@ -16,6 +17,10 @@ public abstract class Arma implements Equipaggiamento {
         this.caricatore = maxCaricatore;
         this.danno = danno;
         this.critChance = critChance;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
     }
 
     @Override

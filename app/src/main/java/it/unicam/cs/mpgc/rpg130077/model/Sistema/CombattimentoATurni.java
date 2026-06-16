@@ -6,14 +6,18 @@ import java.util.ArrayList;
 
 public class CombattimentoATurni implements SistemaCombattimento {
 
-
+    //TODO
     @Override
     public boolean avanza(StatoBattaglia stato) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 
-    //@return l'entita che ha vinto o null
+    /**
+     *
+     * @param stato stato della battaglia
+     * @return true se il giocatore ha vinto, false se ha perso o null se non ha vinto nessuno ancora
+     */
     @Override
     public Entita checkVittoria(StatoBattaglia stato) {
         ArrayList<Entita> eroi = stato.getFazioneEroi();

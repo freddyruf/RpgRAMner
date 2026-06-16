@@ -38,9 +38,6 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
     public Giocatore getGiocatore() {
         return giocatore;
     }
-    public NPC getAvversario() {
-        return avversario;
-    }
 
     public void cambiaTurno(){
         this.turno= !turno;

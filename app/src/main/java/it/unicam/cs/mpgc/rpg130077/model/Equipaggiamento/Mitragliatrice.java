@@ -2,8 +2,8 @@ package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
 public class Mitragliatrice extends Arma {
 
-    public Mitragliatrice(String nome, int maxCaricatore, int danno, double critChance) {
-        super(nome, maxCaricatore, danno, critChance);
+    public Mitragliatrice(String nome, String Descrizione, int maxCaricatore, int danno, double critChance) {
+        super(nome, Descrizione, maxCaricatore, danno, critChance);
     }
 
     @Override
