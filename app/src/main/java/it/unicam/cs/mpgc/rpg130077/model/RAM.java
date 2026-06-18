@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.model;
 
+import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 
@@ -24,15 +25,15 @@ public class RAM {
         return spazioOccupato;
     }
 
-    public void inserisci(Hack hack) throws IllegalAccessException {
+    public void inserisci(Hack hack, Entita bersaglio, Entita lanciatore) {
         if(hack==null){
             throw new NullPointerException("Hack non può essere null");
         }
         else if(hack.getDurata()+hack.getDurata()>spazioMassimoInSecondi){
-            throw new IllegalAccessException("Hack troppo grande per essere inserita");
+            throw new IllegalArgumentException("Hack troppo grande per essere inserita");
         }
         else{
-            hacks.offer(new QueuedHack(hack));
+            hacks.offer(new QueuedHack(hack, bersaglio,lanciatore));
         }
     }
 
