@@ -13,7 +13,6 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
     private RAM ram;
     private int clock;
     private double velocita;
-    private boolean turno; //0 giocatore 1 avversario
 
     public StatoBattaglia1v1(Giocatore giocatore, NPC avversario) {
         // Controllo che i parametri non sono nulli
@@ -35,17 +34,6 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
         this.velocita = velocita;
     }
 
-    public Giocatore getGiocatore() {
-        return giocatore;
-    }
-
-    public void cambiaTurno(){
-        this.turno= !turno;
-    }
-    public boolean getTurno() {
-        return turno;
-    }
-
     @Override
     public RAM getRamCondivisa() {
         return ram;
@@ -62,6 +50,11 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
     }
 
     @Override
+    public Giocatore getGiocatore() {
+        return giocatore;
+    }
+
+    @Override
     public ArrayList<Entita> getFazioneEroi() {
         ArrayList<Entita> eroi = new ArrayList<>();
         eroi.add(giocatore);
@@ -73,6 +66,16 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
         ArrayList<Entita> nemici = new ArrayList<>();
         nemici.add(avversario);
         return nemici;
+    }
+
+    @Override
+    public Entita getEroe(int n) {
+        return giocatore;
+    }
+
+    @Override
+    public Entita getNemico(int n) {
+        return avversario;
     }
 
 

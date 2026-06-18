@@ -1,25 +1,70 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
+import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
 import java.util.ArrayList;
 
 public class CombattimentoATurni implements SistemaCombattimento {
 
+    StatoBattaglia stato;
+    StatoTurni statoTurni;
+
+    public CombattimentoATurni(StatoBattaglia stato) {
+        this.stato = stato;
+        statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
+    }
+
+    /**
+     *
+     * @return Entita che sta svolgendo il turno
+     */
+    public Entita getEntitaInCorso(){
+        int turno=statoTurni.getTurno();
+        if(turno<stato.getFazioneEroi().size()){
+            return stato.getEroe(turno);
+        }else{
+            return stato.getNemico(turno-stato.getFazioneEroi().size());
+        }
+    }
+
     //TODO
     @Override
-    public boolean avanza(StatoBattaglia stato) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void avanza() {
+
+        statoTurni.avanzaTurno();
+        Entita entitaInCorso=getEntitaInCorso();
+        if(entitaInCorso instanceof NPC){ //il nemico fa una mossa
+            entitaInCorso.richiediMossa(this,stato);
+        }
+        else{
+
+        }
+    }
+
+    @Override
+    public StatoBattaglia getStatoBattaglia() {
+        return stato;
+    }
+
+    public void eseguiMossa(Azione azione) {
+        azione.esegui(stato);
+        statoTurni.avanzaTurno();
+
+        if (checkVittoria() == null) {
+            avanza();
+        }
     }
 
 
     /**
-     *
-     * @param stato stato della battaglia
+     * Controlla se il giocatore ha vinto o perso lo scontro.
      * @return true se il giocatore ha vinto, false se ha perso o null se non ha vinto nessuno ancora
      */
     @Override
-    public Entita checkVittoria(StatoBattaglia stato) {
+    public Entita checkVittoria() {
         ArrayList<Entita> eroi = stato.getFazioneEroi();
         ArrayList<Entita> nemici = stato.getFazioneNemici();
 

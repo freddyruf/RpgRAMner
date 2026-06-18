@@ -2,6 +2,8 @@ package it.unicam.cs.mpgc.rpg130077.model.Entita;
 
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -57,6 +59,9 @@ public abstract class Entita {
     public void spara(Entita e) {
         if(e==null) throw new NullPointerException();
         e.setPV(e.getPV()-this.arma.calcolaDanno());
+    }
+    public void richiediMossa(SistemaCombattimento sistemaTurni, StatoBattaglia stato){
+        throw new UnsupportedOperationException("Not supported.");
     }
 
 }

@@ -15,5 +15,9 @@ public interface StatoBattaglia {
     Giocatore getGiocatore();
     ArrayList<Entita> getFazioneEroi();
     ArrayList<Entita> getFazioneNemici();
+    Entita getEroe(int n);
+    Entita getNemico(int n);
+
+
 
 }
