@@ -1,0 +1,6 @@
+.root{
+    -fx-background-image: url("/SfondoBattaglia.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
