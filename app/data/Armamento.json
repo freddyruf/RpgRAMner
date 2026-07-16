@@ -11,13 +11,12 @@
   ],
   "hacks": [
     {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 5,
+      "nome": "RAM:Reverse",
+      "descrizione": "Inverte il flusso dei dati in memoria.",
+      "durata": 2,
       "effetti": [
         {
-          "danno": 10,
-          "conclusive": false
+          "conclusive": true
         }
       ]
     },
@@ -33,24 +32,23 @@
       ]
     },
     {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 5,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
-          "danno": 10,
-          "conclusive": false
+          "danno": 50,
+          "conclusive": true
         }
       ]
     },
     {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 5,
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 2,
       "effetti": [
         {
-          "danno": 10,
-          "conclusive": false
+          "conclusive": true
         }
       ]
     }

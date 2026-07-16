@@ -1,6 +1,6 @@
 
 package it.unicam.cs.mpgc.rpg130077;
-import it.unicam.cs.mpgc.rpg130077.controller.SchermataInizialeFXML;
+import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataGenerica;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamentoJSON;
@@ -26,7 +26,7 @@ public class App extends Application {
             Parent root = loader.load();
 
             // passo le dipendenze
-            SchermataInizialeFXML controller = loader.getController();
+            SchermataGenerica controller = loader.getController();
             controller.setPersistenze(persistenza, catalogo);
 
             stage.setScene(new Scene(root));
