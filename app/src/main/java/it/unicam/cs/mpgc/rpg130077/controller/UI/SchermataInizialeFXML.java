@@ -1,8 +1,6 @@
-package it.unicam.cs.mpgc.rpg130077.controller;
+package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.App;
-import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +11,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class SchermataInizialeFXML {
+public class SchermataInizialeFXML extends SchermataGenerica {
 
 
-    private persistenzaArmamento persistenzaArmamento;
-    private CaricatoreCatalogo caricatoreCatalogo;
 
-    public void setPersistenze(persistenzaArmamento p, CaricatoreCatalogo c) {
-        this.persistenzaArmamento = p;
-        this.caricatoreCatalogo = c;
-    }
 
     @FXML
     private void ExitWindow(ActionEvent event) {
@@ -37,7 +29,7 @@ public class SchermataInizialeFXML {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SceltaArmamento.fxml"));
             Parent nuovaSchermata = loader.load();
 
-            SceltaArmamento controller = loader.getController();
+            SchermataGenerica controller = loader.getController();
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
