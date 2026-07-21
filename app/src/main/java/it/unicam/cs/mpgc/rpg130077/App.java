@@ -1,6 +1,18 @@
 
 package it.unicam.cs.mpgc.rpg130077;
+import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataBattagliaFXML;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataGenerica;
+import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
+import it.unicam.cs.mpgc.rpg130077.model.RAM;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamentoJSON;
@@ -12,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class App extends Application {
     @Override
@@ -20,14 +33,37 @@ public class App extends Application {
             // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
             persistenzaArmamento persistenza = new persistenzaArmamentoJSON();
             CaricatoreCatalogo catalogo = new persistenzaCatalogoArmamentoJSON();
+            ArrayList<Arma> catalogoArmi= catalogo.CaricamentoCatalogoArmi();
+
+            //carico le hack del giocatore e del nemico
+            ArrayList<Hack> catalogoHack= catalogo.CaricamentoCatalogoHack();
+            ArrayList<Hack> catalogoHackNemico=catalogoHack;
+            catalogoHackNemico.remove(0);
+            catalogoHackNemico.remove(catalogoHackNemico.size()-1);
+
+            Arma armaG= catalogoArmi.get(0);
+
+            Arma armaN= catalogoArmi.get(1);
+
+
+            //Creo giocatore
+            Giocatore giocatore = new Giocatore("Giocatore", 100, "", 5, catalogoHack, armaG);
+
+            //Creo nemico
+            NPC nemico = new NPC("Cybermorb", 100, "", 3, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
+
+
+            // Creo il sistema di combattimento
+            SistemaCombattimento sistemaCombattimento = new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
 
             // Carica l'FXML
             FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
             Parent root = loader.load();
 
             // passo le dipendenze
-            SchermataGenerica controller = loader.getController();
+            SchermataInizialeFXML controller = loader.getController();
             controller.setPersistenze(persistenza, catalogo);
+            controller.setSpazioRam(giocatore.getSpazioRAM()+nemico.getSpazioRAM());
 
             stage.setScene(new Scene(root));
             stage.show();

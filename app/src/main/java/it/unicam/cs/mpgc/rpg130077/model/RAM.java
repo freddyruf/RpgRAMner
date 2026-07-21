@@ -17,6 +17,10 @@ public class RAM {
         this.spazioMassimoInSecondi = spazioMassimoInSecondi;
     }
 
+    public int getSpazioMassimoInSecondi() {
+        return spazioMassimoInSecondi;
+    }
+
     public int getSpazioOccupato(){
         int spazioOccupato = 0;
         for(QueuedHack qh : hacks){
@@ -55,6 +59,10 @@ public class RAM {
             reversed.add(hacks.get(i));
         }
         hacks = reversed;
+    }
+
+    public LinkedList<QueuedHack> getHacks(){
+        return hacks;
     }
 
 

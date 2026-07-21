@@ -42,6 +42,10 @@ public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
 
     //TODO: cambiare metodo per i principi SOLID
 
+    /**
+     * Metodo da usare 1 volta solo per l'inizializzazione o aggiornamento del catalogo
+     * @return catalogo di armi scelto
+     */
     public ArrayList<Arma> CaricamentoCatalogoArmi() {
         RuntimeTypeAdapterFactory<Arma> armaAdapter = RuntimeTypeAdapterFactory.of(Arma.class, "tipo")
                 .registerSubtype(Pistola.class, "Pistola")
@@ -52,8 +56,8 @@ public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
                 .create();
 
         Type tipoListaArmi = new TypeToken<ArrayList<Arma>>(){}.getType();
-        ArrayList<Arma> catalogoArmi = gson.fromJson(fileReaderArmi, tipoListaArmi);
-        return catalogoArmi != null ? catalogoArmi : new ArrayList<>();
+        ArrayList<Arma> catalogoArmi = gson.fromJson(fileReaderArmi, tipoListaArmi);return catalogoArmi != null ? catalogoArmi : new ArrayList<>();
+
     }
 
     //TODO: cambiare metodo per i principi SOLID
