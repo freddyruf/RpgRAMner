@@ -55,6 +55,8 @@ sourceSets {
             include '**/*.css'
             include '**/*.jpg'
             include '**/*.json'
+            include '**/*.png'
+            include '**/*.jpg'
         }
     }
 }

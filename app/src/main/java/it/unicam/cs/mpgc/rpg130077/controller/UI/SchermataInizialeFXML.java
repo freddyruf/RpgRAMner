@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.App;
+import it.unicam.cs.mpgc.rpg130077.model.RAM;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +33,22 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
             SchermataGenerica controller = loader.getController();
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(nuovaSchermata));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private void GoBattaglia(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));
+            Parent nuovaSchermata = loader.load();
+
+            SchermataBattagliaFXML controller = loader.getController();
+            controller.setSpazioRam(spazioRam);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
