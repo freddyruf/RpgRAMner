@@ -13,7 +13,8 @@ public class AzioneSparo implements Azione {
     }
 
     @Override
-    public void esegui(StatoBattaglia stato) {
-        lanciatore.spara(bersaglio);
+    public void esegui( StatoBattaglia stato) {
+        if(stato!=null) throw new NullPointerException();
+        bersaglio.setPV(bersaglio.getPV()-lanciatore.getArma().calcolaDanno());
     }
 }

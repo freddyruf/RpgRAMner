@@ -19,7 +19,7 @@ public class StatoTurni {
 
     /**
      *
-     * @return un numero compresto tra 0 e il numero di entità in gioco, da 0 al numero di alleati in gioco, da 0 a Numero Alleati indica l'indice dal alleato, altrimenti facendo -Numero Nemici è quello dei nemici
+     * @return un numero compresto tra 0 e il numero di entità in gioco, da 0 al numero di alleati in gioco, da 0 a Numero Alleati indica l'indice dal alleato, altrimenti facendo -Numero Alleati è quello dei nemici
      */
     public int getTurno() {
         int entitaTotali=numeroTurniAlleati+numeroTurniNemici;

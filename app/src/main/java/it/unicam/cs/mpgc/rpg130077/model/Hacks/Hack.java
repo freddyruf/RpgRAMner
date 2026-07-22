@@ -1,14 +1,17 @@
 package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hack {
     private String nome;
     private String descrizione;
     private int durata;
-    protected List<Effetto> effetti;
+    protected ArrayList<Effetto> effetti;
 
     public Hack(String nome, String descrizione, int durata) {
         this.nome = nome;
@@ -23,12 +26,36 @@ public abstract class Hack {
         return descrizione;
     }
     public int getDurata() {return durata;}
-    public List<Effetto> getEffetti() {return effetti;}
+    public ArrayList<Effetto> getEffetti() {return effetti;}
     public void addEffetto(Effetto effetto){
         effetti.add(effetto);
     }
     public void removeEffetto(Effetto effetto){
         effetti.remove(effetto);
+    }
+
+    /**
+     * Dice se la hack fa danno
+     * @return true se causa danni false se non
+     */
+    public boolean isDamageDealer(){
+        for(Effetto effetto : effetti){
+            if(effetto instanceof EffettoDanno)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Dice se la hack cura
+     * @return true se cura e false se non
+     */
+    public boolean isHealDealer(){
+        for(Effetto effetto : effetti){
+            if(effetto instanceof EffettoCura)
+                return true;
+        }
+        return false;
     }
 
 

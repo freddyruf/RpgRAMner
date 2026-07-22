@@ -19,9 +19,17 @@ public class QueuedHack {
     public int getThickInCoda() {
         return thickInCoda;
     }
-
-
+    public void setThickInCoda(int thickInCoda) {
+        this.thickInCoda = thickInCoda;
+    }
     public Hack getHack(){
         return hack;
+    }
+
+    public Entita getBersaglio(){
+        return bersaglio;
+    }
+    public Entita getLanciatore(){
+        return lanciatore;
     }
 }

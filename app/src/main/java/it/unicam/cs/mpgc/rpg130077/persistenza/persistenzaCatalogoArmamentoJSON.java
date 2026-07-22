@@ -20,68 +20,89 @@ import it.unicam.cs.mpgc.rpg130077.util.RuntimeTypeAdapterFactory;
 import java.lang.reflect.Type;
 
 public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
-    private static InputStreamReader fileReaderArmi;
-    private static InputStreamReader fileReaderHacks;
+    // Percorsi dei file di catalogo nei resources
+    private static final String CATALOGO_ARMI_PATH = "/catalogo_armi.json";
+    private static final String CATALOGO_HACKS_PATH = "/catalogo_hacks.json";
+
 
     public persistenzaCatalogoArmamentoJSON() {
-        try {
-            // Carica i file dai resources
-            InputStream isArmi = getClass().getResourceAsStream("/catalogo_armi.json");
-            InputStream isHacks = getClass().getResourceAsStream("/catalogo_hacks.json");
-
-            if (isArmi == null || isHacks == null) {
-                throw new RuntimeException("File di catalogo non trovati nei resources!");
-            }
-
-            this.fileReaderArmi = new InputStreamReader(isArmi, StandardCharsets.UTF_8);
-            this.fileReaderHacks = new InputStreamReader(isHacks, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Nulla da fare: i file verranno caricati dai metodi
     }
 
     //TODO: cambiare metodo per i principi SOLID
 
     /**
-     * Metodo da usare 1 volta solo per l'inizializzazione o aggiornamento del catalogo
-     * @return catalogo di armi scelto
+     *
+     * @return ArrayList di armi scelte
      */
+    @Override
     public ArrayList<Arma> CaricamentoCatalogoArmi() {
-        RuntimeTypeAdapterFactory<Arma> armaAdapter = RuntimeTypeAdapterFactory.of(Arma.class, "tipo")
-                .registerSubtype(Pistola.class, "Pistola")
-                .registerSubtype(Mitragliatrice.class, "Mitragliatrice");
+        try (InputStream isArmi = getClass().getResourceAsStream(CATALOGO_ARMI_PATH)) {
+            if (isArmi == null) {
+                throw new RuntimeException("catalogo_armi.json non trovato nei resources!");
+            }
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(armaAdapter)
-                .create();
+            try (InputStreamReader reader = new InputStreamReader(isArmi, StandardCharsets.UTF_8)) {
+                RuntimeTypeAdapterFactory<Arma> armaAdapter = RuntimeTypeAdapterFactory.of(Arma.class, "tipo")
+                        .registerSubtype(Pistola.class, "Pistola")
+                        .registerSubtype(Mitragliatrice.class, "Mitragliatrice");
 
-        Type tipoListaArmi = new TypeToken<ArrayList<Arma>>(){}.getType();
-        ArrayList<Arma> catalogoArmi = gson.fromJson(fileReaderArmi, tipoListaArmi);return catalogoArmi != null ? catalogoArmi : new ArrayList<>();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapterFactory(armaAdapter)
+                        .create();
 
+                Type tipoListaArmi = new TypeToken<ArrayList<Arma>>(){}.getType();
+                ArrayList<Arma> catalogoArmi = gson.fromJson(reader, tipoListaArmi);
+                return catalogoArmi != null ? catalogoArmi : new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.err.println("Errore durante il caricamento del catalogo armi: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
+
 
     //TODO: cambiare metodo per i principi SOLID
+
+    /**
+     *
+     * @return ArrayList di hack scelte
+     */
+    @Override
     public ArrayList<Hack> CaricamentoCatalogoHack() {
-        RuntimeTypeAdapterFactory<Hack> hackAdapter = RuntimeTypeAdapterFactory.of(Hack.class, "tipo")
-                .registerSubtype(Acid.class, "Acid")
-                .registerSubtype(Fireball.class, "Fireball")
-                .registerSubtype(Firewall.class, "Firewall")
-                .registerSubtype(RAMReverse.class, "RAM:Reverse")
-                .registerSubtype(RAMSort.class, "RAM:Sort");
+        try (InputStream isHacks = getClass().getResourceAsStream(CATALOGO_HACKS_PATH)) {
+            if (isHacks == null) {
+                throw new RuntimeException("catalogo_hacks.json non trovato nei resources!");
+            }
 
-        RuntimeTypeAdapterFactory<Effetto> effettoAdapter = RuntimeTypeAdapterFactory.of(Effetto.class, "tipoEffetto")
-                .registerSubtype(EffettoDanno.class, "Danno")
-                .registerSubtype(EffettoCura.class, "Cura")
-                .registerSubtype(EffettoReverse.class, "Reverse")
-                .registerSubtype(EffettoSort.class, "Sort");
+            try (InputStreamReader reader = new InputStreamReader(isHacks, StandardCharsets.UTF_8)) {
+                RuntimeTypeAdapterFactory<Hack> hackAdapter = RuntimeTypeAdapterFactory.of(Hack.class, "tipo")
+                        .registerSubtype(Acid.class, "Acid")
+                        .registerSubtype(Fireball.class, "Fireball")
+                        .registerSubtype(Firewall.class, "Firewall")
+                        .registerSubtype(RAMReverse.class, "RAM:Reverse")
+                        .registerSubtype(RAMSort.class, "RAM:Sort");
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(hackAdapter)
-                .registerTypeAdapterFactory(effettoAdapter)
-                .create();
+                RuntimeTypeAdapterFactory<Effetto> effettoAdapter = RuntimeTypeAdapterFactory.of(Effetto.class, "tipoEffetto")
+                        .registerSubtype(EffettoDanno.class, "Danno")
+                        .registerSubtype(EffettoCura.class, "Cura")
+                        .registerSubtype(EffettoReverse.class, "Reverse")
+                        .registerSubtype(EffettoSort.class, "Sort");
 
-        Type tipoListaHack = new TypeToken<ArrayList<Hack>>(){}.getType();
-        ArrayList<Hack> catalogoHack = gson.fromJson(fileReaderHacks, tipoListaHack);
-        return catalogoHack != null ? catalogoHack : new ArrayList<>();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapterFactory(hackAdapter)
+                        .registerTypeAdapterFactory(effettoAdapter)
+                        .create();
+
+                Type tipoListaHack = new TypeToken<ArrayList<Hack>>(){}.getType();
+                ArrayList<Hack> catalogoHack = gson.fromJson(reader, tipoListaHack);
+                return catalogoHack != null ? catalogoHack : new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.err.println("Errore durante il caricamento del catalogo hacks: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
-}
+    }
