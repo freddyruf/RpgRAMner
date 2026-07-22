@@ -1,53 +1,64 @@
 {
   "armi": [
     {
-      "nome": "Pistola",
-      "descrizione": "Spara un colpo singolo.",
-      "maxCaricatore": 6,
+      "tipo": "Mitragliatrice",
+      "nome": "Mitragliatrice",
+      "descrizione": "Spara colpi a raffica.",
+      "maxCaricatore": 60,
       "caricatore": 0,
-      "danno": 30,
-      "critChance": 0.3
+      "danno": 5,
+      "critChance": 0.1
     }
   ],
   "hacks": [
     {
-      "nome": "RAM:Reverse",
-      "descrizione": "Inverte il flusso dei dati in memoria.",
-      "durata": 2,
-      "effetti": [
-        {
-          "conclusive": true
-        }
-      ]
-    },
-    {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 5,
-      "effetti": [
-        {
-          "danno": 10,
-          "conclusive": false
-        }
-      ]
-    },
-    {
+      "tipo": "Fireball",
       "nome": "Fireball",
       "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
       "durata": 4,
       "effetti": [
         {
+          "tipoEffetto": "Danno",
           "danno": 50,
           "conclusive": true
         }
       ]
     },
     {
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
-      "durata": 2,
+      "tipo": "Fireball",
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
+          "tipoEffetto": "Danno",
+          "danno": 50,
+          "conclusive": true
+        }
+      ]
+    },
+    {
+      "tipo": "Fireball",
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
+      "effetti": [
+        {
+          "tipoEffetto": "Danno",
+          "danno": 50,
+          "conclusive": true
+        }
+      ]
+    },
+    {
+      "tipo": "Fireball",
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
+      "effetti": [
+        {
+          "tipoEffetto": "Danno",
+          "danno": 50,
           "conclusive": true
         }
       ]

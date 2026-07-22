@@ -37,21 +37,21 @@
                <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <children>
-               <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 1" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <Button fx:id="hack1" mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 1" GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#pulsanteHack">
                    <font>
                        <Font size="77.0" />
                    </font></Button>
-               <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 2" GridPane.rowIndex="3">
+               <Button fx:id="hack2" mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 2" GridPane.rowIndex="3" onAction="#pulsanteHack">
                    <font>
                        <Font size="77.0" />
                    </font>
                </Button>
-               <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 3" GridPane.rowIndex="4">
+               <Button fx:id="hack3" mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 3" GridPane.rowIndex="4" onAction="#pulsanteHack">
                    <font>
                        <Font size="77.0" />
                    </font>
                </Button>
-               <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 4" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <Button fx:id="hack4" mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="hack 4" GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#pulsanteHack">
                    <font>
                        <Font size="77.0" />
                    </font>
@@ -80,7 +80,7 @@
                <font>
                   <Font size="77.0" />
                </font></Button>
-            <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="Spara" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" prefHeight="177.0" prefWidth="787.0" text="Spara" GridPane.rowIndex="3" onAction="#pulsanteSparare">
                <font>
                   <Font size="77.0" />
                </font>

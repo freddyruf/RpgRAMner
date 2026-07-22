@@ -13,13 +13,4 @@ public class Giocatore extends Entita {
         super(nome, MaxPV, image, spazioRAM, hacks, arma);
     }
 
-    /**
-     * esegue una mossa
-     * @param sistemaCombattimento
-     *
-     */
-    public void richiediMossa(SistemaCombattimento sistemaCombattimento, Azione mossa) {
-
-        sistemaCombattimento.eseguiMossa(mossa);
-    }
 }

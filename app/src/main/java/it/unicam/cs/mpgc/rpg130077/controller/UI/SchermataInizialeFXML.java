@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class SchermataInizialeFXML extends SchermataGenerica {
 
-
+    private boolean armamentoCaricato=false;
 
 
     @FXML
@@ -24,6 +24,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
+
 
     @FXML
     private void GoSceltaHack(ActionEvent event) {
@@ -36,6 +37,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
+            armamentoCaricato=true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,18 +45,22 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
     @FXML
     private void GoBattaglia(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));
-            Parent nuovaSchermata = loader.load();
+        if(armamentoCaricato){
+            try {
+                FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));
+                Parent nuovaSchermata = loader.load();
 
-            SchermataBattagliaFXML controller = loader.getController();
-            controller.setSpazioRam(spazioRam);
+                SchermataBattagliaFXML controller = loader.getController();
+                controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+                controller.setSpazioRam(spazioRam);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(nuovaSchermata));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(nuovaSchermata));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
     }
 

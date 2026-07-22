@@ -16,6 +16,10 @@ public class AzioneCaricaHack implements Azione {
 
     }
 
+    public Hack getHack() {
+        return hack;
+    }
+
     @Override
     public void esegui(StatoBattaglia stato) {
         stato.getRamCondivisa().inserisci(hack, bersaglio, lanciatore);

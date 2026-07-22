@@ -1,11 +1,14 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.App;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class SchermataBattagliaFXML extends SchermataGenerica {
+public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener {
 
         @FXML
         private GridPane MenuHacks;
@@ -35,6 +38,17 @@ public class SchermataBattagliaFXML extends SchermataGenerica {
 
         @FXML
         private GridPane BarraRAM;
+
+        @FXML
+        private javafx.scene.control.Button hack1;
+        @FXML
+        private javafx.scene.control.Button hack2;
+        @FXML
+        private javafx.scene.control.Button hack3;
+        @FXML
+        private javafx.scene.control.Button hack4;
+
+        private boolean turnoGiocatore;
 
 
     /**
@@ -55,6 +69,9 @@ public class SchermataBattagliaFXML extends SchermataGenerica {
             Parent nuovaSchermata = loader.load();
 
             SchermataInizialeFXML controller = loader.getController();
+            controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+            controller.setSpazioRam(this.spazioRam);
+            controller.setSistemaCombattimento(this.sistemaCombattimento);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
@@ -63,11 +80,26 @@ public class SchermataBattagliaFXML extends SchermataGenerica {
         }
     }
 
+
+
     @FXML
     private void visualizzaHacks(ActionEvent event) {
         //scambio il menu da vedere per mostrare le hacks
         MenuHacks.setVisible(true);
         MenuPrincipale.setVisible(false);
+
+        //carico le hacks
+        ArrayList<Hack> catalogo= persistenzaArmamento.getHacks();
+
+        if (catalogo == null || catalogo.size() < 4) {
+            System.err.println("Catalogo hacks non valido o incompleto: " + catalogo);
+            return;
+        }
+
+        hack1.setText(catalogo.get(0).getNome());
+        hack2.setText(catalogo.get(1).getNome());
+        hack3.setText(catalogo.get(2).getNome());
+        hack4.setText(catalogo.get(3).getNome());
     }
 
     @FXML
@@ -75,6 +107,40 @@ public class SchermataBattagliaFXML extends SchermataGenerica {
         //scambio il menu da vedere per mostrare il menu principale
         MenuPrincipale.setVisible(true);
         MenuHacks.setVisible(false);
+    }
+
+    @FXML
+    private void pulsanteSparare(ActionEvent event) {
+        if(turnoGiocatore){
+            sistemaCombattimento.sparare();
+        }
+        onVitaAggiornataEntita(sistemaCombattimento.getStatoBattaglia().getNemico(0));
+    }
+
+    @FXML
+    private void pulsanteHack(ActionEvent event) {
+        if(turnoGiocatore){
+            //ottengo il button che ha chiamato l'evento
+            javafx.scene.control.Button b = (javafx.scene.control.Button) event.getSource();
+
+            //carico l'hack scelta
+            if (b==hack1){
+                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(0));
+            }
+            else if (b==hack2){
+                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(1));
+            }
+            else if (b==hack3){
+                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(2));
+            }
+            else if (b==hack4){
+                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(3));
+            }
+
+        }
+
+        //torno al menu principale
+        visualizzaHacks(event);
     }
 
     /**
@@ -144,5 +210,60 @@ public class SchermataBattagliaFXML extends SchermataGenerica {
         }
     }
 
+    /**
+     * Compie le azioni che avvengono a ogni thick
+     * @param statoBattaglia
+     */
+    @Override
+    public void onTick(StatoBattaglia statoBattaglia) {
 
+        aggiornaRAM(statoBattaglia.getRamCondivisa());
+        onVitaAggiornata(statoBattaglia); //aggiorno anche la vita perche una hack "continua" potrebbe aver cambiato la vita
+
+
+    }
+
+    /**
+     * aggiorna la vita di una singola entita
+     * @param entita
+     */
+    @Override
+    public void onVitaAggiornataEntita(Entita entita) {
+        Platform.runLater(() -> {
+            cambiaVita(entita);
+        });
+
+    }
+
+    /**
+     * aggiorna la vita di tutte le entità
+     * @param statoBattaglia
+     */
+    @Override
+    public void onVitaAggiornata(StatoBattaglia statoBattaglia) {
+
+        Platform.runLater(() -> {
+            ArrayList<Entita> listaEntita= ((ArrayList) statoBattaglia.getFazioneEroi().clone());
+            listaEntita.addAll(statoBattaglia.getFazioneNemici());
+            for(Entita entita : listaEntita){
+                onVitaAggiornataEntita(entita);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onVittoria(Entita vincitore) {
+        Platform.runLater(() -> {
+            //TODO
+        });
+    }
+
+    @Override
+    public void onTurnoGiocatore(Giocatore giocatore) {
+        Platform.runLater(() -> {
+                turnoGiocatore = true;
+        });
+    }
 }

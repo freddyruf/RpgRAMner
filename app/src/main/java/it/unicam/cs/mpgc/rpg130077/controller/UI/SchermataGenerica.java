@@ -8,6 +8,7 @@ public abstract class SchermataGenerica {
     protected persistenzaArmamento persistenzaArmamento;
     protected CaricatoreCatalogo caricatoreCatalogo;
     int spazioRam;
+    protected SistemaCombattimento sistemaCombattimento;
 
 
 
@@ -19,5 +20,9 @@ public abstract class SchermataGenerica {
     public void setPersistenze(persistenzaArmamento p, CaricatoreCatalogo c) {
         this.persistenzaArmamento = p;
         this.caricatoreCatalogo = c;
+    }
+
+    public void setSistemaCombattimento(SistemaCombattimento s) {
+        this.sistemaCombattimento = s;
     }
 }

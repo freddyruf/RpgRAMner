@@ -20,9 +20,10 @@ import java.util.ArrayList;
 public class SceltaArmamentoFXML extends SchermataGenerica {
     protected GestoreArmamento gestore;
 
+
     @Override
     public void setPersistenze(persistenzaArmamento p, CaricatoreCatalogo c) {
-        this.persistenzaArmamento = p;
+        super.persistenzaArmamento = p;
         this.caricatoreCatalogo = c;
 
         this.gestore = new GestoreArmamento(p, c);
@@ -64,8 +65,20 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      */
     @FXML
     private void PulsanteEsci(ActionEvent event) {
-        gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
-        GoSchermataIniziale(event);
+        if(tuttoArmamentoèScelto(event)){
+            gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
+            GoSchermataIniziale(event);
+        }
+    }
+
+    private boolean tuttoArmamentoèScelto(ActionEvent event) {
+        ArrayList<String> menuButtonNames = getMenuButtonNames(getAllMenuButtonsFromEvent(event));
+        for(String menuButtonName : menuButtonNames) {
+            if(menuButtonName.contains("HACK") || menuButtonName.contains("Arma")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -77,7 +90,9 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
             Parent nuovaSchermata = loader.load();
 
             SchermataInizialeFXML controller = loader.getController();
+
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+            controller.setSpazioRam(this.spazioRam);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
