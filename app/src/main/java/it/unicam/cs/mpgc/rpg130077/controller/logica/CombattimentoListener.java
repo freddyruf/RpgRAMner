@@ -10,6 +10,6 @@ public interface CombattimentoListener {
     void onVitaAggiornataEntita(Entita entita);
     void onVittoria(Entita vincitore);
     void onVitaAggiornata(StatoBattaglia statoBattaglia);
-    void onTurnoGiocatore(Giocatore giocatore);
+    void onTurnoGiocatore();
     void aggiornaRAM(RAM ram);
 }

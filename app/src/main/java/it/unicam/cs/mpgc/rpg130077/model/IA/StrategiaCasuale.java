@@ -17,7 +17,7 @@ public class StrategiaCasuale implements StrategiaCombattimento{
         Entita entitaBersaglio=stato.getFazioneEroi().get(alleatoIndex);
 
         double sceltaMossa=Math.random();
-        if(npc.getArma()!=null || sceltaMossa<0.5){ //hack
+        if(npc.getArma()==null || sceltaMossa<0.5){ //hack
             //Randomizzo l'Hack
             double sceltaHack=Math.random();
             Hack hack;

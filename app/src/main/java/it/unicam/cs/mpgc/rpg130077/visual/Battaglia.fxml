@@ -107,9 +107,6 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="120.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" GridPane.rowIndex="2" />
-         </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>

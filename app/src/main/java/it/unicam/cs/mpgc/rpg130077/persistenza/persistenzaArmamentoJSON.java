@@ -81,7 +81,6 @@ public class persistenzaArmamentoJSON implements persistenzaArmamento {
 
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(dato, writer);
-            System.out.println("Salvataggio dell'armamento completato nel file: " + FILE);
         } catch (IOException e) {
             System.err.println("Errore durante il salvataggio: " + e.getMessage());
         }
