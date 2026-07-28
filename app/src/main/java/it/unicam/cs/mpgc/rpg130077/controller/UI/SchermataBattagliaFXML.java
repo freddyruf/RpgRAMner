@@ -70,8 +70,8 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
             SchermataInizialeFXML controller = loader.getController();
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
-            controller.setSpazioRam(this.spazioRam);
             controller.setSistemaCombattimento(this.sistemaCombattimento);
+            controller.setSpazioRam(spazioRam);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
@@ -111,15 +111,15 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
     @FXML
     private void pulsanteSparare(ActionEvent event) {
-        if(turnoGiocatore){
+        if(sistemaCombattimento.isPlayerTurn()){
             sistemaCombattimento.sparare();
         }
-        onVitaAggiornataEntita(sistemaCombattimento.getStatoBattaglia().getNemico(0));
+
     }
 
     @FXML
     private void pulsanteHack(ActionEvent event) {
-        if(turnoGiocatore){
+        if(sistemaCombattimento.isPlayerTurn()){
             //ottengo il button che ha chiamato l'evento
             javafx.scene.control.Button b = (javafx.scene.control.Button) event.getSource();
 
@@ -138,6 +138,8 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             }
 
         }
+        sistemaCombattimento.isPlayerTurn();
+        turnoGiocatore=false;
 
         //torno al menu principale
         visualizzaHacks(event);
@@ -149,14 +151,16 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     public void cambiaVita(Entita entita) {
         //calcolo la percentuale di vita che ha l'entita rispetto a la massima
-        int percentualeDifferenzaVita = entita.getPV() / entita.getMaxPV();
-
+        double percentuale = (double) entita.getPV() / (double) entita.getMaxPV();
+        percentuale = Math.max(0.0, Math.min(1.0, percentuale));
+        double width = percentuale * 668.0;
         if (entita instanceof Giocatore) {
-            PlayerLifeBar.setWidth(percentualeDifferenzaVita * 668); // 668 è la larghezza massima della barra della vita
+            PlayerLifeBar.setWidth(width);
         } else {
-            EnemyLifeBar.setWidth(percentualeDifferenzaVita * 668); // 668 è la larghezza massima della barra della vita
+            EnemyLifeBar.setWidth(width);
         }
     }
+
 
     /**
      * Aggiorna la visualizzazione della RAM graficamente
@@ -246,7 +250,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             ArrayList<Entita> listaEntita= ((ArrayList) statoBattaglia.getFazioneEroi().clone());
             listaEntita.addAll(statoBattaglia.getFazioneNemici());
             for(Entita entita : listaEntita){
-                onVitaAggiornataEntita(entita);
+                cambiaVita(entita);
             }
         });
 
@@ -261,7 +265,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     }
 
     @Override
-    public void onTurnoGiocatore(Giocatore giocatore) {
+    public void onTurnoGiocatore() {
         Platform.runLater(() -> {
                 turnoGiocatore = true;
         });

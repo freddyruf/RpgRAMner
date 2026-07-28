@@ -18,6 +18,7 @@ public class RAM {
     public RAM(int spazioMassimoInSecondi){  // ← no void!
         super();
         this.spazioMassimoInSecondi = spazioMassimoInSecondi;
+        hacks = new LinkedList<QueuedHack>();
     }
 
     public void avanza(StatoBattaglia statoBattaglia) {

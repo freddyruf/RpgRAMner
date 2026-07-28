@@ -38,8 +38,7 @@ public class App extends Application {
             //carico le hack del giocatore e del nemico
             ArrayList<Hack> catalogoHack= catalogo.CaricamentoCatalogoHack();
             ArrayList<Hack> catalogoHackNemico=catalogoHack;
-            catalogoHackNemico.remove(0);
-            catalogoHackNemico.remove(catalogoHackNemico.size()-1);
+            catalogoHackNemico.remove(0); //rimuovo 1 hack cosi ne ha 4
 
             Arma armaG= catalogoArmi.get(0);
 
@@ -64,6 +63,7 @@ public class App extends Application {
             SchermataInizialeFXML controller = loader.getController();
             controller.setPersistenze(persistenza, catalogo);
             controller.setSpazioRam(giocatore.getSpazioRAM()+nemico.getSpazioRAM());
+            controller.setSistemaCombattimento(sistemaCombattimento);
 
             stage.setScene(new Scene(root));
             stage.show();

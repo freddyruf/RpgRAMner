@@ -7,7 +7,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
@@ -59,16 +58,18 @@ public abstract class Entita {
         this.PV = PV;
     }
 
+    @Deprecated
     public void spara(Entita entita){
         Azione azione = new AzioneSparo(this, entita);
         azione.esegui(null);
     }
+    @Deprecated
     public void caricaHack(Hack hack, Entita entita, StatoBattaglia stato){
         Azione azione= new AzioneCaricaHack(this, entita, hack);
         azione.esegui(stato);
     }
 
-    public void richiediMossa(SistemaCombattimento sistemaTurni, StatoBattaglia stato){
+    public Azione richiediMossa(SistemaCombattimento sistemaTurni, StatoBattaglia stato){
         throw new UnsupportedOperationException("Not supported.");
     }
 

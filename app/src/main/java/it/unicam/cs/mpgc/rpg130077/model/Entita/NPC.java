@@ -5,7 +5,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
@@ -36,15 +35,16 @@ public class NPC extends Entita {
     }
 
     /**
-     * Sceglie e esegue una mossa
+     * Sceglie e ritorna una mossa
+     *
      * @param sistemaCombattimento
-     * @param stato stato della batttaglia
+     * @param stato                stato della batttaglia
+     * @return mossa scelta
      *
      */
     @Override
-    public void richiediMossa(SistemaCombattimento sistemaCombattimento, StatoBattaglia stato) {
-        Azione mossa = strategia.scegliMossa(this, stato);
+    public Azione richiediMossa(SistemaCombattimento sistemaCombattimento, StatoBattaglia stato) {
+        return strategia.scegliMossa(this, stato);
 
-        sistemaCombattimento.eseguiMossa(mossa);
     }
 }

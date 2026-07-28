@@ -93,6 +93,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
             controller.setSpazioRam(this.spazioRam);
+            controller.setSistemaCombattimento(this.sistemaCombattimento);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));

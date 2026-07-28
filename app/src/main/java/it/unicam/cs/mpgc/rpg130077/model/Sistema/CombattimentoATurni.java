@@ -27,6 +27,10 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         listeners.add(combattimentoListener);
     }
 
+    public boolean isPlayerTurn() {
+        return statoTurni.getTurno() < stato.getFazioneEroi().size();
+    }
+
     private void notificaThick(){
         for(CombattimentoListener combattimentoListener : listeners){
             combattimentoListener.onTick(stato);
@@ -37,6 +41,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         this.stato = stato;
         statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
         inizializzaClock();
+
     }
 
     private void inizializzaClock() {
@@ -68,12 +73,8 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         Entita entitaInCorso=getEntitaInCorso();
 
         if(entitaInCorso instanceof NPC){ //il nemico fa una mossa
-            entitaInCorso.richiediMossa(this,stato);
-        }
-        else{
-            for(CombattimentoListener listener : listeners){
-                listener.onTurnoGiocatore((Giocatore) entitaInCorso);
-            }
+            Azione a=entitaInCorso.richiediMossa(this,stato);
+            eseguiMossa(a);
         }
     }
 
@@ -94,11 +95,12 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
     public void eseguiMossa(Azione azione) {
         azione.esegui(stato);
-        statoTurni.avanzaTurno();
 
         if (checkVittoria() == null) {
             avanza();
         }
+
+
         //se l'azione fa danno o cura
         if((azione instanceof AzioneSparo) || ((azione instanceof AzioneCaricaHack) && ((AzioneCaricaHack) azione).getHack().isHealDealer() || ((AzioneCaricaHack) azione).getHack().isDamageDealer())){
             //aggiorno le barre della vita
