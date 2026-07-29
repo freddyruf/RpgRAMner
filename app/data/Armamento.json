@@ -1,25 +1,24 @@
 {
   "armi": [
     {
-      "tipo": "Mitragliatrice",
-      "nome": "Mitragliatrice",
-      "descrizione": "Spara colpi a raffica.",
-      "maxCaricatore": 60,
+      "tipo": "Pistola",
+      "nome": "Pistola",
+      "descrizione": "Spara un colpo singolo.",
+      "maxCaricatore": 6,
       "caricatore": 0,
-      "danno": 5,
-      "critChance": 0.1
+      "danno": 30,
+      "critChance": 0.3
     }
   ],
   "hacks": [
     {
-      "tipo": "Fireball",
-      "nome": "Fireball",
-      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
-      "durata": 4,
+      "tipo": "RAM:Sort",
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 6,
       "effetti": [
         {
-          "tipoEffetto": "Danno",
-          "danno": 50,
+          "tipoEffetto": "Sort",
           "conclusive": true
         }
       ]
@@ -37,28 +36,26 @@
       ]
     },
     {
-      "tipo": "Firewall",
-      "nome": "Firewall",
-      "descrizione": "Cura il giocatore",
-      "durata": 4,
+      "tipo": "RAM:Sort",
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 6,
       "effetti": [
         {
-          "tipoEffetto": "Cura",
-          "cura": 30,
+          "tipoEffetto": "Sort",
           "conclusive": true
         }
       ]
     },
     {
-      "tipo": "Acid",
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 10,
+      "tipo": "RAM:Sort",
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 6,
       "effetti": [
         {
-          "tipoEffetto": "Danno",
-          "danno": 6,
-          "conclusive": false
+          "tipoEffetto": "Sort",
+          "conclusive": true
         }
       ]
     }

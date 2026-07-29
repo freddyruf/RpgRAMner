@@ -31,13 +31,14 @@ public class SchermataInizialeFXML extends SchermataGenerica {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SceltaArmamento.fxml"));
             Parent nuovaSchermata = loader.load();
 
-            SchermataGenerica controller = loader.getController();
+            SchermataGenerica controller = (SceltaArmamentoFXML)loader.getController();
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
             controller.setSpazioRam(this.spazioRam);
             controller.setSistemaCombattimento(this.sistemaCombattimento);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
+            ((SceltaArmamentoFXML) controller).caricaHack();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

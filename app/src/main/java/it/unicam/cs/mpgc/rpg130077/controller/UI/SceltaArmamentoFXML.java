@@ -20,6 +20,9 @@ import java.util.ArrayList;
 public class SceltaArmamentoFXML extends SchermataGenerica {
     protected GestoreArmamento gestore;
 
+    @FXML
+    Pane mainPane;
+
 
     @Override
     public void setPersistenze(persistenzaArmamento p, CaricatoreCatalogo c) {
@@ -135,8 +138,43 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
     }
 
-    //TODO: caricare nei menu button le armi e hack che sono salvate
+    public ArrayList<MenuButton> geAllMenuButtonsFromThis(){
+
+        ArrayList<MenuButton> menuButtons = new ArrayList<>();
+        for (javafx.scene.Node child : mainPane.getChildren()) {
+            if (child instanceof MenuButton) {
+                menuButtons.add((MenuButton) child);
+            }
+        }
+        return menuButtons;
     }
+
+    /**
+     * Carica le armi e le hacks salvate nei menu button e nelle labels
+     */
+    public void caricaHack() {
+        ArrayList<MenuButton> listaMenuButton = geAllMenuButtonsFromThis();
+
+        //Carico le armi
+        int cnt=0;
+        for (int i = 0; i<listaMenuButton.size();i++) {
+            MenuButton menuButton = listaMenuButton.get(i);
+            if(menuButton.getId().contains("Arma")) {
+                menuButton.setText(persistenzaArmamento.getArma().get(cnt).getNome());
+                CambiaLabel(menuButton);
+                cnt++;
+            }
+        }
+
+        //Carico le hacks
+        for (int i = 0; i < listaMenuButton.size(); i++) {
+            MenuButton menuButton = listaMenuButton.get(i);
+            menuButton.setText(persistenzaArmamento.getHacks().get(i).getNome());
+            CambiaLabel(menuButton);
+        }
+
+    }
+}
 
 
 
