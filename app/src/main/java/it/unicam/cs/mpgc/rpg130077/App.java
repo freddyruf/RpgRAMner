@@ -35,6 +35,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         try {
+
             //Musica
             java.net.URL urlMusica = getClass().getResource("/Nightdrive VHS Dreams.mp3");
             if (urlMusica != null) {
