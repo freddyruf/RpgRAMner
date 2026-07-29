@@ -8,7 +8,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 public class RAMReverse extends Hack {
     public RAMReverse(String nome, String descrizione, int durata) {
         super(nome,descrizione, durata);
-        effetti.add(new EffettoReverse(true));
     }
 }
 

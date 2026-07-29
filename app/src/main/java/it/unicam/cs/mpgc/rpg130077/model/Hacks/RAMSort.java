@@ -11,6 +11,5 @@ public class RAMSort extends Hack {
 
     public RAMSort(String nome, String descrizione, int durata, Comparator<QueuedHack> comparator) {
         super(nome,descrizione, durata);
-        effetti.add(new EffettoSort(true, comparator));
     }
 }

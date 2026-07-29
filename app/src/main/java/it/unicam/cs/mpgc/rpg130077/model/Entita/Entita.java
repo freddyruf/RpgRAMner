@@ -54,8 +54,12 @@ public abstract class Entita {
     }
 
     public void setPV(int PV) {
-        if(PV > MaxPV) throw new IllegalArgumentException();
-        this.PV = PV;
+        if(PV > MaxPV){
+            this.PV = MaxPV;
+        }
+        else {
+            this.PV = PV;
+        }
     }
 
     @Deprecated

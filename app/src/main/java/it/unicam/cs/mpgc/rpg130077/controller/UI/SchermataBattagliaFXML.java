@@ -17,10 +17,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+//TODO rimpiazzare i javafx.XXX nel codice importando quelle classi specifiche
 
 public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener {
 
@@ -37,7 +42,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         private javafx.scene.shape.Rectangle EnemyLifeBar;
 
         @FXML
-        private GridPane BarraRAM;
+        private VBox BarraRAM;
 
         @FXML
         private javafx.scene.control.Button hack1;
@@ -122,29 +127,27 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         if(sistemaCombattimento.isPlayerTurn()){
             //ottengo il button che ha chiamato l'evento
             javafx.scene.control.Button b = (javafx.scene.control.Button) event.getSource();
-
+            // Uso la stessa lista che viene visualizzata nei pulsanti
+            ArrayList<Hack> hacksDisponibili = persistenzaArmamento.getHacks();
             //carico l'hack scelta
             if (b==hack1){
-                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(0));
+                sistemaCombattimento.caricaHack(hacksDisponibili.get(0));
             }
             else if (b==hack2){
-                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(1));
+                sistemaCombattimento.caricaHack(hacksDisponibili.get(1));
             }
             else if (b==hack3){
-                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(2));
+                sistemaCombattimento.caricaHack(hacksDisponibili.get(2));
             }
             else if (b==hack4){
-                sistemaCombattimento.caricaHack(sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks().get(3));
+                sistemaCombattimento.caricaHack(hacksDisponibili.get(3));
             }
-
         }
-        sistemaCombattimento.isPlayerTurn();
         turnoGiocatore=false;
 
         //torno al menu principale
-        visualizzaHacks(event);
+        visualizzaMenu(event);
     }
-
     /**
      * Cambia la lunghezza della barra della vita in base alla vita attuale dell'entita
      * @param entita
@@ -171,46 +174,68 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         ObservableList<Node> children = BarraRAM.getChildren();
         children.clear();
 
-        //Definiamo le costanti di layout
-        double altezzaTotale = BarraRAM.getPrefHeight(); // Prende il valore dall'FXML
-        double gap = 5.0; // Spazio vuoto desiderato
+        // Costanti di layout
+        double altezzaTotale = BarraRAM.getPrefHeight(); // 400.0
+        double padding = 12.5; // Bordo esterno
+        double spacing = 5.0; // Spazio tra una hack e l'altra
 
-        // Impostiamo il gap e il padding della GridPane
-        BarraRAM.setVgap(gap);
-        BarraRAM.setPadding(new javafx.geometry.Insets(gap, gap, gap, gap));
+        BarraRAM.setSpacing(spacing);
+        BarraRAM.setPadding(new javafx.geometry.Insets(padding, padding, padding, padding));
 
-        // Calcoliamo l'altezza "utile", ovvero togliendo i bordi
-        double altezzaUtile = altezzaTotale - (gap * 2);
+        // NOVITÀ: Calcoliamo lo spazio extra che sarà preso dai gap
+        double spazioExtraGaps = Math.max(0, (ram.getHacks().size() - 1) * spacing);
+
+        // Calcoliamo l'altezza "utile" decurtando sia il padding (sopra e sotto) sia i gaps intermedi
+        double altezzaUtile = altezzaTotale - (padding * 2) - spazioExtraGaps;
 
         // Otteniamo lo spazio massimo totale della RAM per le proporzioni
         int spazioMassimo = ram.getSpazioMassimoInSecondi();
-
-        //Inizializzo la riga da cui inserire
-        int riga = ram.getHacks().size() - 1;
 
         // Creiamo i rettangoli proporzionali
         for (QueuedHack queuedHack : ram.getHacks()) {
             javafx.scene.shape.Rectangle hackRectangle = new javafx.scene.shape.Rectangle();
 
-            // Calcolo la proporzione dell'hack (es. un hack da 10 in una ram da 100 darà 0.1)
-            double proporzione = (double) queuedHack.getHack().getDurata() / spazioMassimo;
+            // Calcolo la proporzione dell'hack
+            double proporzione = (double) queuedHack.getThickInCoda() / spazioMassimo;
 
-            // L'altezza teorica se non ci fossero spazi tra gli elementi
+            // L'altezza teorica
             double altezzaTeorica = proporzione * altezzaUtile;
 
-            // Sottraggo il gap per lasciare fisicamente lo spazio vuoto tra un hack e l'altro
-            // Uso Math.max(1, ...) per evitare altezze zero o negative per hack piccolissimi
-            double altezzaReale = Math.max(1.0, altezzaTeorica - gap);
+            // Garantiamo un'altezza minima per le hack presenti
+            double altezzaReale = Math.max(0.0, altezzaTeorica);
 
             hackRectangle.setWidth(110); // Larghezza fissa del rettangolo
             hackRectangle.setHeight(altezzaReale);
-            hackRectangle.setFill(javafx.scene.paint.Color.WHITE);
 
-            // Aggiungo il rettangolo alla GridPane nella prima colonna (0), prossima riga
-            BarraRAM.add(hackRectangle, 0, riga);
+            // Trovo il nome del hack
+            Text hackText = new Text(queuedHack.getHack().getNome());
 
-            //Decrementiamo la riga
-            riga--;
+            //se e' un alleato a lanciarlo il quadrato e' bianco, altrimenti e' nero
+            if(sistemaCombattimento.getStatoBattaglia().getFazioneEroi().contains(queuedHack.getLanciatore())){
+                hackRectangle.setFill(javafx.scene.paint.Color.WHITE);
+                hackText.setFill(javafx.scene.paint.Color.BLACK);
+            }
+            else{
+                hackRectangle.setFill(javafx.scene.paint.Color.BLACK);
+                hackText.setFill(javafx.scene.paint.Color.WHITE);
+            }
+
+
+
+            // Nasconde il testo se l'hack diventa troppo sottile per contenerlo
+            if (altezzaReale < 20) {
+                hackText.setVisible(false);
+            }
+
+            // Creo uno StackPane in modo che si veda il nome del hack sopra il rettangolo
+            StackPane hackPane = new StackPane(hackRectangle, hackText);
+            // Forza lo StackPane a non espandersi oltre il rettangolo
+            hackPane.setMinHeight(altezzaReale);
+            hackPane.setMaxHeight(altezzaReale);
+            hackPane.setPrefHeight(altezzaReale);
+
+            // Aggiungo il rettangolo alla VBox (vengono impilati dall'alto in basso!)
+            children.add(hackPane);
         }
     }
 
@@ -221,7 +246,9 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     @Override
     public void onTick(StatoBattaglia statoBattaglia) {
 
-        aggiornaRAM(statoBattaglia.getRamCondivisa());
+        Platform.runLater(() -> {
+            aggiornaRAM(statoBattaglia.getRamCondivisa());
+        });
         onVitaAggiornata(statoBattaglia); //aggiorno anche la vita perche una hack "continua" potrebbe aver cambiato la vita
 
 

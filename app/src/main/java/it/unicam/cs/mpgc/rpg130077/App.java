@@ -23,13 +23,28 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            //Musica
+            java.net.URL urlMusica = getClass().getResource("/Nightdrive VHS Dreams.mp3");
+            if (urlMusica != null) {
+                Media media = new Media(urlMusica.toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                mediaPlayer.play();
+            }
+
+
             // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
             persistenzaArmamento persistenza = new persistenzaArmamentoJSON();
             CaricatoreCatalogo catalogo = new persistenzaCatalogoArmamentoJSON();
@@ -46,10 +61,10 @@ public class App extends Application {
 
 
             //Creo giocatore
-            Giocatore giocatore = new Giocatore("Giocatore", 100, "", 5, catalogoHack, armaG);
+            Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, catalogoHack, armaG);
 
             //Creo nemico
-            NPC nemico = new NPC("Cybermorb", 100, "", 3, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
+            NPC nemico = new NPC("Cybermorb", 100, "", 5, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
 
 
             // Creo il sistema di combattimento

@@ -3,11 +3,11 @@
     "tipo": "Acid",
     "nome": "Acid",
     "descrizione": "Infligge 10 di danno ogni tick.",
-    "durata": 5,
+    "durata": 10,
     "effetti": [
       {
         "tipoEffetto": "Danno",
-        "danno": 10,
+        "danno": 6,
         "conclusive": false
       }
     ]
@@ -42,7 +42,7 @@
     "tipo": "RAM:Reverse",
     "nome": "RAM:Reverse",
     "descrizione": "Inverte il flusso dei dati in memoria.",
-    "durata": 2,
+    "durata": 6,
     "effetti": [
       {
         "tipoEffetto": "Reverse",
@@ -54,7 +54,7 @@
     "tipo": "RAM:Sort",
     "nome": "RAM:Sort",
     "descrizione": "Riordina le Hack nella RAM.",
-    "durata": 2,
+    "durata": 6,
     "effetti": [
       {
         "tipoEffetto": "Sort",
