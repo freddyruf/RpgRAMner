@@ -17,6 +17,7 @@ public abstract class Hack {
         this.nome = nome;
         this.descrizione = descrizione;
         this.durata = durata;
+        this.effetti = new ArrayList<>();
     }
 
     public String getNome() {

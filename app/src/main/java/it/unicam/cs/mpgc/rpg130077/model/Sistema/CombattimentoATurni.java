@@ -50,6 +50,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
             notificaThick();
         }));
         clock.setCycleCount(Timeline.INDEFINITE);
+        clock.play();
     }
 
     /**

@@ -37,7 +37,8 @@ javafx {
     version = '21.0.8'
     modules = [
         'javafx.controls',
-        'javafx.fxml'
+        'javafx.fxml',
+        'javafx.media'
     ]
 }
 
@@ -57,6 +58,7 @@ sourceSets {
             include '**/*.json'
             include '**/*.png'
             include '**/*.jpg'
+            include '**/*.mp3'
         }
     }
 }

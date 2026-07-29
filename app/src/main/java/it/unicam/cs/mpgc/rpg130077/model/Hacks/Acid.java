@@ -8,7 +8,6 @@ public class Acid extends Hack {
 
     public Acid(String nome, String descrizione, int durata) {
         super(nome,descrizione, durata);
-        effetti.add(new EffettoDanno(10,false));
     }
 
 

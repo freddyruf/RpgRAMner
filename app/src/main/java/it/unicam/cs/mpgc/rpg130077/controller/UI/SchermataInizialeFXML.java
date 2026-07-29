@@ -46,7 +46,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
     @FXML
     private void GoBattaglia(ActionEvent event) {
         //se sono gia stati scelte sia le armi che gli hack
-        if(!(persistenzaArmamento.caricamentoCatalogoHacks().isEmpty() || persistenzaArmamento.caricamentoCatalogoHacks().isEmpty())){
+        if(!(persistenzaArmamento.caricamentoCatalogoHacks().isEmpty() || persistenzaArmamento.caricamentoCatalogoArmi().isEmpty())){
             try {
                 //TODO: aggiungere il reset del sistema di combattimento quando si torna alla schermata iniziale
                 FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));

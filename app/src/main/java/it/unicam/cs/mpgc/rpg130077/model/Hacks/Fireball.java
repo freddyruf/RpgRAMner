@@ -8,8 +8,6 @@ public class Fireball extends Hack {
 
     public Fireball(String nome, String descrizione, int durata) {
 
-        super(nome,descrizione, durata);
-        effetti.add(new EffettoDanno(50,true));
-    }
+        super(nome,descrizione, durata);}
 
 }
