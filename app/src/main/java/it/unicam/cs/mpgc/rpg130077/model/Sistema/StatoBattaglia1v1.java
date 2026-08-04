@@ -26,6 +26,16 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
         this.velocita = 1;
         this.ram=new RAM(giocatore.getSpazioRAM()+avversario.getSpazioRAM());
     }
+    public StatoBattaglia1v1(StatoBattaglia1v1 s){
+        this.giocatore=(Giocatore) s.giocatore.Copy();
+        this.avversario=(NPC) s.avversario.Copy();
+        this.clock=s.clock;
+        this.velocita=s.velocita;
+        this.ram=new RAM(s.getRamCondivisa());
+    }
+    public StatoBattaglia Copy(){
+        return new StatoBattaglia1v1(this);
+    }
 
     public double getVelocita() {
         return velocita;

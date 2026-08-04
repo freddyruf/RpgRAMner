@@ -19,6 +19,16 @@ public abstract class Hack {
         this.durata = durata;
         this.effetti = new ArrayList<>();
     }
+    public Hack(Hack hack) {
+        this.nome = hack.getNome();
+        this.descrizione = hack.getDescrizione();
+        this.durata = hack.getDurata();
+        this.effetti = new ArrayList<>();
+        for(Effetto effetto : hack.getEffetti()) {
+            this.effetti.add(effetto.Copy());
+        }
+    }
+    public abstract Hack Copy();
 
     public String getNome() {
         return nome;

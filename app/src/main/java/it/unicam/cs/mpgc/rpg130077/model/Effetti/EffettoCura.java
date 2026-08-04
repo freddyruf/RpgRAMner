@@ -12,6 +12,13 @@ public class EffettoCura implements Effetto {
         this.cura = cura;
         this.conclusive = conclusive;
     }
+    public EffettoCura(EffettoCura effettoCura) {
+        this.cura = effettoCura.cura;
+        this.conclusive = effettoCura.conclusive;
+    }
+    public Effetto Copy() {
+        return new EffettoCura(this);
+    }
 
     @Override
     public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {

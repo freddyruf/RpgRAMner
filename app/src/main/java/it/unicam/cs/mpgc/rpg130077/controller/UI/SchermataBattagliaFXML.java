@@ -16,16 +16,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-//TODO rimpiazzare i javafx.XXX nel codice importando quelle classi specifiche
+import javafx.scene.control.Button;
+import javafx.scene.shape.Rectangle;
+import javafx.geometry.Insets;
+import javafx.scene.paint.Color.*;
 
 public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener {
 
@@ -36,22 +43,24 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         private GridPane MenuPrincipale;
 
         @FXML
-        private javafx.scene.shape.Rectangle PlayerLifeBar;
+        private Rectangle PlayerLifeBar;
 
         @FXML
-        private javafx.scene.shape.Rectangle EnemyLifeBar;
+        private Rectangle EnemyLifeBar;
 
         @FXML
         private VBox BarraRAM;
 
         @FXML
-        private javafx.scene.control.Button hack1;
+        private Button hack1;
         @FXML
-        private javafx.scene.control.Button hack2;
+        private Button hack2;
         @FXML
-        private javafx.scene.control.Button hack3;
+        private Button hack3;
         @FXML
-        private javafx.scene.control.Button hack4;
+        private Button hack4;
+        @FXML
+        private Pane mainPane;
 
         private boolean turnoGiocatore;
 
@@ -126,7 +135,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     private void pulsanteHack(ActionEvent event) {
         if(sistemaCombattimento.isPlayerTurn()){
             //ottengo il button che ha chiamato l'evento
-            javafx.scene.control.Button b = (javafx.scene.control.Button) event.getSource();
+            Button b = (Button) event.getSource();
             // Uso la stessa lista che viene visualizzata nei pulsanti
             ArrayList<Hack> hacksDisponibili = persistenzaArmamento.getHacks();
             //carico l'hack scelta
@@ -180,7 +189,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         double spacing = 5.0; // Spazio tra una hack e l'altra
 
         BarraRAM.setSpacing(spacing);
-        BarraRAM.setPadding(new javafx.geometry.Insets(padding, padding, padding, padding));
+        BarraRAM.setPadding(new Insets(padding, padding, padding, padding));
 
         // NOVITÀ: Calcoliamo lo spazio extra che sarà preso dai gap
         double spazioExtraGaps = Math.max(0, (ram.getHacks().size() - 1) * spacing);
@@ -193,7 +202,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
         // Creiamo i rettangoli proporzionali
         for (QueuedHack queuedHack : ram.getHacks()) {
-            javafx.scene.shape.Rectangle hackRectangle = new javafx.scene.shape.Rectangle();
+            Rectangle hackRectangle = new Rectangle();
 
             // Calcolo la proporzione dell'hack
             double proporzione = (double) queuedHack.getThickInCoda() / spazioMassimo;
@@ -212,12 +221,12 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
             //se e' un alleato a lanciarlo il quadrato e' bianco, altrimenti e' nero
             if(sistemaCombattimento.getStatoBattaglia().getFazioneEroi().contains(queuedHack.getLanciatore())){
-                hackRectangle.setFill(javafx.scene.paint.Color.WHITE);
-                hackText.setFill(javafx.scene.paint.Color.BLACK);
+                hackRectangle.setFill(Color.WHITE);
+                hackText.setFill(Color.BLACK);
             }
             else{
-                hackRectangle.setFill(javafx.scene.paint.Color.BLACK);
-                hackText.setFill(javafx.scene.paint.Color.WHITE);
+                hackRectangle.setFill(Color.BLACK);
+                hackText.setFill(Color.WHITE);
             }
 
 
@@ -284,12 +293,40 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
     }
 
+    /**
+     * Mostra un pop up che annuncia il vincitore, e presenta un pulsante esci per tornare al menu principale
+     * @param vincitore
+     */
     @Override
     public void onVittoria(Entita vincitore) {
-        Platform.runLater(() -> {
-            //TODO
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Fine battaglia");
+        alert.setHeaderText("Vittoria");
+        alert.setContentText("Il vincitore è: " + vincitore.getNome());
+
+        //Bottone
+        ButtonType esci = new ButtonType("ESCI", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(esci);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == esci) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
+                    Parent nuovaSchermata = loader.load();
+
+                    SchermataInizialeFXML controller = loader.getController();
+                    controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+                    controller.setSistemaCombattimento(this.sistemaCombattimento);
+                    controller.setSpazioRam(spazioRam);
+
+                    Stage stage = (Stage) mainPane.getScene().getWindow();
+                    stage.setScene(new Scene(nuovaSchermata));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
-    }
+    };
 
     @Override
     public void onTurnoGiocatore() {

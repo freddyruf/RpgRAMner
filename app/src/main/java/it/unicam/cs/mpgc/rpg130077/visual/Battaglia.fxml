@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.layout.VBox?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@battagliaStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataBattagliaFXML">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@battagliaStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataBattagliaFXML">
    <children>
       <ImageView fitHeight="537.0" fitWidth="718.0" layoutX="328.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
          <image>

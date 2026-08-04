@@ -9,7 +9,13 @@ public class Acid extends Hack {
     public Acid(String nome, String descrizione, int durata) {
         super(nome,descrizione, durata);
     }
+    public Acid(Acid acid){
+        super(acid);
+    }
 
-
+    @Override
+    public Hack Copy() {
+        return new Acid(this);
+    }
 
 }

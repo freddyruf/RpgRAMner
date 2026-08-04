@@ -15,10 +15,13 @@ public class RAM {
     private int spazioMassimoInSecondi;
     private LinkedList<QueuedHack> hacks;
 
-    public RAM(int spazioMassimoInSecondi){  // ← no void!
-        super();
+    public RAM(int spazioMassimoInSecondi){
         this.spazioMassimoInSecondi = spazioMassimoInSecondi;
         hacks = new LinkedList<QueuedHack>();
+    }
+    public RAM(RAM ram){
+        this.spazioMassimoInSecondi = ram.spazioMassimoInSecondi;
+        this.hacks = new LinkedList<QueuedHack>();
     }
 
     public void avanza(StatoBattaglia statoBattaglia) {

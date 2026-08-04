@@ -8,7 +8,7 @@ public abstract class Arma implements Equipaggiamento {
     int danno;
     double critChance; //min 0 max 1
 
-    protected Arma(String nome,String descrizione, int maxCaricatore, int danno, double critChance) {
+    public Arma(String nome,String descrizione, int maxCaricatore, int danno, double critChance) {
         if(nome == null) {
             throw new NullPointerException("Il nome non può essere nullo");
         }
@@ -18,6 +18,15 @@ public abstract class Arma implements Equipaggiamento {
         this.danno = danno;
         this.critChance = critChance;
     }
+    public Arma(Arma arma) {
+        this.nome = arma.nome;
+        this.descrizione = arma.descrizione;
+        this.maxCaricatore = arma.maxCaricatore;
+        this.caricatore = arma.caricatore;
+        this.danno = arma.danno;
+        this.critChance = arma.critChance;
+    }
+    public abstract Arma copy();
 
     public String getDescrizione() {
         return descrizione;

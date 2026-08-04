@@ -12,5 +12,11 @@ public class Giocatore extends Entita {
     public Giocatore(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma);
     }
+    public Giocatore(Giocatore giocatore){
+        super(giocatore);
+    }
+    public Entita Copy(){
+        return new Giocatore(this);
+    }
 
 }

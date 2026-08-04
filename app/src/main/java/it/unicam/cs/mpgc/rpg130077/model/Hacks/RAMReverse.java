@@ -9,5 +9,12 @@ public class RAMReverse extends Hack {
     public RAMReverse(String nome, String descrizione, int durata) {
         super(nome,descrizione, durata);
     }
+    public RAMReverse(RAMReverse ramReverse) {
+        super(ramReverse);
+    }
+    @Override
+    public Hack Copy() {
+        return new RAMReverse(this);
+    }
 }
 

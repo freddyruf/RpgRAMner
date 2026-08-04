@@ -11,6 +11,12 @@ public class EffettoReverse implements Effetto {
     public EffettoReverse(boolean conclusive) {
         this.conclusive = conclusive;
     }
+    public EffettoReverse(EffettoReverse effettoReverse) {
+        this.conclusive = effettoReverse.conclusive;
+    }
+    public Effetto Copy() {
+        return new EffettoReverse(this);
+    }
 
     @Override
     public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {

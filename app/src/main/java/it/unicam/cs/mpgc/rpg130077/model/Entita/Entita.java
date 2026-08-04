@@ -31,6 +31,19 @@ public abstract class Entita {
         this.hacks = hacks;
         this.arma = arma;
     }
+    public Entita(Entita entita) {
+        this.nome = entita.nome;
+        this.MaxPV = entita.MaxPV;
+        this.PV=entita.PV;
+        this.image = entita.image;
+        this.spazioRAM = entita.spazioRAM;
+        this.hacks = new ArrayList<>(entita.hacks);
+        for (Hack hack : entita.hacks) {
+            this.hacks.add(hack.Copy());
+        }
+        this.arma = entita.arma.copy();
+    }
+    public abstract Entita Copy();
     public String getNome() {
         return nome;
     }

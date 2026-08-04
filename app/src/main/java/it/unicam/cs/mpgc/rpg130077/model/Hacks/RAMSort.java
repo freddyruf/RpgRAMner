@@ -12,4 +12,11 @@ public class RAMSort extends Hack {
     public RAMSort(String nome, String descrizione, int durata, Comparator<QueuedHack> comparator) {
         super(nome,descrizione, durata);
     }
+    public RAMSort(RAMSort ramSort) {
+        super(ramSort);
+    }
+    @Override
+    public Hack Copy() {
+        return new RAMSort(this);
+    }
 }
