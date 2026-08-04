@@ -13,6 +13,13 @@ public class EffettoSort implements Effetto {
     public EffettoSort(boolean conclusive) {
         this.conclusive = conclusive;
     }
+    public EffettoSort(EffettoSort effettoSort) {
+        this.conclusive = effettoSort.conclusive;
+        this.comparator = effettoSort.comparator;
+    }
+    public Effetto Copy() {
+        return new EffettoSort(this);
+    }
 
     @Override
     public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {

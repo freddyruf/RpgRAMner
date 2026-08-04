@@ -13,6 +13,11 @@ public class StatoTurni {
         this.numeroTurniNemici = numeroTurniNemici;
         turno=0;
     }
+    public StatoTurni(StatoTurni statoTurni){
+        this.numeroTurniAlleati = statoTurni.numeroTurniAlleati;
+        this.numeroTurniNemici = statoTurni.numeroTurniNemici;
+        this.turno = statoTurni.turno;
+    }
     public void avanzaTurno(){
         turno++;
     }

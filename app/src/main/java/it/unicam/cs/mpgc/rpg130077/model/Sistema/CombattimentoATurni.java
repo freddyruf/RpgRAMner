@@ -16,12 +16,14 @@ import java.util.ArrayList;
 
 public class CombattimentoATurni  implements SistemaCombattimento {
 
-    StatoBattaglia stato;
-    StatoTurni statoTurni;
+    private StatoBattaglia stato;
+    private StatoTurni statoTurni;
 
     private Timeline clock;
 
     private ArrayList<CombattimentoListener> listeners= new ArrayList<>();
+
+    private CombattimentoATurni backup;
 
     public void aggiungiListener(CombattimentoListener combattimentoListener) {
         listeners.add(combattimentoListener);
@@ -40,11 +42,22 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     public CombattimentoATurni(StatoBattaglia stato) {
         this.stato = stato;
         statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
-        inizializzaClock();
+
+        //clono il combattimento per salvarlo allo stato originario
+        backup = new CombattimentoATurni(this);
+    }
+    public CombattimentoATurni(CombattimentoATurni combattimentoATurni){
+        this.stato=combattimentoATurni.stato.Copy();
+        this.statoTurni=new StatoTurni(combattimentoATurni.statoTurni);
+    }
+    public void ripristina(){
+
+        this.stato=backup.getStatoBattaglia().Copy();
+        this.statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
 
     }
-
-    private void inizializzaClock() {
+    @Override
+    public void inizializzaClock() {
         clock = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             stato.getRamCondivisa().avanza(stato);
             notificaThick();

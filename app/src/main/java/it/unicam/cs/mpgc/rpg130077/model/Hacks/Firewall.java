@@ -11,6 +11,14 @@ public class Firewall extends Hack {
 
         super(nome,descrizione, durata);
     }
+
+    public Firewall(Firewall firewall) {
+        super(firewall);
+    }
+    @Override
+    public Hack Copy() {
+        return new Firewall(this);
+    }
 }
 
 

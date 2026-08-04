@@ -14,6 +14,8 @@ public interface SistemaCombattimento {
     void sparare();
     boolean isPlayerTurn();
     void aggiungiListener(CombattimentoListener combattimentoListener);
+    void ripristina();
+    void inizializzaClock();
 
 }
 

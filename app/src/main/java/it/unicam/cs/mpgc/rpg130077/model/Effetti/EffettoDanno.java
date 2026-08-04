@@ -11,6 +11,13 @@ public class EffettoDanno implements Effetto {
         this.danno = danno;
         this.conclusive = conclusive;
     }
+    public EffettoDanno(EffettoDanno effettoDanno) {
+        this.danno = effettoDanno.danno;
+        this.conclusive = effettoDanno.conclusive;
+    }
+    public Effetto Copy() {
+        return new EffettoDanno(this);
+    }
 
     @Override
     public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {

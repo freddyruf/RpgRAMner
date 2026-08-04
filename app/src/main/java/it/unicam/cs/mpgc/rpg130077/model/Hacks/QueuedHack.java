@@ -15,6 +15,12 @@ public class QueuedHack {
         this.hack = hack;
         this.thickInCoda = hack.getDurata();
     }
+    public QueuedHack(QueuedHack queuedHack) {
+        this.hack = queuedHack.hack.Copy();
+        this.thickInCoda = queuedHack.thickInCoda;
+        this.bersaglio = queuedHack.bersaglio.Copy();
+        this.lanciatore = queuedHack.lanciatore.Copy();
+    }
 
     public int getThickInCoda() {
         return thickInCoda;

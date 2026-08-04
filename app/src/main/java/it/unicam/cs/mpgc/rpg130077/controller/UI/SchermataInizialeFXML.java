@@ -49,15 +49,18 @@ public class SchermataInizialeFXML extends SchermataGenerica {
         //se sono gia stati scelte sia le armi che gli hack
         if(!(persistenzaArmamento.caricamentoCatalogoHacks().isEmpty() || persistenzaArmamento.caricamentoCatalogoArmi().isEmpty())){
             try {
-                //TODO: aggiungere il reset del sistema di combattimento quando si torna alla schermata iniziale
                 FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));
                 Parent nuovaSchermata = loader.load();
 
                 SchermataBattagliaFXML controller = loader.getController();
                 controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
+                this.sistemaCombattimento.ripristina(); //ripristino lo stato del combattimento a quello scelto al inizio
+                this.sistemaCombattimento.inizializzaClock(); //avvio il clock
+
                 controller.setSistemaCombattimento(this.sistemaCombattimento);
                 controller.setSpazioRam(spazioRam);
                 sistemaCombattimento.aggiungiListener(controller);
+
 
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -23,6 +23,16 @@ public class NPC extends Entita {
         this.strategia = strategia;
 
     }
+    public NPC(NPC npc){
+        super(npc);
+        this.dannoAttaccoASorpresa = npc.dannoAttaccoASorpresa;
+        this.chanceAttaccoASorpresa = npc.chanceAttaccoASorpresa;
+        this.strategia = npc.strategia;
+    }
+
+    public Entita Copy(){
+        return new NPC(this);
+    }
 
     public boolean controllaAttaccoASorpresa(){
         if(chanceAttaccoASorpresa*Math.random() <= 0.5){
