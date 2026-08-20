@@ -1,63 +1,65 @@
 {
   "armi": [
     {
-      "tipo": "Pistola",
       "nome": "Pistola",
       "descrizione": "Spara un colpo singolo.",
       "maxCaricatore": 6,
       "caricatore": 0,
       "danno": 30,
-      "critChance": 0.3
+      "critChance": 0.3,
+      "tipo": "Pistola"
     }
   ],
   "hacks": [
     {
-      "tipo": "RAM:Sort",
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
+      "nome": "RAM:Reverse",
+      "descrizione": "Inverte il flusso dei dati in memoria.",
       "durata": 6,
       "effetti": [
         {
-          "tipoEffetto": "Sort",
-          "conclusive": true
+          "conclusive": true,
+          "tipoEffetto": "Reverse"
         }
-      ]
+      ],
+      "tipo": "RAM:Reverse"
     },
     {
-      "tipo": "RAM:Sort",
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
+      "nome": "RAM:Reverse",
+      "descrizione": "Inverte il flusso dei dati in memoria.",
       "durata": 6,
       "effetti": [
         {
-          "tipoEffetto": "Sort",
-          "conclusive": true
+          "conclusive": true,
+          "tipoEffetto": "Reverse"
         }
-      ]
+      ],
+      "tipo": "RAM:Reverse"
     },
     {
-      "tipo": "RAM:Sort",
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
-      "durata": 6,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
-          "tipoEffetto": "Sort",
-          "conclusive": true
+          "danno": 50,
+          "conclusive": true,
+          "tipoEffetto": "Danno"
         }
-      ]
+      ],
+      "tipo": "Fireball"
     },
     {
-      "tipo": "RAM:Sort",
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
-      "durata": 6,
+      "nome": "Firewall",
+      "descrizione": "Cura il giocatore",
+      "durata": 4,
       "effetti": [
         {
-          "tipoEffetto": "Sort",
-          "conclusive": true
+          "cura": 30,
+          "conclusive": true,
+          "tipoEffetto": "Cura"
         }
-      ]
+      ],
+      "tipo": "Firewall"
     }
   ]
 }

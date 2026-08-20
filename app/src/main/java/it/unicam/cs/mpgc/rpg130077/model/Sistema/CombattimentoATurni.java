@@ -79,7 +79,6 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         }
     }
 
-    //TODO
     @Override
     public void avanza() {
 
