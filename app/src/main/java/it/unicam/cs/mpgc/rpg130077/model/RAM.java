@@ -76,7 +76,7 @@ public class RAM {
         }
     }
 
-    public QueuedHack rimuovi() { //FIXME: rimuoverlo solo o anche returnarlo?
+    public QueuedHack rimuovi() {
         return hacks.poll();
     }
 
