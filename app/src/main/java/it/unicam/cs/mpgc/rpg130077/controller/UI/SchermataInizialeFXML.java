@@ -32,6 +32,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
             controller.setSpazioRam(this.spazioRam);
             controller.setSistemaCombattimento(this.sistemaCombattimento);
+            controller.setClock(this.clock);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
@@ -60,7 +61,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(nuovaSchermata));
-                
+
                 clock.start();
 
             } catch (IOException e) {

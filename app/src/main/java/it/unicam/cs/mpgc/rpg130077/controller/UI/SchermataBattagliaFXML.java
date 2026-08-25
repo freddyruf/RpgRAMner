@@ -78,6 +78,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
             controller.setSistemaCombattimento(this.sistemaCombattimento);
             controller.setSpazioRam(spazioRam);
+            controller.setClock(this.clock);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
