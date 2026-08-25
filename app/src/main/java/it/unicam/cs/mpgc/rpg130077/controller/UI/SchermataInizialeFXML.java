@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.App;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,12 +55,14 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
                 controller.setSistemaCombattimento(this.sistemaCombattimento);
                 controller.setSpazioRam(spazioRam);
+                controller.setClock(this.clock);
                 sistemaCombattimento.aggiungiListener(controller);
-
-
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(nuovaSchermata));
+                
+                clock.start();
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -15,12 +15,12 @@ public class EffettoDanno implements Effetto {
         this.danno = effettoDanno.danno;
         this.conclusive = effettoDanno.conclusive;
     }
-    public Effetto Copy() {
+    public Effetto copy() {
         return new EffettoDanno(this);
     }
 
     @Override
-    public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
+    public void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
         bersaglio.setPV(bersaglio.getPV() - danno);
     }
 

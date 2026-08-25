@@ -13,7 +13,7 @@ public class Fireball extends Hack {
         super(fireball);
     }
     @Override
-    public Hack Copy() {
+    public Hack copy() {
         return new Fireball(this);
     }
 

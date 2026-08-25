@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.model.Entita;
 
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
-import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
-import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
@@ -42,11 +40,11 @@ public abstract class Entita {
         this.spazioRAM = entita.spazioRAM;
         this.hacks = new ArrayList<Hack>(entita.hacks.size());
         for (Hack hack : entita.hacks) {
-            this.hacks.add(hack.Copy());
+            this.hacks.add(hack.copy());
         }
         this.arma = entita.arma.copy();
     }
-    public abstract Entita Copy();
+    public abstract Entita copy();
     public String getNome() {
         return nome;
     }

@@ -1,31 +1,25 @@
 
 package it.unicam.cs.mpgc.rpg130077;
-import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataBattagliaFXML;
-import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataGenerica;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
-import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
-import it.unicam.cs.mpgc.rpg130077.model.RAM;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamentoJSON;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaCatalogoArmamentoJSON;
+import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
+import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamentoJSON;
+import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaCatalogoArmamentoJSON;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -48,12 +42,12 @@ public class App extends Application {
 
 
             // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
-            persistenzaArmamento persistenza = new persistenzaArmamentoJSON();
-            CaricatoreCatalogo catalogo = new persistenzaCatalogoArmamentoJSON();
-            ArrayList<Arma> catalogoArmi= catalogo.CaricamentoCatalogoArmi();
+            PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON();
+            CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
+            ArrayList<Arma> catalogoArmi= catalogo.caricamentoCatalogoArmi();
 
             //carico le hack del giocatore e del nemico
-            ArrayList<Hack> catalogoHack= catalogo.CaricamentoCatalogoHack();
+            ArrayList<Hack> catalogoHack= catalogo.caricamentoCatalogoHack();
             ArrayList<Hack> catalogoHackNemico=catalogoHack;
             catalogoHackNemico.remove(0); //rimuovo 1 hack cosi ne ha 4
 
@@ -73,18 +67,19 @@ public class App extends Application {
             // Creo il sistema di combattimento
             SistemaCombattimento sistemaCombattimento = new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
 
-            // Timer
-            Clock clock = new Clock(() -> {sistemaCombattimento.onTick();}); // 1 secondo per tick
-
             // Carica l'FXML
             FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
             Parent root = loader.load();
+
+            //Creo il clock
+            Clock clock = new Clock(() -> sistemaCombattimento.onTick());
 
             // passo le dipendenze
             SchermataInizialeFXML controller = loader.getController();
             controller.setPersistenze(persistenza, catalogo);
             controller.setSpazioRam(giocatore.getSpazioRAM()+nemico.getSpazioRAM());
             controller.setSistemaCombattimento(sistemaCombattimento);
+            controller.setClock(clock);
 
             stage.setScene(new Scene(root));
             stage.show();

@@ -11,7 +11,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
 
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 public class CombattimentoATurni  implements SistemaCombattimento {
 
@@ -52,12 +51,12 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         backup = new CombattimentoATurni(this);
     }
     public CombattimentoATurni(CombattimentoATurni combattimentoATurni){
-        this.stato=combattimentoATurni.stato.Copy();
+        this.stato=combattimentoATurni.stato.copy();
         this.statoTurni=new StatoTurni(combattimentoATurni.statoTurni);
     }
     public void ripristina(){
 
-        this.stato=backup.getStatoBattaglia().Copy();
+        this.stato=backup.getStatoBattaglia().copy();
         this.statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
 
     }

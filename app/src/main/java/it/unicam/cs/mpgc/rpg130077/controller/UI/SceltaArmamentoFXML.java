@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130077.controller.UI;
 import it.unicam.cs.mpgc.rpg130077.App;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
+import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
 
     @Override
-    public void setPersistenze(persistenzaArmamento p, CaricatoreCatalogo c) {
+    public void setPersistenze(PersistenzaArmamento p, CaricatoreCatalogo c) {
         super.persistenzaArmamento = p;
         this.caricatoreCatalogo = c;
 

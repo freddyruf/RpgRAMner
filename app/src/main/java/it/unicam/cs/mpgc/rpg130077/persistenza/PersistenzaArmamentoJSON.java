@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Implementazione el interfaccia persistenzaArmamento che utilizza il formato JSON per salvare e caricare l'equipaggiamento scelto dal giocatore.
  */
-public class persistenzaArmamentoJSON implements persistenzaArmamento {
+public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
 
     private static class ArmamentoSalvato {
         ArrayList<Arma> armi;
@@ -30,11 +30,11 @@ public class persistenzaArmamentoJSON implements persistenzaArmamento {
     }
 
     private final String FILE = "data/Armamento.json";
-    private final persistenzaCatalogoArmamentoJSON catalogo;
+    private final PersistenzaCatalogoArmamentoJSON catalogo;
     private final Gson gson;
 
-    public persistenzaArmamentoJSON() {
-        this.catalogo = new persistenzaCatalogoArmamentoJSON();
+    public PersistenzaArmamentoJSON() {
+        this.catalogo = new PersistenzaCatalogoArmamentoJSON();
         this.gson = GsonProvider.getGson();
     }
 
@@ -86,11 +86,11 @@ public class persistenzaArmamentoJSON implements persistenzaArmamento {
 
     @Override
     public ArrayList<Arma> caricamentoCatalogoArmi() {
-        return catalogo.CaricamentoCatalogoArmi();
+        return catalogo.caricamentoCatalogoArmi();
     }
 
     @Override
     public ArrayList<Hack> caricamentoCatalogoHacks() {
-        return catalogo.CaricamentoCatalogoHack();
+        return catalogo.caricamentoCatalogoHack();
     }
 }

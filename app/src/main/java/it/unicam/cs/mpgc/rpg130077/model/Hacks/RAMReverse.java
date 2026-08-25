@@ -13,7 +13,7 @@ public class RAMReverse extends Hack {
         super(ramReverse);
     }
     @Override
-    public Hack Copy() {
+    public Hack copy() {
         return new RAMReverse(this);
     }
 }

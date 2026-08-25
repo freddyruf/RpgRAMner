@@ -30,7 +30,7 @@ public class NPC extends Entita {
         this.strategia = npc.strategia;
     }
 
-    public Entita Copy(){
+    public Entita copy(){
         return new NPC(this);
     }
 

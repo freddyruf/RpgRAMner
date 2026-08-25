@@ -14,7 +14,7 @@ public class Acid extends Hack {
     }
 
     @Override
-    public Hack Copy() {
+    public Hack copy() {
         return new Acid(this);
     }
 

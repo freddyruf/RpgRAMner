@@ -70,6 +70,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     public void GoSchermataIniziale(ActionEvent event) {
         try {
+            clock.stop();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
             Parent nuovaSchermata = loader.load();
 
@@ -316,20 +317,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType == esci) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
-                    Parent nuovaSchermata = loader.load();
-
-                    SchermataInizialeFXML controller = loader.getController();
-                    controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
-                    controller.setSistemaCombattimento(this.sistemaCombattimento);
-                    controller.setSpazioRam(spazioRam);
-
-                    Stage stage = (Stage) mainPane.getScene().getWindow();
-                    stage.setScene(new Scene(nuovaSchermata));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                GoSchermataIniziale(new ActionEvent());
             }
         });
     };
