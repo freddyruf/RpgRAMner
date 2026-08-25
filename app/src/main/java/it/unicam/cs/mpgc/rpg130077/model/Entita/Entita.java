@@ -10,6 +10,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
 import java.util.ArrayList;
 
+/**
+ * Classe che astrae il concetto di "Entita": Essere vivente, o perlomeno, dotato di una coscienza
+ */
 public abstract class Entita {
     private String nome;
     private int PV;

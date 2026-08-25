@@ -6,11 +6,12 @@ import it.unicam.cs.mpgc.rpg130077.model.RAM;
 
 import java.util.ArrayList;
 
+/**
+ * interfaccia che astrae il concetto di stato di una battaglia: insieme dei suoi dati
+ */
 public interface StatoBattaglia {
 
     RAM getRamCondivisa();
-    int getClock();
-    void incrementaClock();
 
     Giocatore getGiocatore();
     ArrayList<Entita> getFazioneEroi();

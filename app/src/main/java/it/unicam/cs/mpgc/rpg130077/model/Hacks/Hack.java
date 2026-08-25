@@ -7,6 +7,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe che astrae il concetto di Hack: Software che interagisce con la battaglia. E' l'equivalente di un incantesimo per i classici RPG
+ */
 public abstract class Hack {
     private String nome;
     private String descrizione;

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * Classe che rappresenta una RAM: Un contenitore di programmi attivi
+ */
 public class RAM {
 
     private int spazioMassimoInSecondi;
@@ -24,15 +27,16 @@ public class RAM {
         this.hacks = new LinkedList<QueuedHack>();
     }
 
+    /**
+     * Si attiva a ogni tick
+     * @param statoBattaglia
+     */
     public void avanza(StatoBattaglia statoBattaglia) {
         QueuedHack queuedHack = visualizzaTesta();
         if (queuedHack == null) return;
         queuedHack.setThickInCoda(queuedHack.getThickInCoda()-1);
         Hack hack = queuedHack.getHack();
         ArrayList<Effetto> effetti= hack.getEffetti();
-
-        System.out.println("\n"+hacks.toString()+"\n");
-        System.out.println("\n"+effetti.toString()+"\n");
 
         // Esegue gli effetti non conclusivi
         for (Effetto effetto : effetti) {
@@ -88,6 +92,9 @@ public class RAM {
         hacks.sort(comparator);
     }
 
+    /**
+     * Inverte l'ordine delle hack in coda
+     */
     public void reverse(){
         LinkedList<QueuedHack> reversed = new LinkedList<>();
         for (int i = hacks.size() - 1; i >= 0; i--) {

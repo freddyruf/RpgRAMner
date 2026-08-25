@@ -4,6 +4,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import java.util.ArrayList;
 
+/**
+ * Interfaccia che astrae un oggetto che si occupa di gestire la persistenza del armamento scelto dal giocatore
+ */
 public interface persistenzaArmamento {
 
 
@@ -13,7 +16,7 @@ public interface persistenzaArmamento {
      *
      * @return ArrayList di Arma salvate nel file JSON
      */
-    ArrayList<Arma> getArma();
+    ArrayList<Arma> getArmi();
 
     /**
      * Legge il file e restituisce gli hack salvati.
@@ -21,7 +24,7 @@ public interface persistenzaArmamento {
      */
     ArrayList<Hack> getHacks();
 
-    // Nuovo metodo unificato per il salvataggio
+
     void salvaEquipaggiamentoScelto(ArrayList<Arma> armi, ArrayList<Hack> hacks);
 
     ArrayList<Arma> caricamentoCatalogoArmi();

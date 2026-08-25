@@ -5,21 +5,20 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import java.util.Timer;
+
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class CombattimentoATurni  implements SistemaCombattimento {
 
     private StatoBattaglia stato;
     private StatoTurni statoTurni;
 
-    private Timeline clock;
+    private Timer clock;
 
     private ArrayList<CombattimentoListener> listeners= new ArrayList<>();
 
@@ -58,12 +57,26 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     }
     @Override
     public void inizializzaClock() {
-        clock = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            stato.getRamCondivisa().avanza(stato);
-            notificaThick();
-        }));
-        clock.setCycleCount(Timeline.INDEFINITE);
-        clock.play();
+        clock = new Timer(); // Creiamo l'orologio
+
+        //Creo una task che viene eseguita ogni 1s(o 1000ms)
+        clock.scheduleAtFixedRate(new TimerTask() {
+            //Questo viene eseguito ogni volta che viene chiamata la task
+            @Override
+            public void run() {
+                stato.getRamCondivisa().avanza(stato);
+                notificaThick();
+            }
+        }, 1000, 1000);
+    }
+
+    /**
+     * Blocca il clock
+     */
+    public void fermaClock() {
+        if (clock != null) {
+            clock.cancel();
+        }
     }
 
     /**
@@ -113,9 +126,8 @@ public class CombattimentoATurni  implements SistemaCombattimento {
             avanza();
         }
 
-
         //se l'azione fa danno o cura
-        if((azione instanceof AzioneSparo) || ((azione instanceof AzioneCaricaHack) && ((AzioneCaricaHack) azione).getHack().isHealDealer() || ((AzioneCaricaHack) azione).getHack().isDamageDealer())){
+        if(azione.isDamageDealer() || azione.isHealDealer()){
             //aggiorno le barre della vita
             for(CombattimentoListener combattimentoListener : listeners){
                 combattimentoListener.onVitaAggiornata(stato);
@@ -158,14 +170,17 @@ public class CombattimentoATurni  implements SistemaCombattimento {
             }
         }
 
+
         // Determina il risultato
         if (eroiSconfitti) {
+            fermaClock();
             // Se gli eroi sono morti, restituiamo il primo nemico come vincitore simbolico
             for (CombattimentoListener listener : listeners) {
                 listener.onVittoria(nemici.get(0));
             }
             return nemici.get(0);
         } else if (nemiciSconfitti) {
+            fermaClock();
             // Se i nemici sono morti, restituiamo il giocatore
             for (CombattimentoListener listener : listeners) {
                 listener.onVittoria(eroi.get(0));

@@ -11,7 +11,7 @@ public class GestoreArmamento {
     private final ArrayList<Hack> catalogoHacks;
     private final persistenzaArmamento gestoreSalvataggi;
 
-    // Il costruttore ora accetta ENTRAMBE le interfacce (Massimo SOLID!)
+
     public GestoreArmamento(persistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
         this.catalogoArmi = caricatoreCatalogo.CaricamentoCatalogoArmi();
         this.catalogoHacks = caricatoreCatalogo.CaricamentoCatalogoHack();
@@ -20,8 +20,8 @@ public class GestoreArmamento {
 
     /**
      *
-     * @param nomeItem nome del item
-     * @return descrizione del item
+     * @param nomeItem
+     * @return
      */
     public String getDescrizioneItem(String nomeItem) {
         for (Hack hack : catalogoHacks) {

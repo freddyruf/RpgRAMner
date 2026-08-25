@@ -68,13 +68,13 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      */
     @FXML
     private void PulsanteEsci(ActionEvent event) {
-        if(tuttoArmamentoèScelto(event)){
+        if(checkArmamentoCompletamenteScelto(event)){
             gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
             GoSchermataIniziale(event);
         }
     }
 
-    private boolean tuttoArmamentoèScelto(ActionEvent event) {
+    private boolean checkArmamentoCompletamenteScelto(ActionEvent event) {
         ArrayList<String> menuButtonNames = getMenuButtonNames(getAllMenuButtonsFromEvent(event));
         for(String menuButtonName : menuButtonNames) {
             if(menuButtonName.contains("HACK") || menuButtonName.contains("Arma")) {
@@ -85,7 +85,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     }
 
     /**
-     * vado alla schermata iniziale e passo le dipendenze alla schermata iniziale, cosi che non le perdo
+     * Va alla schermata iniziale e passa le dipendenze alla schermata iniziale, cosi che non le perde
      */
     private void GoSchermataIniziale(ActionEvent event) {
         try {
@@ -106,7 +106,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     }
 
     /**
-     *
+     * Cambia la descrizione di un Hack o di un Arma in base a cosa si ha scelto
      * @param menuButton menu button la cui descrizione(Nella label) va cambiata
      */
     private void CambiaLabel(MenuButton menuButton) {
@@ -114,10 +114,10 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
         String idLabelAttesa = idBottone.replace("MenuButton", "Label");
 
-        //Cerco la Label dinamicamente nella scena (serve il casting a Label)
+        //Cerca la Label dinamicamente nella scena (serve il casting a Label)
         Label label = (Label) menuButton.getScene().lookup("#" + idLabelAttesa);
 
-        // Se ho trovato la label, le assegno la descrizione presa dal Model
+        // Se trova la label, le assegno la descrizione presa dal Model
         if (label != null) {
             String nomeItem = menuButton.getText(); // Es: "Fireball"
             String testoDescrizione = gestore.getDescrizioneItem(nomeItem);
@@ -128,7 +128,9 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     }
 
 
-    /** Si attiva quando un Menu button viene cambiato, aggiorna la Label**/
+    /**
+     * Cambia il testo del menu button con quello del menu item selezionato e aggiorna la label con la descrizione dell'oggetto selezionato
+     **/
     @FXML
     private void SelezionaNelMenu(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
@@ -138,6 +140,10 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
     }
 
+    /**
+     * Raccoglie tutti i MenuButton della pagina in cui e' stato eseguito
+     * @return ArrayList dei MenuButton della pagina
+     */
     public ArrayList<MenuButton> geAllMenuButtonsFromThis(){
 
         ArrayList<MenuButton> menuButtons = new ArrayList<>();
@@ -160,7 +166,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
         for (int i = 0; i<listaMenuButton.size();i++) {
             MenuButton menuButton = listaMenuButton.get(i);
             if(menuButton.getId().contains("Arma")) {
-                menuButton.setText(persistenzaArmamento.getArma().get(cnt).getNome());
+                menuButton.setText(persistenzaArmamento.getArmi().get(cnt).getNome());
                 CambiaLabel(menuButton);
                 cnt++;
             }

@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * Implementazione el interfaccia persistenzaArmamento che utilizza il formato JSON per salvare e caricare l'equipaggiamento scelto dal giocatore.
+ */
 public class persistenzaArmamentoJSON implements persistenzaArmamento {
 
     private static class ArmamentoSalvato {
@@ -52,7 +55,7 @@ public class persistenzaArmamentoJSON implements persistenzaArmamento {
     }
 
     @Override
-    public ArrayList<Arma> getArma() {
+    public ArrayList<Arma> getArmi() {
         try (FileReader reader = new FileReader(FILE)) {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             Type tipoLista = new TypeToken<ArrayList<Arma>>(){}.getType();

@@ -34,7 +34,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.geometry.Insets;
 import javafx.scene.paint.Color.*;
 
-public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener {
+public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener, SchermataBattaglia {
 
         @FXML
         private GridPane MenuHacks;
@@ -75,9 +75,9 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     }
 
     /**
-     * vado alla schermata iniziale e passo le dipendenze alla schermata iniziale, cosi che non le perdo
+     * Va alla schermata iniziale e passa le dipendenze alla schermata iniziale, cosi che non le perde
      */
-    private void GoSchermataIniziale(ActionEvent event) {
+    public void GoSchermataIniziale(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
             Parent nuovaSchermata = loader.load();
@@ -95,32 +95,49 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     }
 
 
-
+    /**
+     * Carica le hack che erano immagazinate nella memoria nel interfaccia
+     * @param event
+     */
     @FXML
     private void visualizzaHacks(ActionEvent event) {
-        //scambio il menu da vedere per mostrare le hacks
-        MenuHacks.setVisible(true);
-        MenuPrincipale.setVisible(false);
+        scambiaMenu();
 
         //carico le hacks
         ArrayList<Hack> catalogo= persistenzaArmamento.getHacks();
 
-        if (catalogo == null || catalogo.size() < 4) {
-            System.err.println("Catalogo hacks non valido o incompleto: " + catalogo);
-            return;
+
+        ArrayList<Button> bottoniHacks = new ArrayList<>();
+
+        for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
+            if (nodo instanceof Button) {
+                bottoniHacks.add((Button) nodo);
+            }
         }
 
-        hack1.setText(catalogo.get(0).getNome());
-        hack2.setText(catalogo.get(1).getNome());
-        hack3.setText(catalogo.get(2).getNome());
-        hack4.setText(catalogo.get(3).getNome());
+        for (int i = 0; i < bottoniHacks.size(); i++) {
+            bottoniHacks.get(i).setText(catalogo.get(i).getNome());
+        }
     }
 
+    /**
+     * Scambia il menu principale con quello delle hack o viceversa
+     */
+    private void scambiaMenu() {
+        if(MenuPrincipale.isVisible()) {
+            MenuHacks.setVisible(true);
+            MenuPrincipale.setVisible(false);
+        }
+        else {
+            MenuHacks.setVisible(false);
+            MenuPrincipale.setVisible(true);
+        }
+    }
+
+
     @FXML
-    private void visualizzaMenu(ActionEvent event) {
-        //scambio il menu da vedere per mostrare il menu principale
-        MenuPrincipale.setVisible(true);
-        MenuHacks.setVisible(false);
+    private void Indietro(ActionEvent event) {
+        scambiaMenu();
     }
 
     @FXML
@@ -134,28 +151,28 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     @FXML
     private void pulsanteHack(ActionEvent event) {
         if(sistemaCombattimento.isPlayerTurn()){
-            //ottengo il button che ha chiamato l'evento
+
             Button b = (Button) event.getSource();
-            // Uso la stessa lista che viene visualizzata nei pulsanti
+
             ArrayList<Hack> hacksDisponibili = persistenzaArmamento.getHacks();
-            //carico l'hack scelta
-            if (b==hack1){
-                sistemaCombattimento.caricaHack(hacksDisponibili.get(0));
+            ArrayList<Button> bottoniHacks = new ArrayList<>();
+
+            for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
+                if (nodo instanceof Button) {
+                    bottoniHacks.add((Button) nodo);
+                }
             }
-            else if (b==hack2){
-                sistemaCombattimento.caricaHack(hacksDisponibili.get(1));
+            for (int i = 0; i < bottoniHacks.size(); i++) {
+                if(b==bottoniHacks.get(i)) {
+                    sistemaCombattimento.caricaHack(hacksDisponibili.get(i));
+                }
             }
-            else if (b==hack3){
-                sistemaCombattimento.caricaHack(hacksDisponibili.get(2));
-            }
-            else if (b==hack4){
-                sistemaCombattimento.caricaHack(hacksDisponibili.get(3));
-            }
+
         }
         turnoGiocatore=false;
 
         //torno al menu principale
-        visualizzaMenu(event);
+        scambiaMenu();
     }
     /**
      * Cambia la lunghezza della barra della vita in base alla vita attuale dell'entita
@@ -180,46 +197,46 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
 
     public void aggiornaRAM(RAM ram) {
+        if(ram==null){
+            throw new NullPointerException("Ram nulla");
+        }
         ObservableList<Node> children = BarraRAM.getChildren();
         children.clear();
 
         // Costanti di layout
-        double altezzaTotale = BarraRAM.getPrefHeight(); // 400.0
+        double altezzaTotale = BarraRAM.getPrefHeight();
         double padding = 12.5; // Bordo esterno
         double spacing = 5.0; // Spazio tra una hack e l'altra
 
         BarraRAM.setSpacing(spacing);
         BarraRAM.setPadding(new Insets(padding, padding, padding, padding));
 
-        // NOVITÀ: Calcoliamo lo spazio extra che sarà preso dai gap
+
         double spazioExtraGaps = Math.max(0, (ram.getHacks().size() - 1) * spacing);
 
-        // Calcoliamo l'altezza "utile" decurtando sia il padding (sopra e sotto) sia i gaps intermedi
+
         double altezzaUtile = altezzaTotale - (padding * 2) - spazioExtraGaps;
 
-        // Otteniamo lo spazio massimo totale della RAM per le proporzioni
+
         int spazioMassimo = ram.getSpazioMassimoInSecondi();
 
         // Creiamo i rettangoli proporzionali
         for (QueuedHack queuedHack : ram.getHacks()) {
             Rectangle hackRectangle = new Rectangle();
 
-            // Calcolo la proporzione dell'hack
+
             double proporzione = (double) queuedHack.getThickInCoda() / spazioMassimo;
 
-            // L'altezza teorica
             double altezzaTeorica = proporzione * altezzaUtile;
 
-            // Garantiamo un'altezza minima per le hack presenti
             double altezzaReale = Math.max(0.0, altezzaTeorica);
 
-            hackRectangle.setWidth(110); // Larghezza fissa del rettangolo
+            hackRectangle.setWidth(110);
             hackRectangle.setHeight(altezzaReale);
 
-            // Trovo il nome del hack
             Text hackText = new Text(queuedHack.getHack().getNome());
 
-            //se e' un alleato a lanciarlo il quadrato e' bianco, altrimenti e' nero
+            //Scelgo i colori in base a chi lo ha caricato
             if(sistemaCombattimento.getStatoBattaglia().getFazioneEroi().contains(queuedHack.getLanciatore())){
                 hackRectangle.setFill(Color.WHITE);
                 hackText.setFill(Color.BLACK);
@@ -229,21 +246,18 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
                 hackText.setFill(Color.WHITE);
             }
 
-
-
             // Nasconde il testo se l'hack diventa troppo sottile per contenerlo
             if (altezzaReale < 20) {
                 hackText.setVisible(false);
             }
 
-            // Creo uno StackPane in modo che si veda il nome del hack sopra il rettangolo
+            // Crea uno StackPane in modo che si veda il nome del hack sopra il rettangolo
             StackPane hackPane = new StackPane(hackRectangle, hackText);
-            // Forza lo StackPane a non espandersi oltre il rettangolo
             hackPane.setMinHeight(altezzaReale);
             hackPane.setMaxHeight(altezzaReale);
             hackPane.setPrefHeight(altezzaReale);
 
-            // Aggiungo il rettangolo alla VBox (vengono impilati dall'alto in basso!)
+
             children.add(hackPane);
         }
     }
@@ -257,8 +271,9 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
         Platform.runLater(() -> {
             aggiornaRAM(statoBattaglia.getRamCondivisa());
+            onVitaAggiornata(statoBattaglia); //aggiorno anche la vita perche una hack "continua" potrebbe aver cambiato la vita
         });
-        onVitaAggiornata(statoBattaglia); //aggiorno anche la vita perche una hack "continua" potrebbe aver cambiato la vita
+
 
 
     }

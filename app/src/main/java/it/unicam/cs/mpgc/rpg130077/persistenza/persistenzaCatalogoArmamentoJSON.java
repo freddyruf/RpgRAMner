@@ -11,6 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * Classe che implementa CaricatoreCatalogo che usa JSON per gestire la persistenza del catalogo
+ */
 public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
 
     private static final String CATALOGO_ARMI_PATH = "/catalogo_armi.json";
@@ -31,7 +34,6 @@ public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
         return caricaDaResources(CATALOGO_HACKS_PATH, new TypeToken<ArrayList<Hack>>(){}.getType());
     }
 
-    // DRY: Metodo privato generico per leggere risorse interne al Jar
     private <T> ArrayList<T> caricaDaResources(String path, Type tipoLista) {
         try (InputStream is = getClass().getResourceAsStream(path)) {
             if (is == null) {
