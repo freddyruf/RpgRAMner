@@ -17,12 +17,12 @@ public interface SistemaCombattimento {
     void sparare();
     boolean isPlayerTurn();
     void aggiungiListener(CombattimentoListener combattimentoListener);
+    void onTick();
 
     /**
      * Ripristina il combattimento allo stato originario
      */
     void ripristina();
-    void inizializzaClock();
 
 }
 

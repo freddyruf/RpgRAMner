@@ -10,6 +10,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
@@ -68,8 +69,12 @@ public class App extends Application {
             NPC nemico = new NPC("Cybermorb", 100, "", 5, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
 
 
+
             // Creo il sistema di combattimento
             SistemaCombattimento sistemaCombattimento = new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
+
+            // Timer
+            Clock clock = new Clock(() -> {sistemaCombattimento.onTick();}); // 1 secondo per tick
 
             // Carica l'FXML
             FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
