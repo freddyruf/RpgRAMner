@@ -15,6 +15,12 @@ public class AzioneCaricaHack implements Azione {
         this.hack = hack;
 
     }
+    public boolean isDamageDealer() {
+        return hack.isDamageDealer();
+    }
+    public boolean isHealDealer() {
+        return hack.isHealDealer();
+    }
 
     public Hack getHack() {
         return hack;

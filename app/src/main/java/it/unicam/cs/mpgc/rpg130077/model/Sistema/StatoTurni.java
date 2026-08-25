@@ -4,6 +4,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 
 import java.util.ArrayList;
 
+/**
+ * Classe che rappresenta lo stato dei turni della battaglia
+ */
 public class StatoTurni {
     int numeroTurniAlleati;
     int numeroTurniNemici;

@@ -1,5 +1,8 @@
 package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
+/**
+ * Classe astratta che rappresenta un'arma nel gioco.
+ */
 public abstract class Arma implements Equipaggiamento {
     String nome;
     String descrizione;

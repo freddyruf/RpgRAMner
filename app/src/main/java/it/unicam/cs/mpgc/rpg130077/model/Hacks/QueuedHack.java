@@ -2,6 +2,9 @@ package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 
+/**
+ * Contenitore di una hack che serve ad "adattarla" al essere dentro una RAM
+ */
 public class QueuedHack {
     Hack hack;
     int thickInCoda;

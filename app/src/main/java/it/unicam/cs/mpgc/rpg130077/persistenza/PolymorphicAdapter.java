@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.function.Function;
 
 /**
- * Adapter generico per serializzare e deserializzare classi polimorfiche dinamicamente.
+ * Adapter generico per serializzare e deserializzare classi dinamicamente.
  */
 public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerializer<T> {
 
@@ -46,7 +46,7 @@ public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerialize
 
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
-        // Serializza la classe concreta (usiamo src.getClass() per evitare loop infiniti di serializzazione)
+        // Serializza la classe concreta
         JsonElement elem = context.serialize(src, src.getClass());
         JsonObject jsonObject = elem.getAsJsonObject();
 

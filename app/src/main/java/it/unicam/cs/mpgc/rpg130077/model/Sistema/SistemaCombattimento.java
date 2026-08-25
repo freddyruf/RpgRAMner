@@ -5,6 +5,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
+/**
+ * Interfaccia che astrae il concetto di combattimento nella sua interezza
+ */
 public interface SistemaCombattimento {
     void avanza();
     Entita checkVittoria();
@@ -14,6 +17,10 @@ public interface SistemaCombattimento {
     void sparare();
     boolean isPlayerTurn();
     void aggiungiListener(CombattimentoListener combattimentoListener);
+
+    /**
+     * Ripristina il combattimento allo stato originario
+     */
     void ripristina();
     void inizializzaClock();
 

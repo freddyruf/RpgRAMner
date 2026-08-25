@@ -11,6 +11,12 @@ public class AzioneSparo implements Azione {
         this.lanciatore = lanciatore;
         this.bersaglio = bersaglio;
     }
+    public boolean isDamageDealer() {
+        return true;
+    }
+    public boolean isHealDealer() {
+        return false;
+    }
 
     @Override
     public void esegui( StatoBattaglia stato) {
