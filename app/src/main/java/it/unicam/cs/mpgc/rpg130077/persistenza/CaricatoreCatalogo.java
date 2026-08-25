@@ -8,6 +8,6 @@ import java.util.ArrayList;
  * Interfaccia che astrae un oggetto che serve a interfacciarsi con la persistenza del catalogo(insieme di Armi e hack disponibili nel gioco)
  */
 public interface CaricatoreCatalogo {
-    ArrayList<Arma> CaricamentoCatalogoArmi();
-    ArrayList<Hack> CaricamentoCatalogoHack();
+    ArrayList<Arma> caricamentoCatalogoArmi();
+    ArrayList<Hack> caricamentoCatalogoHack();
 }

@@ -14,23 +14,23 @@ import java.util.ArrayList;
 /**
  * Classe che implementa CaricatoreCatalogo che usa JSON per gestire la persistenza del catalogo
  */
-public class persistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
+public class PersistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
 
     private static final String CATALOGO_ARMI_PATH = "/catalogo_armi.json";
     private static final String CATALOGO_HACKS_PATH = "/catalogo_hacks.json";
     private final Gson gson;
 
-    public persistenzaCatalogoArmamentoJSON() {
+    public PersistenzaCatalogoArmamentoJSON() {
         this.gson = GsonProvider.getGson();
     }
 
     @Override
-    public ArrayList<Arma> CaricamentoCatalogoArmi() {
+    public ArrayList<Arma> caricamentoCatalogoArmi() {
         return caricaDaResources(CATALOGO_ARMI_PATH, new TypeToken<ArrayList<Arma>>(){}.getType());
     }
 
     @Override
-    public ArrayList<Hack> CaricamentoCatalogoHack() {
+    public ArrayList<Hack> caricamentoCatalogoHack() {
         return caricaDaResources(CATALOGO_HACKS_PATH, new TypeToken<ArrayList<Hack>>(){}.getType());
     }
 

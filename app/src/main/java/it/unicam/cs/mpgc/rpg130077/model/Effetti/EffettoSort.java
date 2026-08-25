@@ -17,12 +17,12 @@ public class EffettoSort implements Effetto {
         this.conclusive = effettoSort.conclusive;
         this.comparator = effettoSort.comparator;
     }
-    public Effetto Copy() {
+    public Effetto copy() {
         return new EffettoSort(this);
     }
 
     @Override
-    public void EseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
+    public void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
         b.getRamCondivisa().sort(comparator);  // ← usa il comparator passato
     }
 

@@ -13,7 +13,7 @@ public class Giocatore extends Entita {
     public Giocatore(Giocatore giocatore){
         super(giocatore);
     }
-    public Entita Copy(){
+    public Entita copy(){
         return new Giocatore(this);
     }
 

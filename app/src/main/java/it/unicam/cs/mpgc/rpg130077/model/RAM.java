@@ -41,7 +41,7 @@ public class RAM {
         // Esegue gli effetti non conclusivi
         for (Effetto effetto : effetti) {
             if(!effetto.isConclusive()){
-                effetto.EseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
+                effetto.eseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
             }
         }
 
@@ -50,7 +50,7 @@ public class RAM {
             hacks.remove(queuedHack); // Rimuove PRIMA di eseguire gli effetti conclusivi che potrebbero alterare l'ordine (es. reverse)
             for(Effetto effetto : effetti){
                 if(effetto.isConclusive()){
-                    effetto.EseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
+                    effetto.eseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
                 }
             }
         }

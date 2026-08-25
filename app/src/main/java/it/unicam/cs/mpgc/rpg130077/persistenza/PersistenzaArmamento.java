@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Interfaccia che astrae un oggetto che si occupa di gestire la persistenza del armamento scelto dal giocatore
  */
-public interface persistenzaArmamento {
+public interface PersistenzaArmamento {
 
 
     /**

@@ -2,19 +2,19 @@ package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-import it.unicam.cs.mpgc.rpg130077.persistenza.persistenzaArmamento;
+import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 
 import java.util.ArrayList;
 
 public class GestoreArmamento {
     private final ArrayList<Arma> catalogoArmi;
     private final ArrayList<Hack> catalogoHacks;
-    private final persistenzaArmamento gestoreSalvataggi;
+    private final PersistenzaArmamento gestoreSalvataggi;
 
 
-    public GestoreArmamento(persistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
-        this.catalogoArmi = caricatoreCatalogo.CaricamentoCatalogoArmi();
-        this.catalogoHacks = caricatoreCatalogo.CaricamentoCatalogoHack();
+    public GestoreArmamento(PersistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
+        this.catalogoArmi = caricatoreCatalogo.caricamentoCatalogoArmi();
+        this.catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHack();
         this.gestoreSalvataggi = gestoreSalvataggi;
     }
 

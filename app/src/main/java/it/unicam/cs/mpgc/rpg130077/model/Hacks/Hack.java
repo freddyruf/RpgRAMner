@@ -5,7 +5,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe che astrae il concetto di Hack: Software che interagisce con la battaglia. E' l'equivalente di un incantesimo per i classici RPG
@@ -28,10 +27,10 @@ public abstract class Hack {
         this.durata = hack.getDurata();
         this.effetti = new ArrayList<>();
         for(Effetto effetto : hack.getEffetti()) {
-            this.effetti.add(effetto.Copy());
+            this.effetti.add(effetto.copy());
         }
     }
-    public abstract Hack Copy();
+    public abstract Hack copy();
 
     public String getNome() {
         return nome;

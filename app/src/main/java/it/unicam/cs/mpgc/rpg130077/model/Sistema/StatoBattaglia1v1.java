@@ -23,11 +23,11 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
         this.ram=new RAM(giocatore.getSpazioRAM()+avversario.getSpazioRAM());
     }
     public StatoBattaglia1v1(StatoBattaglia1v1 s){
-        this.giocatore=(Giocatore) s.giocatore.Copy();
-        this.avversario=(NPC) s.avversario.Copy();
+        this.giocatore=(Giocatore) s.giocatore.copy();
+        this.avversario=(NPC) s.avversario.copy();
         this.ram=new RAM(s.getRamCondivisa());
     }
-    public StatoBattaglia Copy(){
+    public StatoBattaglia copy(){
         return new StatoBattaglia1v1(this);
     }
 

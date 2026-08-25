@@ -16,7 +16,7 @@ public class RAMSort extends Hack {
         super(ramSort);
     }
     @Override
-    public Hack Copy() {
+    public Hack copy() {
         return new RAMSort(this);
     }
 }

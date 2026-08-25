@@ -16,7 +16,7 @@ public class Firewall extends Hack {
         super(firewall);
     }
     @Override
-    public Hack Copy() {
+    public Hack copy() {
         return new Firewall(this);
     }
 }
