@@ -1,10 +1,8 @@
 package it.unicam.cs.mpgc.rpg130077.model.Entita;
-import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
+
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
-import javafx.scene.image.Image;
+
 
 import java.util.ArrayList;
 

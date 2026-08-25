@@ -51,7 +51,6 @@ public class SchermataInizialeFXML extends SchermataGenerica {
                 SchermataBattagliaFXML controller = loader.getController();
                 controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
                 this.sistemaCombattimento.ripristina();
-                this.sistemaCombattimento.inizializzaClock();
 
                 controller.setSistemaCombattimento(this.sistemaCombattimento);
                 controller.setSpazioRam(spazioRam);

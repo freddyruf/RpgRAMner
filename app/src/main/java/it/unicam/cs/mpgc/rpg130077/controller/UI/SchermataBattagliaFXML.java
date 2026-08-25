@@ -50,15 +50,6 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
         @FXML
         private VBox BarraRAM;
-
-        @FXML
-        private Button hack1;
-        @FXML
-        private Button hack2;
-        @FXML
-        private Button hack3;
-        @FXML
-        private Button hack4;
         @FXML
         private Pane mainPane;
 

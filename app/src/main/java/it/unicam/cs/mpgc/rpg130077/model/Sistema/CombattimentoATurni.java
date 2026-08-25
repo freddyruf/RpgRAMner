@@ -7,7 +7,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import java.util.Timer;
+
 
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
     private StatoBattaglia stato;
     private StatoTurni statoTurni;
+    private Clock clock;
 
-    private Timer clock;
 
     private ArrayList<CombattimentoListener> listeners= new ArrayList<>();
 
@@ -32,7 +32,13 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         return statoTurni.getTurno() < stato.getFazioneEroi().size();
     }
 
+    public void onTick(){
+        stato.getRamCondivisa().avanza(stato);
+        notificaThick();
+    }
+
     private void notificaThick(){
+
         for(CombattimentoListener combattimentoListener : listeners){
             combattimentoListener.onTick(stato);
         }
@@ -54,29 +60,6 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         this.stato=backup.getStatoBattaglia().Copy();
         this.statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
 
-    }
-    @Override
-    public void inizializzaClock() {
-        clock = new Timer(); // Creiamo l'orologio
-
-        //Creo una task che viene eseguita ogni 1s(o 1000ms)
-        clock.scheduleAtFixedRate(new TimerTask() {
-            //Questo viene eseguito ogni volta che viene chiamata la task
-            @Override
-            public void run() {
-                stato.getRamCondivisa().avanza(stato);
-                notificaThick();
-            }
-        }, 1000, 1000);
-    }
-
-    /**
-     * Blocca il clock
-     */
-    public void fermaClock() {
-        if (clock != null) {
-            clock.cancel();
-        }
     }
 
     /**
@@ -173,14 +156,12 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
         // Determina il risultato
         if (eroiSconfitti) {
-            fermaClock();
             // Se gli eroi sono morti, restituiamo il primo nemico come vincitore simbolico
             for (CombattimentoListener listener : listeners) {
                 listener.onVittoria(nemici.get(0));
             }
             return nemici.get(0);
         } else if (nemiciSconfitti) {
-            fermaClock();
             // Se i nemici sono morti, restituiamo il giocatore
             for (CombattimentoListener listener : listeners) {
                 listener.onVittoria(eroi.get(0));

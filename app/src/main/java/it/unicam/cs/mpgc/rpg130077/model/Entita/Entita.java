@@ -40,7 +40,7 @@ public abstract class Entita {
         this.PV=entita.PV;
         this.image = entita.image;
         this.spazioRAM = entita.spazioRAM;
-        this.hacks = new ArrayList<>(entita.hacks);
+        this.hacks = new ArrayList<Hack>(entita.hacks.size());
         for (Hack hack : entita.hacks) {
             this.hacks.add(hack.Copy());
         }
@@ -76,17 +76,6 @@ public abstract class Entita {
         else {
             this.PV = PV;
         }
-    }
-
-    @Deprecated
-    public void spara(Entita entita){
-        Azione azione = new AzioneSparo(this, entita);
-        azione.esegui(null);
-    }
-    @Deprecated
-    public void caricaHack(Hack hack, Entita entita, StatoBattaglia stato){
-        Azione azione= new AzioneCaricaHack(this, entita, hack);
-        azione.esegui(stato);
     }
 
     public Azione richiediMossa(SistemaCombattimento sistemaTurni, StatoBattaglia stato){
