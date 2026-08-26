@@ -1,27 +1,27 @@
 {
   "armi": [
     {
-      "nome": "Pistola",
-      "descrizione": "Spara un colpo singolo.",
-      "maxCaricatore": 6,
+      "nome": "Mitragliatrice",
+      "descrizione": "Spara colpi a raffica.",
+      "maxCaricatore": 60,
       "caricatore": 0,
-      "danno": 30,
-      "critChance": 0.3,
-      "tipo": "Pistola"
+      "danno": 5,
+      "critChance": 0.1,
+      "tipo": "Mitragliatrice"
     }
   ],
   "hacks": [
     {
-      "nome": "RAM:Reverse",
-      "descrizione": "Inverte il flusso dei dati in memoria.",
-      "durata": 6,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
+          "danno": 50,
           "conclusive": true,
-          "tipoEffetto": "Reverse"
+          "tipoEffetto": "Danno"
         }
-      ],
-      "tipo": "RAM:Reverse"
+      ]
     },
     {
       "nome": "RAM:Reverse",
@@ -32,8 +32,7 @@
           "conclusive": true,
           "tipoEffetto": "Reverse"
         }
-      ],
-      "tipo": "RAM:Reverse"
+      ]
     },
     {
       "nome": "Fireball",
@@ -45,8 +44,7 @@
           "conclusive": true,
           "tipoEffetto": "Danno"
         }
-      ],
-      "tipo": "Fireball"
+      ]
     },
     {
       "nome": "Firewall",
@@ -58,8 +56,7 @@
           "conclusive": true,
           "tipoEffetto": "Cura"
         }
-      ],
-      "tipo": "Firewall"
+      ]
     }
   ]
 }

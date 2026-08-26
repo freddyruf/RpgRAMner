@@ -7,7 +7,7 @@ public class Clock {
     private final Runnable runnable;
 
     public Clock(Runnable onTick) {
-        timer = new Timer();
+        timer = new Timer(true);
         this.runnable = onTick;
 
     }

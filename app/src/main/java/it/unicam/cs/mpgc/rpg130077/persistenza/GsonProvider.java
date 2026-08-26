@@ -23,14 +23,6 @@ public class GsonProvider {
                 nomeClasse -> nomeClasse
         ));
 
-        // Adapter per Hack (Gestisce la punteggiatura: "RAM:Sort" <-> "RAMSort")
-        builder.registerTypeAdapter(Hack.class, new PolymorphicAdapter<Hack>(
-                "it.unicam.cs.mpgc.rpg130077.model.Hacks",
-                "tipo",
-                tipoJson -> tipoJson.replace(":", ""),
-                nomeClasse -> nomeClasse.startsWith("RAM") ? nomeClasse.replace("RAM", "RAM:") : nomeClasse
-        ));
-
         // Adapter per Effetto (Gestisce il prefisso: "Danno" <-> "EffettoDanno")
         builder.registerTypeAdapter(Effetto.class, new PolymorphicAdapter<Effetto>(
                 "it.unicam.cs.mpgc.rpg130077.model.Effetti",
