@@ -104,12 +104,21 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
         for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
             if (nodo instanceof Button) {
-                bottoniHacks.add((Button) nodo);
+                Button btn = (Button) nodo;
+                if (btn.getId() != null && btn.getId().startsWith("hack")) {
+                    bottoniHacks.add(btn);
+                }
             }
         }
 
         for (int i = 0; i < bottoniHacks.size(); i++) {
-            bottoniHacks.get(i).setText(catalogo.get(i).getNome());
+            if (i < catalogo.size()) {
+                bottoniHacks.get(i).setText(catalogo.get(i).getNome());
+                bottoniHacks.get(i).setDisable(false);
+            } else {
+                bottoniHacks.get(i).setText("-");
+                bottoniHacks.get(i).setDisable(true);
+            }
         }
     }
 

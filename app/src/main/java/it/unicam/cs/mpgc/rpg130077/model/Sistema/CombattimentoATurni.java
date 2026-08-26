@@ -32,6 +32,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     }
 
     public void onTick(){
+        checkVittoria();
         stato.getRamCondivisa().avanza(stato);
         notificaThick();
     }
