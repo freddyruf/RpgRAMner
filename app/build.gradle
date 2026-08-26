@@ -33,6 +33,12 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 javafx {
     version = '21.0.8'
     modules = [

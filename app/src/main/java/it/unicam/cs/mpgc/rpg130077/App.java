@@ -27,17 +27,25 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class App extends Application {
+
+    private MediaPlayer mediaPlayer;
+
     @Override
     public void start(Stage stage) {
         try {
 
             //Musica
-            java.net.URL urlMusica = getClass().getResource("/Nightdrive VHS Dreams.mp3");
-            if (urlMusica != null) {
-                Media media = new Media(urlMusica.toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                mediaPlayer.play();
+            try {
+                // Musica
+                java.net.URL urlMusica = getClass().getResource("/Nightdrive VHS Dreams.mp3");
+                if (urlMusica != null) {
+                    Media media = new Media(urlMusica.toExternalForm());
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                    mediaPlayer.play();
+                }
+            } catch (Exception e) {
+                System.err.println("Errore nel caricamento della musica: " + e.getMessage());
             }
 
 
@@ -86,6 +94,14 @@ public class App extends Application {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void stop() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
         }
     }
 
