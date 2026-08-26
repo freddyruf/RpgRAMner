@@ -15,11 +15,13 @@ public abstract class Arma implements Equipaggiamento {
         if(nome == null) {
             throw new NullPointerException("Il nome non può essere nullo");
         }
+        if (maxCaricatore <= 0) throw new IllegalArgumentException("Il caricatore deve essere positivo");
         this.nome = nome;
         this.maxCaricatore = maxCaricatore;
         this.caricatore = maxCaricatore;
         this.danno = danno;
         this.critChance = critChance;
+        this.descrizione = descrizione;
     }
     public Arma(Arma arma) {
         this.nome = arma.nome;
@@ -56,9 +58,7 @@ public abstract class Arma implements Equipaggiamento {
     }
 
 
-    public int calcolaDanno() {
-        throw new RuntimeException("Not implemented yet");
-    }
+    public abstract int calcolaDanno();
 
 
 

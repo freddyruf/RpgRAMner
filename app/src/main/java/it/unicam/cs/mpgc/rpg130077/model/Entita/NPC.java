@@ -15,13 +15,18 @@ public class NPC extends Entita {
 
     public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma);
-        if(chanceAttaccoASorpresa>1 ){
-            throw new IllegalArgumentException("Chance attacco ASorpresa non valido");
+        if (chanceAttaccoASorpresa < 0.0 || chanceAttaccoASorpresa > 1.0) {
+            throw new IllegalArgumentException("La probabilità di attacco a sorpresa deve essere tra 0.0 e 1.0: " + chanceAttaccoASorpresa);
+        }
+        if(strategia == null){
+            throw new NullPointerException("La strategia non può essere nulla");
+        }
+        if(chanceAttaccoASorpresa==0.0 && (dannoAttaccoASorpresa<=0)){
+            throw new IllegalArgumentException("Se la probabilità di attacco a sorpresa è 0, il danno deve essere maggiore di 0");
         }
         this.dannoAttaccoASorpresa = dannoAttaccoASorpresa;
         this.chanceAttaccoASorpresa = chanceAttaccoASorpresa;
         this.strategia = strategia;
-
     }
     public NPC(NPC npc){
         super(npc);
@@ -30,15 +35,14 @@ public class NPC extends Entita {
         this.strategia = npc.strategia;
     }
 
+
+
     public Entita copy(){
         return new NPC(this);
     }
 
     public boolean controllaAttaccoASorpresa(){
-        if(chanceAttaccoASorpresa*Math.random() <= 0.5){
-            return true;
-        }
-        else return false;
+        return Math.random() < chanceAttaccoASorpresa;
     }
     public int getDannoAttaccoASorpresa() {
         return dannoAttaccoASorpresa;

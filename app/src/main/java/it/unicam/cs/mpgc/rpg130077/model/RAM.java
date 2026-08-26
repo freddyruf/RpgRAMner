@@ -24,7 +24,7 @@ public class RAM {
     }
     public RAM(RAM ram){
         this.spazioMassimoInSecondi = ram.spazioMassimoInSecondi;
-        this.hacks = new LinkedList<QueuedHack>();
+        this.hacks = new LinkedList<>();//La ram non viene trasferita con le copie
     }
 
     /**
@@ -34,7 +34,7 @@ public class RAM {
     public void avanza(StatoBattaglia statoBattaglia) {
         QueuedHack queuedHack = visualizzaTesta();
         if (queuedHack == null) return;
-        queuedHack.setThickInCoda(queuedHack.getThickInCoda()-1);
+        queuedHack.setTickInCoda(queuedHack.getTickInCoda()-1);
         Hack hack = queuedHack.getHack();
         ArrayList<Effetto> effetti= hack.getEffetti();
 
@@ -46,7 +46,7 @@ public class RAM {
         }
 
         //se un caricamento si e' concluso
-        if(queuedHack.getThickInCoda()<=0){
+        if(queuedHack.getTickInCoda()<=0){
             hacks.remove(queuedHack); // Rimuove PRIMA di eseguire gli effetti conclusivi che potrebbero alterare l'ordine (es. reverse)
             for(Effetto effetto : effetti){
                 if(effetto.isConclusive()){
@@ -63,7 +63,7 @@ public class RAM {
     public int getSpazioOccupato(){
         int spazioOccupato = 0;
         for(QueuedHack hack : hacks){
-            spazioOccupato += hack.getThickInCoda();
+            spazioOccupato += hack.getTickInCoda();
         }
         return spazioOccupato;
     }

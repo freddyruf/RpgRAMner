@@ -1,27 +1,46 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Clock {
-    Timer timer;
+    private Thread threadTimer;
+    private boolean inEsecuzione;
     private final Runnable runnable;
 
     public Clock(Runnable onTick) {
-        timer = new Timer(true);
         this.runnable = onTick;
+        this.inEsecuzione = false;
+    }
 
-    }
-    public void start(){
-        //Creo una task che viene eseguita ogni 1s(o 1000ms)
-        timer.scheduleAtFixedRate(new TimerTask() {
-            //Questo viene eseguito ogni volta che viene chiamata la task
-            @Override
-            public void run() {
-                runnable.run();
+    public void start() {
+        if (inEsecuzione) {
+            return;
+        }
+
+        inEsecuzione = true;
+
+        threadTimer = new Thread(() -> {
+            while (inEsecuzione) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Se il thread viene fermato mentre dorme, esce dal ciclo
+                    break;
+                }
+
+                if (inEsecuzione) {
+                    runnable.run();
+                }
             }
-        }, 1000, 1000);
+        });
+
+        threadTimer.setDaemon(true);
+        threadTimer.start();
     }
-    public void stop(){
-        timer.cancel();
+
+    public void stop() {
+        inEsecuzione = false;
+        if (threadTimer != null) {
+            threadTimer.interrupt();
+            threadTimer = null;
+        }
     }
 }

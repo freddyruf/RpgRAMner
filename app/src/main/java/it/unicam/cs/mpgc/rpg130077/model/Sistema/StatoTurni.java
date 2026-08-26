@@ -31,6 +31,9 @@ public class StatoTurni {
      */
     public int getTurno() {
         int entitaTotali=numeroTurniAlleati+numeroTurniNemici;
+        if(entitaTotali<=0){
+            return 0;
+        }
         return turno%entitaTotali;
     }
 

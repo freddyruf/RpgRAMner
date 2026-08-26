@@ -1,5 +1,6 @@
-package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
+package it.unicam.cs.mpgc.rpg130077.model;
 
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;

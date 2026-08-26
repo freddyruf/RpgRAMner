@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
-import it.unicam.cs.mpgc.rpg130077.controller.logica.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
@@ -17,6 +16,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     private StatoBattaglia stato;
     private StatoTurni statoTurni;
     private Clock clock;
+    private boolean vittoriaNotificata=false;
 
 
     private ArrayList<CombattimentoListener> listeners= new ArrayList<>();
@@ -32,12 +32,12 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     }
 
     public void onTick(){
-        checkVittoria();
         stato.getRamCondivisa().avanza(stato);
-        notificaThick();
+        notificaTick();
+        checkVittoria();
     }
 
-    private void notificaThick(){
+    private void notificaTick(){
 
         for(CombattimentoListener combattimentoListener : listeners){
             combattimentoListener.onTick(stato);
@@ -59,6 +59,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
         this.stato=backup.getStatoBattaglia().copy();
         this.statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
+        vittoriaNotificata=false;
 
     }
 
@@ -105,10 +106,6 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     public void eseguiMossa(Azione azione) {
         azione.esegui(stato);
 
-        if (checkVittoria() == null) {
-            avanza();
-        }
-
         //se l'azione fa danno o cura
         if(azione.isDamageDealer() || azione.isHealDealer()){
             //aggiorno le barre della vita
@@ -121,6 +118,12 @@ public class CombattimentoATurni  implements SistemaCombattimento {
                 combattimentoListener.aggiornaRAM(stato.getRamCondivisa());
             }
         }
+        if (checkVittoria() != null) {
+            clock.stop();
+        } else{
+            avanza();
+        }
+
 
     }
 
@@ -156,20 +159,31 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
         // Determina il risultato
         if (eroiSconfitti) {
-            // Se gli eroi sono morti, restituiamo il primo nemico come vincitore simbolico
-            for (CombattimentoListener listener : listeners) {
-                listener.onVittoria(nemici.get(0));
+            if (!vittoriaNotificata) {
+                vittoriaNotificata = true;
+                for (CombattimentoListener listener : listeners) {
+                    listener.onVittoria(nemici.get(0));
+                }
             }
             return nemici.get(0);
         } else if (nemiciSconfitti) {
-            // Se i nemici sono morti, restituiamo il giocatore
-            for (CombattimentoListener listener : listeners) {
-                listener.onVittoria(eroi.get(0));
+            if (!vittoriaNotificata) {
+                vittoriaNotificata = true;
+                for (CombattimentoListener listener : listeners) {
+                    listener.onVittoria(eroi.get(0));
+                }
             }
             return eroi.get(0);
         }
 
+
         // Nessuno ha ancora vinto, lo scontro continua
         return null;
+    }
+    @Override
+    public void rimuoviListener(CombattimentoListener combattimentoListener) {
+        if (combattimentoListener != null) {
+            listeners.remove(combattimentoListener);
+        }
     }
 }

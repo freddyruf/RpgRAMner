@@ -1,13 +1,13 @@
 {
   "armi": [
     {
-      "nome": "Mitragliatrice",
-      "descrizione": "Spara colpi a raffica.",
-      "maxCaricatore": 60,
+      "nome": "Pistola",
+      "descrizione": "Spara un colpo singolo.",
+      "maxCaricatore": 6,
       "caricatore": 0,
-      "danno": 5,
-      "critChance": 0.1,
-      "tipo": "Mitragliatrice"
+      "danno": 30,
+      "critChance": 0.3,
+      "tipo": "Pistola"
     }
   ],
   "hacks": [
@@ -24,25 +24,25 @@
       ]
     },
     {
-      "nome": "RAM:Reverse",
-      "descrizione": "Inverte il flusso dei dati in memoria.",
-      "durata": 6,
+      "nome": "Acid",
+      "descrizione": "Infligge 10 di danno ogni tick.",
+      "durata": 10,
       "effetti": [
         {
-          "conclusive": true,
-          "tipoEffetto": "Reverse"
+          "danno": 6,
+          "conclusive": false,
+          "tipoEffetto": "Danno"
         }
       ]
     },
     {
-      "nome": "Fireball",
-      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
-      "durata": 4,
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 6,
       "effetti": [
         {
-          "danno": 50,
           "conclusive": true,
-          "tipoEffetto": "Danno"
+          "tipoEffetto": "Sort"
         }
       ]
     },

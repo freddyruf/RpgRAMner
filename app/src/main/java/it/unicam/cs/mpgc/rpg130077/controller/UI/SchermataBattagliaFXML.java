@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.App;
-import it.unicam.cs.mpgc.rpg130077.controller.logica.CombattimentoListener;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Insets;
-import javafx.scene.paint.Color.*;
 
 public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener, SchermataBattaglia {
 
@@ -62,15 +60,17 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     @FXML
     private void PulsanteEsci(ActionEvent event) {
-        GoSchermataIniziale(event);
+        goSchermataIniziale(event);
     }
 
     /**
      * Va alla schermata iniziale e passa le dipendenze alla schermata iniziale, cosi che non le perde
      */
-    public void GoSchermataIniziale(ActionEvent event) {
+    public void goSchermataIniziale(ActionEvent event) {
         try {
-            clock.stop();
+            if (clock != null){
+                clock.stop();
+            }
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
             Parent nuovaSchermata = loader.load();
 
@@ -80,7 +80,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             controller.setSpazioRam(spazioRam);
             controller.setClock(this.clock);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) mainPane.getScene().getWindow();
             stage.setScene(new Scene(nuovaSchermata));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -97,7 +97,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         scambiaMenu();
 
         //carico le hacks
-        ArrayList<Hack> catalogo= persistenzaArmamento.getHacks();
+        ArrayList<Hack> catalogo = sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks();
 
 
         ArrayList<Button> bottoniHacks = new ArrayList<>();
@@ -138,7 +138,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
 
     @FXML
-    private void Indietro(ActionEvent event) {
+    private void indietro(ActionEvent event) {
         scambiaMenu();
     }
 
@@ -156,7 +156,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
             Button b = (Button) event.getSource();
 
-            ArrayList<Hack> hacksDisponibili = persistenzaArmamento.getHacks();
+            ArrayList<Hack> hacksDisponibili = sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks();
             ArrayList<Button> bottoniHacks = new ArrayList<>();
 
             for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
@@ -227,7 +227,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             Rectangle hackRectangle = new Rectangle();
 
 
-            double proporzione = (double) queuedHack.getThickInCoda() / spazioMassimo;
+            double proporzione = (double) queuedHack.getTickInCoda() / spazioMassimo;
 
             double altezzaTeorica = proporzione * altezzaUtile;
 
@@ -316,21 +316,16 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     @Override
     public void onVittoria(Entita vincitore) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Fine battaglia");
-        alert.setHeaderText("Vittoria");
-        alert.setContentText("Il vincitore è: " + vincitore.getNome());
-
-        //Bottone
-        ButtonType esci = new ButtonType("ESCI", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(esci);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType == esci) {
-                GoSchermataIniziale(new ActionEvent());
-            }
+        Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+            alert.setTitle("Fine battaglia");
+            alert.setHeaderText("Battaglia Conclusa");
+            alert.setContentText("Il vincitore è: " + (vincitore != null ? vincitore.getNome() : "Nessuno"));
+            ButtonType btnEsci = new ButtonType("Torna al Menu", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(btnEsci);
+            alert.showAndWait().ifPresent(buttonType -> goSchermataIniziale(new ActionEvent()));
         });
-    };
+    }
 
     @Override
     public void onTurnoGiocatore() {

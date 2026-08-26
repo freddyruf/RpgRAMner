@@ -18,22 +18,23 @@ public class StrategiaCasuale implements StrategiaCombattimento{
 
         double sceltaMossa=Math.random();
 
-        if(npc.getArma()==null || sceltaMossa<0.5){ //hack
-            if (npc.getHacks().isEmpty()) {
-                return new AzioneSparo(npc, entitaBersaglio);
-            }
+        boolean puoCaricareHack = false;
+        Hack hackSelezionato = null;
 
+        if (!npc.getHacks().isEmpty()) {
             int indiceHack = (int) (Math.random() * npc.getHacks().size());
-            Hack hack = npc.getHacks().get(indiceHack);
-
+            Hack candidato = npc.getHacks().get(indiceHack);
             int spazioOccupato = stato.getRamCondivisa().getSpazioOccupato();
             int spazioMassimo = stato.getRamCondivisa().getSpazioMassimoInSecondi();
-            if (spazioOccupato + hack.getDurata() > spazioMassimo) {
-                return new AzioneSparo(npc, entitaBersaglio);
+            if (spazioOccupato + candidato.getDurata() <= spazioMassimo) {
+                puoCaricareHack = true;
+                hackSelezionato = candidato;
             }
-            return new AzioneCaricaHack(npc, entitaBersaglio, hack);
         }
-        else{ //arma
+
+        if (puoCaricareHack && (npc.getArma() == null || sceltaMossa < 0.5)) {
+            return new AzioneCaricaHack(npc, entitaBersaglio, hackSelezionato);
+        } else {
             return new AzioneSparo(npc, entitaBersaglio);
         }
     }

@@ -29,4 +29,9 @@ public class EffettoCura implements Effetto {
     public boolean isConclusive() {
         return conclusive;
     }
+
+    @Override
+    public boolean isHealDealer() {
+        return true;
+    }
 }

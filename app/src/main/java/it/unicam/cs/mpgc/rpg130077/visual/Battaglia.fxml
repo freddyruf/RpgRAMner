@@ -57,7 +57,7 @@
                        <Font size="77.0" />
                    </font>
                </Button>
-               <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="332.0" text="Indietro" GridPane.rowIndex="1" onAction="#Indietro">
+               <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="332.0" text="Indietro" GridPane.rowIndex="1" onAction="#indietro">
                    <font>
                        <Font size="35.0" />
                    </font>

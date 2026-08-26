@@ -250,7 +250,7 @@ class RAMTest {
         ram20.inserisci(hack2, bersaglio, lanciatore);
         ram20.inserisci(hack5, bersaglio, lanciatore);
 
-        ram20.sort(Comparator.comparingInt(QueuedHack::getThickInCoda));
+        ram20.sort(Comparator.comparingInt(QueuedHack::getTickInCoda));
 
         assertEquals("Hack2", ram20.rimuovi().getHack().getNome());
         assertEquals("Hack5", ram20.rimuovi().getHack().getNome());
@@ -272,7 +272,7 @@ class RAMTest {
         ram.avanza(fakeStato);
 
         // 3 - 1 = 2
-        assertEquals(2, ram.visualizzaTesta().getThickInCoda());
+        assertEquals(2, ram.visualizzaTesta().getTickInCoda());
         assertEquals(2, ram.getSpazioOccupato());
     }
 
@@ -321,8 +321,8 @@ class RAMTest {
         ram.avanza(fakeStato);
 
         // Solo la testa viene decrementata: 2 - 1 = 1, la seconda resta a 3
-        assertEquals(1, ram.getHacks().get(0).getThickInCoda());
-        assertEquals(3, ram.getHacks().get(1).getThickInCoda());
+        assertEquals(1, ram.getHacks().get(0).getTickInCoda());
+        assertEquals(3, ram.getHacks().get(1).getTickInCoda());
         // 1 + 3 = 4
         assertEquals(4, ram.getSpazioOccupato());
     }

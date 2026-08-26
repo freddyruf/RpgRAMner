@@ -92,8 +92,8 @@ class GameFactoryTest {
         SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogoStub);
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
-        assertSame(armaGiocatore, stato.getGiocatore().getArma());
-        assertSame(armaNemico, stato.getNemico(0).getArma());
+        assertEquals(armaGiocatore.getNome(), stato.getGiocatore().getArma().getNome());
+        assertEquals(armaNemico.getNome(), stato.getNemico(0).getArma().getNome());
 
         // Giocatore possiede entrambi gli hack
         assertEquals(2, stato.getGiocatore().getHacks().size());

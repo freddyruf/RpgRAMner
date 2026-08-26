@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 import it.unicam.cs.mpgc.rpg130077.App;
-import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.model.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import javafx.event.ActionEvent;
@@ -70,7 +70,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     private void PulsanteEsci(ActionEvent event) {
         if(checkArmamentoCompletamenteScelto(event)){
             gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
-            GoSchermataIniziale(event);
+            goSchermataIniziale(event);
         }
     }
 
@@ -87,7 +87,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     /**
      * Va alla schermata iniziale e passa le dipendenze alla schermata iniziale, cosi che non le perde
      */
-    private void GoSchermataIniziale(ActionEvent event) {
+    private void goSchermataIniziale(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
             Parent nuovaSchermata = loader.load();
@@ -110,7 +110,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Cambia la descrizione di un Hack o di un Arma in base a cosa si ha scelto
      * @param menuButton menu button la cui descrizione(Nella label) va cambiata
      */
-    private void CambiaLabel(MenuButton menuButton) {
+    private void cambiaLabel(MenuButton menuButton) {
         String idBottone = menuButton.getId();
 
         String idLabelAttesa = idBottone.replace("MenuButton", "Label");
@@ -133,11 +133,11 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Cambia il testo del menu button con quello del menu item selezionato e aggiorna la label con la descrizione dell'oggetto selezionato
      **/
     @FXML
-    private void SelezionaNelMenu(ActionEvent event) {
+    private void selezionaNelMenu(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
         MenuButton menuButton = (MenuButton) menuItem.getParentPopup().getOwnerNode();
         menuButton.setText(menuItem.getText());
-        CambiaLabel(menuButton);
+        cambiaLabel(menuButton);
 
     }
 
@@ -145,7 +145,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Raccoglie tutti i MenuButton della pagina in cui e' stato eseguito
      * @return ArrayList dei MenuButton della pagina
      */
-    public ArrayList<MenuButton> geAllMenuButtonsFromThis(){
+    public ArrayList<MenuButton> getAllMenuButtonsFromThis(){
 
         ArrayList<MenuButton> menuButtons = new ArrayList<>();
         for (javafx.scene.Node child : mainPane.getChildren()) {
@@ -160,26 +160,27 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Carica le armi e le hacks salvate nei menu button e nelle labels
      */
     public void caricaHack() {
-        ArrayList<MenuButton> listaMenuButton = geAllMenuButtonsFromThis();
-
-        //Carico le armi
-        int cnt=0;
-        for (int i = 0; i<listaMenuButton.size();i++) {
-            MenuButton menuButton = listaMenuButton.get(i);
-            if(menuButton.getId().contains("Arma")) {
-                menuButton.setText(persistenzaArmamento.getArmi().get(cnt).getNome());
-                CambiaLabel(menuButton);
-                cnt++;
+        ArrayList<MenuButton> listaMenuButton = getAllMenuButtonsFromThis();
+        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> armiSalvate = persistenzaArmamento.getArmi();
+        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack> hacksSalvati = persistenzaArmamento.getHacks();
+        int indiceArma = 0;
+        int indiceHack = 0;
+        for (MenuButton menuButton : listaMenuButton) {
+            String id = menuButton.getId();
+            if (id != null && id.contains("Arma")) {
+                if (armiSalvate != null && indiceArma < armiSalvate.size()) {
+                    menuButton.setText(armiSalvate.get(indiceArma).getNome());
+                    cambiaLabel(menuButton);
+                    indiceArma++;
+                }
+            } else {
+                if (hacksSalvati != null && indiceHack < hacksSalvati.size()) {
+                    menuButton.setText(hacksSalvati.get(indiceHack).getNome());
+                    cambiaLabel(menuButton);
+                    indiceHack++;
+                }
             }
         }
-
-        //Carico le hacks
-        for (int i = 0; i < listaMenuButton.size(); i++) {
-            MenuButton menuButton = listaMenuButton.get(i);
-            menuButton.setText(persistenzaArmamento.getHacks().get(i).getNome());
-            CambiaLabel(menuButton);
-        }
-
     }
 }
 

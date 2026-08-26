@@ -4,46 +4,53 @@ import javazoom.jl.player.Player;
 import java.io.InputStream;
 
 /**
- * Classe che si occupa di gestire la musica
+ * Gestore per la riproduzione audio in streaming concorrente.
  */
 public class GestoreMusica {
 
     private Thread playerThread;
-    private boolean isPlaying = false;
+    private volatile boolean isPlaying = false;
+    private Player currentPlayer;
 
-    /**
-     * Avvia una sola canzone in loop
-     */
-    public void avviaMusicaSemplice() {
-        String resourcePath= "/Nightdrive VHS Dreams.mp3";
+    public synchronized void avviaMusicaSemplice() {
+        String resourcePath = "/Nightdrive VHS Dreams.mp3";
         if (isPlaying) return;
         isPlaying = true;
+
         playerThread = new Thread(() -> {
             while (isPlaying) {
-                try {
-                    InputStream is = getClass().getResourceAsStream(resourcePath);
+                try (InputStream is = getClass().getResourceAsStream(resourcePath)) {
                     if (is != null) {
-                        Player player = new Player(is);
-                        player.play();
+                        synchronized (this) {
+                            if (!isPlaying) break;
+                            currentPlayer = new Player(is);
+                        }
+                        currentPlayer.play();
                     } else {
                         System.err.println("File audio non trovato: " + resourcePath);
                         break;
                     }
                 } catch (Exception e) {
-                    System.err.println("Errore durante la riproduzione audio: " + e.getMessage());
                     break;
                 }
             }
-        });
+        }, "BackgroundAudio-Thread");
+
         playerThread.setDaemon(true);
         playerThread.start();
     }
 
-    //No MUSIC!!!!
-    public void stop() {
+    public synchronized void stop() {
         isPlaying = false;
+        if (currentPlayer != null) {
+            try {
+                currentPlayer.close();
+            } catch (Exception ignored) {}
+            currentPlayer = null;
+        }
         if (playerThread != null) {
             playerThread.interrupt();
+            playerThread = null;
         }
     }
 }
