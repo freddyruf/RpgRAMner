@@ -70,22 +70,13 @@ class NPCTest {
     }
 
     @Test
-    void controllaAttaccoASorpresaConChanceZeroRitornaSempreTrue() {
+    @org.junit.jupiter.api.DisplayName("Con chance 0.0 l'attacco a sorpresa non deve mai verificarsi")
+    void controllaAttaccoASorpresaConChanceZeroRitornaSempreFalse() {
         StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
         NPC npc = creaNPC(dummyStrategia, 0.0);
 
-        for (int i = 0; i < 20; i++) {
-            assertTrue(npc.controllaAttaccoASorpresa());
-        }
-    }
-
-    @Test
-    void controllaAttaccoASorpresaConChanceMezzoRitornaSempreTrue() {
-        StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
-        NPC npc = creaNPC(dummyStrategia, 0.5);
-
-        for (int i = 0; i < 20; i++) {
-            assertTrue(npc.controllaAttaccoASorpresa());
+        for (int i = 0; i < 50; i++) {
+            assertFalse(npc.controllaAttaccoASorpresa(), "Con chance 0.0 deve restituire sempre false");
         }
     }
 

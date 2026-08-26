@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
-import it.unicam.cs.mpgc.rpg130077.controller.logica.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
@@ -99,7 +98,7 @@ class CombattimentoATurniTest {
         combattimento.onTick();
 
         // 3 - 1 = 2
-        assertEquals(2, stato.getRamCondivisa().visualizzaTesta().getThickInCoda());
+        assertEquals(2, stato.getRamCondivisa().visualizzaTesta().getTickInCoda());
         assertEquals(1, spy.conteggioTick);
     }
 

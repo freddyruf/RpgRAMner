@@ -28,4 +28,9 @@ public class EffettoDanno implements Effetto {
     public boolean isConclusive() {
         return conclusive;
     }
+
+    @Override
+    public boolean isDamageDealer() {
+        return true;
+    }
 }

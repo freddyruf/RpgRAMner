@@ -7,7 +7,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
  */
 public class QueuedHack {
     Hack hack;
-    int thickInCoda;
+    int tickInCoda;
     Entita bersaglio;
     Entita lanciatore;
 
@@ -16,20 +16,20 @@ public class QueuedHack {
         this.bersaglio=bersaglio;
         this.lanciatore=lanciatore;
         this.hack = hack;
-        this.thickInCoda = hack.getDurata();
+        this.tickInCoda = hack.getDurata();
     }
     public QueuedHack(QueuedHack queuedHack) {
         this.hack = queuedHack.hack.copy();
-        this.thickInCoda = queuedHack.thickInCoda;
+        this.tickInCoda = queuedHack.tickInCoda;
         this.bersaglio = queuedHack.bersaglio.copy();
         this.lanciatore = queuedHack.lanciatore.copy();
     }
 
-    public int getThickInCoda() {
-        return thickInCoda;
+    public int getTickInCoda() {
+        return tickInCoda;
     }
-    public void setThickInCoda(int thickInCoda) {
-        this.thickInCoda = thickInCoda;
+    public void setTickInCoda(int tickInCoda) {
+        this.tickInCoda = tickInCoda;
     }
     public Hack getHack(){
         return hack;

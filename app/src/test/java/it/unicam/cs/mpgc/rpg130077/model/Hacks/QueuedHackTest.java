@@ -33,7 +33,7 @@ class QueuedHackTest {
         Hack hack = new Hack("Fireball", "Palla di fuoco", 5);
         QueuedHack queued = new QueuedHack(hack, bersaglio, lanciatore);
 
-        assertEquals(5, queued.getThickInCoda());
+        assertEquals(5, queued.getTickInCoda());
         assertSame(hack, queued.getHack());
         assertSame(bersaglio, queued.getBersaglio());
         assertSame(lanciatore, queued.getLanciatore());
@@ -44,20 +44,20 @@ class QueuedHackTest {
         Hack hack = new Hack("Fireball", "Palla di fuoco", 5);
         QueuedHack queued = new QueuedHack(hack, bersaglio, lanciatore);
 
-        queued.setThickInCoda(3);
-        assertEquals(3, queued.getThickInCoda());
+        queued.setTickInCoda(3);
+        assertEquals(3, queued.getTickInCoda());
     }
 
     @Test
     void costruttoreDiCopiaEsegueCopiaProfonda() {
         Hack hack = new Hack("Fireball", "Palla di fuoco", 5);
         QueuedHack originale = new QueuedHack(hack, bersaglio, lanciatore);
-        originale.setThickInCoda(2);
+        originale.setTickInCoda(2);
 
         QueuedHack copia = new QueuedHack(originale);
 
         assertNotSame(originale, copia);
-        assertEquals(originale.getThickInCoda(), copia.getThickInCoda());
+        assertEquals(originale.getTickInCoda(), copia.getTickInCoda());
         assertNotSame(originale.getHack(), copia.getHack());
         assertNotSame(originale.getBersaglio(), copia.getBersaglio());
         assertNotSame(originale.getLanciatore(), copia.getLanciatore());

@@ -10,5 +10,4 @@ public interface SchermataBattaglia {
     void onVittoria(Entita vincitore);
     void aggiornaRAM(RAM ram);
     void cambiaVita(Entita entita);
-    void GoSchermataIniziale(ActionEvent event);
 }

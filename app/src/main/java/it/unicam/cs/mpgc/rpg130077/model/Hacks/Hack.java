@@ -53,13 +53,14 @@ public class Hack {
      * Dice se la hack fa danno
      * @return true se causa danni false se non
      */
-    public boolean isDamageDealer(){
-        for(Effetto effetto : effetti){
-            if(effetto instanceof EffettoDanno)
+    public boolean isDamageDealer() {
+        for (Effetto effetto : effetti) {
+            if (effetto.isDamageDealer())
                 return true;
         }
         return false;
     }
+
 
     /**
      * Dice se la hack cura
@@ -67,7 +68,7 @@ public class Hack {
      */
     public boolean isHealDealer(){
         for(Effetto effetto : effetti){
-            if(effetto instanceof EffettoCura)
+            if(effetto.isHealDealer())
                 return true;
         }
         return false;

@@ -20,6 +20,9 @@ public class AzioneSparo implements Azione {
 
     @Override
     public void esegui( StatoBattaglia stato) {
+        if(lanciatore==null || bersaglio==null){
+            throw new NullPointerException("Lanciatore o Bersaglio nullo");
+        }
         bersaglio.setPV(bersaglio.getPV()-lanciatore.getArma().calcolaDanno());
     }
 }

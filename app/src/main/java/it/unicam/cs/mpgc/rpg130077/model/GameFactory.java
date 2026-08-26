@@ -23,21 +23,30 @@ public class GameFactory {
      * @return un SistemaCombattimento pronto al uso
      */
     public SistemaCombattimento creaNuovaPartitaSemplice(CaricatoreCatalogo catalogo) {
+        if (catalogo == null) {
+            throw new NullPointerException("Il caricatore catalogo non può essere nullo");
+        }
 
         ArrayList<Arma> catalogoArmi = catalogo.caricamentoCatalogoArmi();
         ArrayList<Hack> catalogoHack = catalogo.caricamentoCatalogoHack();
 
-        ArrayList<Hack> catalogoHackNemico = new ArrayList<>(catalogoHack);
-        if (!catalogoHackNemico.isEmpty()) {
-            catalogoHackNemico.remove(0); //RImuovo 1 hack dal nemico per creare un po di differenze
+        if (catalogoArmi.size() < 2) {
+            throw new IllegalStateException("Catalogo insufficiente per creare una partita");
         }
 
-        Arma armaG = catalogoArmi.get(0);
-        Arma armaN = catalogoArmi.get(1);
+        ArrayList<Hack> hacksGiocatore = new ArrayList<>();
+        for (Hack h : catalogoHack) hacksGiocatore.add(h.copy());
 
+        ArrayList<Hack> hacksNemico = new ArrayList<>();
+        for (int i = 1; i < catalogoHack.size(); i++) {
+            hacksNemico.add(catalogoHack.get(i).copy());
+        }
 
-        Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, catalogoHack, armaG);
-        NPC nemico = new NPC("Cybermorb", 100, "", 5, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
+        Arma armaG = catalogoArmi.get(0).copy();
+        Arma armaN = catalogoArmi.get(1).copy();
+
+        Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, hacksGiocatore, armaG);
+        NPC nemico = new NPC("Cybermorb", 100, "", 5, hacksNemico, armaN, 5, 0.1, new StrategiaCasuale());
 
         return new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
     }

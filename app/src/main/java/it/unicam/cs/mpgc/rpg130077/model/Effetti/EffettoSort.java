@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class EffettoSort implements Effetto {
     private boolean conclusive;
-    private Comparator<QueuedHack> comparator=Comparator.comparingInt(QueuedHack::getThickInCoda);
+    private Comparator<QueuedHack> comparator=Comparator.comparingInt(QueuedHack::getTickInCoda);
 
     public EffettoSort(boolean conclusive) {
         this.conclusive = conclusive;

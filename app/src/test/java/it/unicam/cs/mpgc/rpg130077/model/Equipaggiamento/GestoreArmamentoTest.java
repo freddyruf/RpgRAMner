@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
+import it.unicam.cs.mpgc.rpg130077.model.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
@@ -35,13 +36,12 @@ class GestoreArmamentoTest {
         }
     }
 
-    private static class FakeCaricatoreCatalogo implements CaricatoreCatalogo {
+     private static class FakeCaricatoreCatalogo implements CaricatoreCatalogo {
         private final ArrayList<Arma> armi = new ArrayList<>();
         private final ArrayList<Hack> hacks = new ArrayList<>();
-
         FakeCaricatoreCatalogo() {
-            armi.add(new ArmaConDescrizione("Glock", "Pistola rapida", 6, 15, 0.2));
-            armi.add(new ArmaConDescrizione("Fucile", "Fucile pesante", 2, 40, 0.5));
+            armi.add(new Pistola("Glock", "Pistola rapida", 6, 15, 0.2));
+            armi.add(new Pistola("Revolver", "Pistol pesante", 2, 8, 0.5));
             hacks.add(new Hack("Fireball", "Danno infuocato", 4));
         }
 

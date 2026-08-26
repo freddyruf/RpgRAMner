@@ -12,11 +12,11 @@
    <children>
       <MenuButton fx:id="MenuButton1" layoutX="255.0" layoutY="16.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 1">
         <items>
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Fireball" />
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Firewall" />
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Acid" />
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Sort" />
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Reverse" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
         </items>
          <font>
             <Font size="50.0" />
@@ -30,11 +30,11 @@
       </Label>
       <MenuButton fx:id="MenuButton2" layoutX="860.0" layoutY="8.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
          <items>
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Reverse" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
          </items>
          <font>
             <Font size="50.0" />
@@ -48,11 +48,11 @@
       </Label>
       <MenuButton fx:id="MenuButton3" layoutX="245.0" layoutY="546.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
          <items>
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Reverse" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
          </items>
          <font>
             <Font size="50.0" />
@@ -66,11 +66,11 @@
       </Label>
       <MenuButton fx:id="MenuButton4" layoutX="866.0" layoutY="556.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
          <items>
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="RAM:Reverse" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
+             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
          </items>
          <font>
             <Font size="50.0" />
@@ -89,8 +89,8 @@
       </Button>
       <MenuButton fx:id="MenuButtonArma" layoutX="1402.0" layoutY="237.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="Arma">
          <items>
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Pistola" />
-            <MenuItem mnemonicParsing="false" onAction="#SelezionaNelMenu" text="Mitragliatrice" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Pistola" />
+            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Mitragliatrice" />
          </items>
          <font>
             <Font size="50.0" />

@@ -10,4 +10,7 @@ public interface Effetto {
         void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio);
         boolean isConclusive(); //Un effetto e' conclusivo quando si esegue solo al completamento del caricamento, altrimenti si esegue ad ogni tick
         Effetto copy();
+
+        default boolean isDamageDealer() { return false; }
+        default boolean isHealDealer() { return false; }
 }

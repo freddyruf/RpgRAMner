@@ -12,17 +12,17 @@
             <Font name="System Bold Italic" size="96.0" />
          </font>
       </Label>
-      <Button layoutX="648.0" layoutY="332.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="533.0" text="Start" onAction="#GoBattaglia">
+      <Button layoutX="648.0" layoutY="332.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="533.0" text="Start" onAction="#goBattaglia">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Button layoutX="649.0" layoutY="562.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="533.0" text="Hack" onAction="#GoSceltaSetup">
+      <Button layoutX="649.0" layoutY="562.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="533.0" text="Hack" onAction="#goSceltaSetup">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Button layoutX="638.0" layoutY="810.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="553.0" text="Esci" onAction="#ExitWindow" >
+      <Button layoutX="638.0" layoutY="810.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="553.0" text="Esci" onAction="#exitWindow" >
          <font>
             <Font size="28.0" />
          </font>

@@ -67,12 +67,15 @@ public abstract class Entita {
         return arma;
     }
 
-    public void setPV(int PV) {
-        if(PV > MaxPV){
+    public void setPV(int newPV) {
+        if(newPV > MaxPV){
             this.PV = MaxPV;
         }
+        else if(newPV < 0){
+            this.PV = 0;
+        }
         else {
-            this.PV = PV;
+            this.PV = newPV;
         }
     }
 

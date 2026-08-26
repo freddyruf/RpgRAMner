@@ -82,14 +82,14 @@ class EntitaTest {
     }
 
     @Test
-    void setPVAccettaValoriNegativiOZero() {
+    void setPVValoriNegativiOZero() {
         Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma());
 
         entita.setPV(0);
         assertEquals(0, entita.getPV());
 
         entita.setPV(-20);
-        assertEquals(-20, entita.getPV());
+        assertEquals(0, entita.getPV());
     }
 
     @Test
