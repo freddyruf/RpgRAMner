@@ -1,9 +1,11 @@
 
 package it.unicam.cs.mpgc.rpg130077;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreMusica;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
+import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
@@ -23,69 +25,38 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 public class App extends Application {
 
-    private MediaPlayer mediaPlayer;
+    private GestoreMusica gestoreMusica;
 
     @Override
     public void start(Stage stage) {
         try {
-
             //Musica
-            try {
-                // Musica
-                java.net.URL urlMusica = getClass().getResource("/Nightdrive VHS Dreams.mp3");
-                if (urlMusica != null) {
-                    Media media = new Media(urlMusica.toExternalForm());
-                    mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                    mediaPlayer.play();
-                }
-            } catch (Exception e) {
-                System.err.println("Errore nel caricamento della musica: " + e.getMessage());
-            }
-
+            gestoreMusica = new GestoreMusica();
+            gestoreMusica.avviaMusicaSemplice();
 
             // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
             PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON();
             CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
-            ArrayList<Arma> catalogoArmi= catalogo.caricamentoCatalogoArmi();
 
-            //carico le hack del giocatore e del nemico
-            ArrayList<Hack> catalogoHack= catalogo.caricamentoCatalogoHack();
-            ArrayList<Hack> catalogoHackNemico=catalogoHack;
-            catalogoHackNemico.remove(0); //rimuovo 1 hack cosi ne ha 4
+            GameFactory factory = new GameFactory();
+            SistemaCombattimento sistemaCombattimento = factory.creaNuovaPartitaSemplice(catalogo);
 
-            Arma armaG= catalogoArmi.get(0);
-
-            Arma armaN= catalogoArmi.get(1);
-
-
-            //Creo giocatore
-            Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, catalogoHack, armaG);
-
-            //Creo nemico
-            NPC nemico = new NPC("Cybermorb", 100, "", 5, catalogoHackNemico, armaN, 5, 0.1, new StrategiaCasuale());
-
-
-
-            // Creo il sistema di combattimento
-            SistemaCombattimento sistemaCombattimento = new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
+            int ramTotale = sistemaCombattimento.getStatoBattaglia().getFazioneEroi().get(0).getSpazioRAM() +
+                    sistemaCombattimento.getStatoBattaglia().getFazioneNemici().get(0).getSpazioRAM();
 
             // Carica l'FXML
             FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
             Parent root = loader.load();
 
-            //Creo il clock
+            //Crea il clock
             Clock clock = new Clock(() -> sistemaCombattimento.onTick());
 
-            // passo le dipendenze
+            // passa le dipendenze
             SchermataInizialeFXML controller = loader.getController();
             controller.setPersistenze(persistenza, catalogo);
-            controller.setSpazioRam(giocatore.getSpazioRAM()+nemico.getSpazioRAM());
+            controller.setSpazioRam(ramTotale);
             controller.setSistemaCombattimento(sistemaCombattimento);
             controller.setClock(clock);
 
@@ -99,10 +70,7 @@ public class App extends Application {
 
     @Override
     public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.dispose();
-        }
+        gestoreMusica.stop();
     }
 
     public static void main(String[] args) {
