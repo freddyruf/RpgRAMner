@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 /**
  * Adapter generico per serializzare e deserializzare classi dinamicamente.
+ *
+ * Per la stesura di questa classe, sono stati utilizzati strumenti di intelligenza artificiale generativa, in accordo con le linee guida del corso.
  */
 public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerializer<T> {
 
