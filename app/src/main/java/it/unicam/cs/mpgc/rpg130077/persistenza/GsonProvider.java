@@ -5,7 +5,11 @@ import com.google.gson.GsonBuilder;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.RAM;
 
+/**
+ * Per la stesura di questa classe, sono stati utilizzati strumenti di intelligenza artificiale generativa, in accordo con le linee guida del corso.
+ */
 public class GsonProvider {
 
     /**

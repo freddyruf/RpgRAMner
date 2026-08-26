@@ -63,7 +63,6 @@ public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
             ArrayList<Arma> armi = gson.fromJson(root.get("armi"), tipoLista);
             return armi != null ? armi : new ArrayList<>();
         } catch (Exception e) {
-            // È normale che fallisca alla prima esecuzione se il file non c'è, restituiamo vuoto.
             return new ArrayList<>();
         }
     }
