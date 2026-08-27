@@ -19,8 +19,9 @@ public abstract class Entita {
     private int spazioRAM;
     private ArrayList<Hack> hacks;
     private Arma arma;
+    public boolean fazione;
 
-    public Entita(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
+    public Entita(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, boolean fazione) {
         if(nome == null || image == null || hacks == null || arma == null) {
             throw new NullPointerException("I parametri non possono essere nulli");
         }
@@ -31,6 +32,7 @@ public abstract class Entita {
         this.spazioRAM = spazioRAM;
         this.hacks = hacks;
         this.arma = arma;
+        this.fazione = fazione;
     }
     public Entita(Entita entita) {
         this.nome = entita.nome;
@@ -43,6 +45,7 @@ public abstract class Entita {
             this.hacks.add(hack.copy());
         }
         this.arma = entita.arma.copy();
+        this.fazione = entita.fazione;
     }
     public abstract Entita copy();
     public String getNome() {
@@ -67,6 +70,17 @@ public abstract class Entita {
         return arma;
     }
 
+    public boolean getFazione(){
+        return fazione;
+    }
+    /**
+     * Compara la fazione di questa entità con quella di un'altra entità.
+     * @param entita
+     * @return true se sono della stessa fazione, false altrimenti
+     */
+    public boolean compareFazione(Entita entita){
+        return fazione == entita.getFazione();
+    }
     public void setPV(int newPV) {
         if(newPV > MaxPV){
             this.PV = MaxPV;

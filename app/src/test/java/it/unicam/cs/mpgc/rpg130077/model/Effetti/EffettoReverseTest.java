@@ -42,9 +42,9 @@ class EffettoReverseTest {
         ram = new RAM(15);
         stato = new FakeStatoBattaglia(ram);
         lanciatore = new Giocatore("Hero", 100, "hero.png", 8, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), true);
         bersaglio = new Giocatore("Enemy", 100, "enemy.png", 8, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), false);
     }
 
     @Test

@@ -35,7 +35,7 @@ class RAMTest {
 
     private Entita creaEntitaDummy(String nome) {
         return new Giocatore(nome, 100, "image.png", 10, new ArrayList<>(),
-                new Pistola("PistolaTest", "Descrizione", 6, 10, 0.0));
+                new Pistola("PistolaTest", "Descrizione", 6, 10, 0.0), true);
     }
 
     private Hack creaHackDiTest(String nome, int durata) {

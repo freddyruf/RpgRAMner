@@ -45,8 +45,8 @@ public class GameFactory {
         Arma armaG = catalogoArmi.get(0).copy();
         Arma armaN = catalogoArmi.get(1).copy();
 
-        Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, hacksGiocatore, armaG);
-        NPC nemico = new NPC("Cybermorb", 100, "", 5, hacksNemico, armaN, 5, 0.1, new StrategiaCasuale());
+        Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, hacksGiocatore, armaG, true);
+        NPC nemico = new NPC("Cybermorb", 100, "", 5, hacksNemico, armaN, 5, 0.1, new StrategiaCasuale(), false);
 
         return new CombattimentoATurni(new StatoBattaglia1v1(giocatore, nemico));
     }

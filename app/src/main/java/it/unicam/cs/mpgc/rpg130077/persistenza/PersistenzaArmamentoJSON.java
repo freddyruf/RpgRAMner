@@ -62,8 +62,10 @@ public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
 
             ArrayList<Arma> armi = gson.fromJson(root.get("armi"), tipoLista);
             return armi != null ? armi : new ArrayList<>();
-        } catch (Exception e) {
-            return new ArrayList<>();
+        } catch (IOException | com.google.gson.JsonSyntaxException e) {
+            System.err.println("Errore fatale di lettura JSON: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Impossibile caricare il file JSON di configurazione.", e);
         }
     }
 

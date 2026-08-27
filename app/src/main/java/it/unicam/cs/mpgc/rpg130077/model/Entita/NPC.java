@@ -13,8 +13,8 @@ public class NPC extends Entita implements CombattenteAutonomo {
     double chanceAttaccoASorpresa; // Min 0 MAX 0.4, dopo 0.4 diventa troppo frequente
     StrategiaCombattimento strategia;
 
-    public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia) {
-        super(nome, MaxPV, image, spazioRAM, hacks, arma);
+    public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia, boolean fazione) {
+        super(nome, MaxPV, image, spazioRAM, hacks, arma, fazione);
         if (chanceAttaccoASorpresa < 0.0 || chanceAttaccoASorpresa > 1.0) {
             throw new IllegalArgumentException("La probabilità di attacco a sorpresa deve essere tra 0.0 e 1.0");
         }

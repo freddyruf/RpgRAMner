@@ -25,7 +25,7 @@ class NPCTest {
     }
 
     private NPC creaNPC(StrategiaCombattimento strategia, double chanceASorpresa) {
-        return new NPC("Boss", 120, "boss.png", 8, new ArrayList<>(), creaArma(), 25, chanceASorpresa, strategia);
+        return new NPC("Boss", 120, "boss.png", 8, new ArrayList<>(), creaArma(), 25, chanceASorpresa, strategia, false);
     }
 
     @Test
@@ -43,7 +43,7 @@ class NPCTest {
     void costruttoreNPCLanciaEccezioneSeChanceMaggioreDiUno() {
         StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
         assertThrows(IllegalArgumentException.class, () ->
-                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), 20, 1.5, dummyStrategia));
+                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), 20, 1.5, dummyStrategia, false));
     }
 
     @Test

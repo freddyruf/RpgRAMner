@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntitaTest {
 
     private static class EntitaDiTest extends Entita {
-        EntitaDiTest(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma) {
-            super(nome, MaxPV, image, spazioRAM, hacks, arma);
+        EntitaDiTest(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, boolean fazione) {
+            super(nome, MaxPV, image, spazioRAM, hacks, arma, fazione);
         }
 
         EntitaDiTest(Entita entita) {
@@ -43,7 +43,7 @@ class EntitaTest {
     void costruttoreInizializzaCampiECuraAlMassimo() {
         Arma arma = creaArma();
         ArrayList<Hack> hacks = creaListaHacks();
-        Entita entita = new EntitaDiTest("Eroe", 100, "eroe.png", 8, hacks, arma);
+        Entita entita = new EntitaDiTest("Eroe", 100, "eroe.png", 8, hacks, arma, true);
 
         assertEquals("Eroe", entita.getNome());
         assertEquals(100, entita.getMaxPV());
@@ -59,15 +59,15 @@ class EntitaTest {
         Arma arma = creaArma();
         ArrayList<Hack> hacks = creaListaHacks();
 
-        assertThrows(NullPointerException.class, () -> new EntitaDiTest(null, 100, "img.png", 8, hacks, arma));
-        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, null, 8, hacks, arma));
-        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, "img.png", 8, null, arma));
-        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, "img.png", 8, hacks, null));
+        assertThrows(NullPointerException.class, () -> new EntitaDiTest(null, 100, "img.png", 8, hacks, arma, true));
+        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, null, 8, hacks, arma, true));
+        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, "img.png", 8, null, arma, true));
+        assertThrows(NullPointerException.class, () -> new EntitaDiTest("Eroe", 100, "img.png", 8, hacks, null, true));
     }
 
     @Test
     void setPVModificaPuntiVitaNelRangeValido() {
-        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma());
+        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
         entita.setPV(50);
         assertEquals(50, entita.getPV());
@@ -75,7 +75,7 @@ class EntitaTest {
 
     @Test
     void setPVCappaAlValoreMaxPVSeSuperato() {
-        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma());
+        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
         entita.setPV(150);
         assertEquals(100, entita.getPV());
@@ -83,12 +83,26 @@ class EntitaTest {
 
     @Test
     void setPVValoriNegativiOZero() {
-        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma());
+        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
         entita.setPV(0);
         assertEquals(0, entita.getPV());
 
         entita.setPV(-20);
         assertEquals(0, entita.getPV());
+    }
+
+    @Test
+    void compareFazioneTrue(){
+        Entita entita1 = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
+        Entita entita2 = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
+        assertTrue(entita1.compareFazione(entita2));
+    }
+
+    @Test
+    void compareFazioneFalse(){
+        Entita entita1 = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
+        Entita entita2 = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), false);
+        assertFalse(entita1.compareFazione(entita2));
     }
 }
