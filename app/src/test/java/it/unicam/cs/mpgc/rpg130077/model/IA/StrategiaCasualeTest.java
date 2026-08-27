@@ -58,7 +58,7 @@ class StrategiaCasualeTest {
     void setUp() {
         strategia = new StrategiaCasuale();
         eroe = new Giocatore("Hero", 100, "hero.png", 5, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), true);
         ram = new RAM(10);
         stato = new FakeStatoBattaglia(ram, eroe);
     }
@@ -66,7 +66,7 @@ class StrategiaCasualeTest {
     private static class NPCSenzaArma extends NPC {
         NPCSenzaArma(ArrayList<Hack> hacks, StrategiaCombattimento strategia) {
             super("EnemyNoWeapon", 80, "npc.png", 5, hacks,
-                    new Pistola("ArmaDummy", "Desc", 6, 10, 0.0), 10, 0.0, strategia);
+                    new Pistola("ArmaDummy", "Desc", 6, 10, 0.0), 10, 0.0, strategia, false);
         }
 
         @Override
@@ -81,7 +81,7 @@ class StrategiaCasualeTest {
 
     private NPC creaNPCConArma(ArrayList<Hack> hacks) {
         return new NPC("EnemyWithWeapon", 80, "npc.png", 5, hacks,
-                new Pistola("Pistola", "Desc", 6, 10, 0.0), 10, 0.0, strategia);
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), 10, 0.0, strategia, false);
     }
 
     @Test
@@ -121,7 +121,7 @@ class StrategiaCasualeTest {
     @Test
     void scegliMossaSelezionaSempreBersaglioValidoDellaFazioneEroi() {
         Giocatore eroe2 = new Giocatore("Hero2", 100, "hero2.png", 5, new ArrayList<>(),
-                new Pistola("Pistola2", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola2", "Desc", 6, 10, 0.0), true);
         stato.aggiungiEroe(eroe2);
 
         ArrayList<Hack> hacks = new ArrayList<>();

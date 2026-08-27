@@ -24,9 +24,9 @@ class StatoBattaglia1v1Test {
     @BeforeEach
     void setUp() {
         giocatore = new Giocatore("Hero", 100, "hero.png", 6, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), true);
         avversario = new NPC("Enemy", 80, "enemy.png", 4, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0), 15, 0.2, (n, s) -> null);
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), 15, 0.2, (n, s) -> null, false);
     }
 
     @Test

@@ -27,7 +27,7 @@ class GiocatoreTest {
     }
 
     private Giocatore creaGiocatore() {
-        return new Giocatore("Player1", 100, "player.png", 10, creaListaHacks(), creaArma());
+        return new Giocatore("Player1", 100, "player.png", 10, creaListaHacks(), creaArma(), true);
     }
 
     @Test

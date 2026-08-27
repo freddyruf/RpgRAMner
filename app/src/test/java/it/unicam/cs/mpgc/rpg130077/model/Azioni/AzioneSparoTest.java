@@ -24,8 +24,8 @@ class AzioneSparoTest {
     @BeforeEach
     void setUp() {
         Arma arma = new Pistola("PistolaTest", "Desc", 6, 30, 0.0);
-        lanciatore = new Giocatore("Hero", 100, "hero.png", 8, new ArrayList<>(), arma);
-        bersaglio = new Giocatore("Enemy", 100, "enemy.png", 8, new ArrayList<>(), arma);
+        lanciatore = new Giocatore("Hero", 100, "hero.png", 8, new ArrayList<>(), arma, true);
+        bersaglio = new Giocatore("Enemy", 100, "enemy.png", 8, new ArrayList<>(), arma, false);
     }
 
     @Test
@@ -52,7 +52,7 @@ class AzioneSparoTest {
     @Test
     void eseguiConArmaCriticaInfliggeDannoRaddoppiato() {
         Arma armaCritica = new Pistola("PistolaCritica", "Desc", 6, 20, 1.0);
-        Entita lanciatoreCritico = new Giocatore("HeroCrit", 100, "hero.png", 8, new ArrayList<>(), armaCritica);
+        Entita lanciatoreCritico = new Giocatore("HeroCrit", 100, "hero.png", 8, new ArrayList<>(), armaCritica, true);
 
         AzioneSparo azione = new AzioneSparo(lanciatoreCritico, bersaglio);
         azione.esegui(null);

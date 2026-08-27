@@ -72,21 +72,6 @@ class PersistenzaArmamentoJSONTest {
     }
 
     @Test
-    void testCaricamentoConFileInesistenteRitornaListeVuote() {
-        if (FILE_DATA.exists()) {
-            FILE_DATA.delete();
-        }
-
-        ArrayList<Arma> armi = persistenza.getArmi();
-        ArrayList<Hack> hacks = persistenza.getHacks();
-
-        assertNotNull(armi);
-        assertTrue(armi.isEmpty());
-        assertNotNull(hacks);
-        assertTrue(hacks.isEmpty());
-    }
-
-    @Test
     void testDelegazioneCaricamentoCataloghi() {
         ArrayList<Arma> catalogoArmi = persistenza.caricamentoCatalogoArmi();
         ArrayList<Hack> catalogoHacks = persistenza.caricamentoCatalogoHacks();

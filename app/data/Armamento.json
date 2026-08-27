@@ -47,14 +47,13 @@
       ]
     },
     {
-      "nome": "Firewall",
-      "descrizione": "Cura il giocatore",
-      "durata": 4,
+      "nome": "RAM:Reverse",
+      "descrizione": "Inverte il flusso dei dati in memoria.",
+      "durata": 6,
       "effetti": [
         {
-          "cura": 30,
           "conclusive": true,
-          "tipoEffetto": "Cura"
+          "tipoEffetto": "Reverse"
         }
       ]
     }

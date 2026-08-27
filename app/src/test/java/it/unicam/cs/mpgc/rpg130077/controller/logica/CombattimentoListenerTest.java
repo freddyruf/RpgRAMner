@@ -85,10 +85,10 @@ class CombattimentoListenerTest {
     @BeforeEach
     void setUp() {
         giocatore = new Giocatore("Hero", 100, "hero.png", 5, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 20, 0.0));
+                new Pistola("Pistola", "Desc", 6, 20, 0.0), true);
         nemico = new NPC("Enemy", 100, "enemy.png", 5, new ArrayList<>(),
                 new Pistola("Pistola", "Desc", 6, 10, 0.0), 10, 0.0,
-                (npc, st) -> new AzioneSparo(npc, st.getEroe(0)));
+                (npc, st) -> new AzioneSparo(npc, st.getEroe(0)), false);
         stato = new StatoBattaglia1v1(giocatore, nemico);
         combattimento = new CombattimentoATurni(stato);
         listener = new TestCombattimentoListener();

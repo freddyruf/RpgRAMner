@@ -31,9 +31,9 @@ class AzioneCaricaHackTest {
     @BeforeEach
     void setUp() {
         lanciatore = new Giocatore("Hero", 100, "hero.png", 5, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0));
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), true);
         bersaglio = new NPC("Enemy", 100, "enemy.png", 5, new ArrayList<>(),
-                new Pistola("Pistola", "Desc", 6, 10, 0.0), 10, 0.0, (n, s) -> null);
+                new Pistola("Pistola", "Desc", 6, 10, 0.0), 10, 0.0, (n, s) -> null, false);
         stato = new StatoBattaglia1v1((Giocatore) lanciatore, (NPC) bersaglio);
     }
 

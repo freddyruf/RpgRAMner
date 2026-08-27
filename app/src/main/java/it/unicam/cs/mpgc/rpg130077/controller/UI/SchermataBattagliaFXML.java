@@ -8,6 +8,9 @@ import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Insets;
+import javafx.util.Duration;
 
 public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener, SchermataBattaglia {
 
@@ -169,7 +174,12 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             }
             for (int i = 0; i < bottoniHacks.size(); i++) {
                 if(b==bottoniHacks.get(i)) {
-                    sistemaCombattimento.caricaHack(hacksDisponibili.get(i));
+                    try{
+                        sistemaCombattimento.caricaHack(hacksDisponibili.get(i));
+                    } catch (IllegalArgumentException e) {
+                        mostraTestoFluttuante(e.getMessage(), Color.RED);
+                    }
+
                 }
             }
 
@@ -188,7 +198,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         double percentuale = (double) entita.getPV() / (double) entita.getMaxPV();
         percentuale = Math.max(0.0, Math.min(1.0, percentuale));
         double width = percentuale * 668.0;
-        if (entita instanceof Giocatore) {
+        if (sistemaCombattimento.getStatoBattaglia().getFazioneEroi().contains(entita)) {
             PlayerLifeBar.setWidth(width);
         } else {
             EnemyLifeBar.setWidth(width);
@@ -338,5 +348,22 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         Platform.runLater(() -> {
                 turnoGiocatore = true;
         });
+    }
+
+    private void mostraTestoFluttuante(String messaggio, Color colore) {
+        Text testo = new Text(messaggio);
+        testo.setFill(colore);
+        testo.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-border-color: black; -fx-border-width: 2px;");
+
+        testo.setLayoutX(mainPane.getWidth() / 2 - 150);
+        testo.setLayoutY(mainPane.getHeight() / 2 +50);
+
+        mainPane.getChildren().add(testo);
+
+        PauseTransition ritardo = new PauseTransition(Duration.seconds(2));
+
+        ritardo.setOnFinished(e -> mainPane.getChildren().remove(testo));
+
+        ritardo.play();
     }
 }

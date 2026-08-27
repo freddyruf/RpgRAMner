@@ -31,7 +31,7 @@ public class RAM {
      * Si attiva a ogni tick
      * @param statoBattaglia
      */
-    public void avanza(StatoBattaglia statoBattaglia) {
+    public synchronized void avanza(StatoBattaglia statoBattaglia) {
         QueuedHack queuedHack = visualizzaTesta();
         if (queuedHack == null) return;
         queuedHack.setTickInCoda(queuedHack.getTickInCoda()-1);
@@ -68,7 +68,7 @@ public class RAM {
         return spazioOccupato;
     }
 
-    public void inserisci(Hack hack, Entita bersaglio, Entita lanciatore) {
+    public synchronized void inserisci(Hack hack, Entita bersaglio, Entita lanciatore) {
         if(hack==null){
             throw new NullPointerException("Hack non può essere null");
         }
@@ -96,14 +96,10 @@ public class RAM {
      * Inverte l'ordine delle hack in coda
      */
     public void reverse(){
-        LinkedList<QueuedHack> reversed = new LinkedList<>();
-        for (int i = hacks.size() - 1; i >= 0; i--) {
-            reversed.add(hacks.get(i));
-        }
-        hacks = reversed;
+        java.util.Collections.reverse(hacks);
     }
 
-    public LinkedList<QueuedHack> getHacks(){
+    public synchronized LinkedList<QueuedHack> getHacks(){
         return hacks;
     }
 
