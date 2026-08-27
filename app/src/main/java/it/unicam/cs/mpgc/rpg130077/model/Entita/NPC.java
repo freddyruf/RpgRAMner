@@ -8,22 +8,23 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
 import java.util.ArrayList;
 
-public class NPC extends Entita {
+public class NPC extends Entita implements CombattenteAutonomo {
     int dannoAttaccoASorpresa;
-    double chanceAttaccoASorpresa; // Min 0 MAX 1.0
+    double chanceAttaccoASorpresa; // Min 0 MAX 0.4, dopo 0.4 diventa troppo frequente
     StrategiaCombattimento strategia;
 
     public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma);
         if (chanceAttaccoASorpresa < 0.0 || chanceAttaccoASorpresa > 1.0) {
-            throw new IllegalArgumentException("La probabilità di attacco a sorpresa deve essere tra 0.0 e 1.0: " + chanceAttaccoASorpresa);
+            throw new IllegalArgumentException("La probabilità di attacco a sorpresa deve essere tra 0.0 e 1.0");
         }
-        if(strategia == null){
+        if (strategia == null) {
             throw new NullPointerException("La strategia non può essere nulla");
         }
-        if(chanceAttaccoASorpresa==0.0 && (dannoAttaccoASorpresa<=0)){
-            throw new IllegalArgumentException("Se la probabilità di attacco a sorpresa è 0, il danno deve essere maggiore di 0");
+        if (chanceAttaccoASorpresa > 0.0 && dannoAttaccoASorpresa <= 0) {
+            throw new IllegalArgumentException("Se c'è probabilità di attacco a sorpresa, il danno deve essere > 0");
         }
+
         this.dannoAttaccoASorpresa = dannoAttaccoASorpresa;
         this.chanceAttaccoASorpresa = chanceAttaccoASorpresa;
         this.strategia = strategia;

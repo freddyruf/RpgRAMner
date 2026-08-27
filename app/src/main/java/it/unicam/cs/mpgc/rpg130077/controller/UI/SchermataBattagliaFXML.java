@@ -68,8 +68,11 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     public void goSchermataIniziale(ActionEvent event) {
         try {
-            if (clock != null){
+            if (clock != null) {
                 clock.stop();
+            }
+            if (sistemaCombattimento != null) {
+                sistemaCombattimento.rimuoviListener(this);
             }
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
             Parent nuovaSchermata = loader.load();
@@ -316,6 +319,9 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     @Override
     public void onVittoria(Entita vincitore) {
+        if(clock!=null){
+            clock.stop();
+        }
         Platform.runLater(() -> {
             javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
             alert.setTitle("Fine battaglia");

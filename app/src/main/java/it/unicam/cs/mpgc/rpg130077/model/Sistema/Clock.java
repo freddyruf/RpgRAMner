@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
 public class Clock {
     private Thread threadTimer;
-    private boolean inEsecuzione;
+    private volatile boolean inEsecuzione;
     private final Runnable runnable;
 
     public Clock(Runnable onTick) {

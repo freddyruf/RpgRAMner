@@ -30,11 +30,11 @@ public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
     }
 
     private final String FILE = "data/Armamento.json";
-    private final PersistenzaCatalogoArmamentoJSON catalogo;
+    private final CaricatoreCatalogo catalogo;
     private final Gson gson;
 
-    public PersistenzaArmamentoJSON() {
-        this.catalogo = new PersistenzaCatalogoArmamentoJSON();
+    public PersistenzaArmamentoJSON(CaricatoreCatalogo caricatoreCatalogo) {
+        this.catalogo = caricatoreCatalogo;
         this.gson = GsonProvider.getGson();
     }
 

@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.CombattenteAutonomo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
@@ -15,7 +16,6 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
     private StatoBattaglia stato;
     private StatoTurni statoTurni;
-    private Clock clock;
     private boolean vittoriaNotificata=false;
 
 
@@ -82,8 +82,8 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         statoTurni.avanzaTurno();
         Entita entitaInCorso=getEntitaInCorso();
 
-        if(entitaInCorso instanceof NPC){ //il nemico fa una mossa
-            Azione a=entitaInCorso.richiediMossa(this,stato);
+        if(entitaInCorso instanceof CombattenteAutonomo){ //il nemico fa una mossa
+            Azione a=((CombattenteAutonomo)entitaInCorso).richiediMossa(this,stato);
             eseguiMossa(a);
         }
     }
@@ -118,9 +118,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
                 combattimentoListener.aggiornaRAM(stato.getRamCondivisa());
             }
         }
-        if (checkVittoria() != null) {
-            clock.stop();
-        } else{
+        if (checkVittoria() == null) {
             avanza();
         }
 

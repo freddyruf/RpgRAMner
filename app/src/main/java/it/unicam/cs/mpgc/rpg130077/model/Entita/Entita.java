@@ -79,8 +79,4 @@ public abstract class Entita {
         }
     }
 
-    public Azione richiediMossa(SistemaCombattimento sistemaTurni, StatoBattaglia stato){
-        throw new UnsupportedOperationException("Not supported.");
-    }
-
 }
