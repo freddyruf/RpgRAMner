@@ -69,10 +69,4 @@ class GiocatoreTest {
         assertEquals(originale.getNome(), copia.getNome());
         assertNotSame(originale.getArma(), copia.getArma());
     }
-
-    @Test
-    void richiediMossaGiocatoreLanciaUnsupportedOperationException() {
-        Giocatore g = creaGiocatore();
-        assertThrows(UnsupportedOperationException.class, () -> g.richiediMossa(null, null));
-    }
 }

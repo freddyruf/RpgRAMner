@@ -35,7 +35,10 @@ public class StrategiaCasuale implements StrategiaCombattimento{
         if (puoCaricareHack && (npc.getArma() == null || sceltaMossa < 0.5)) {
             return new AzioneCaricaHack(npc, entitaBersaglio, hackSelezionato);
         } else {
+            if (npc.getArma() == null) { //Non puo ne sparare ne caricare una hack
+                return null;
+            }
             return new AzioneSparo(npc, entitaBersaglio);
         }
+        }
     }
-}

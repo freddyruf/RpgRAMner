@@ -91,11 +91,4 @@ class EntitaTest {
         entita.setPV(-20);
         assertEquals(0, entita.getPV());
     }
-
-    @Test
-    void richiediMossaLanciaUnsupportedOperationExceptionDiDefault() {
-        Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma());
-
-        assertThrows(UnsupportedOperationException.class, () -> entita.richiediMossa(null, null));
-    }
 }

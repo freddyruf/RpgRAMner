@@ -37,8 +37,9 @@ public class App extends Application {
             gestoreMusica.avviaMusicaSemplice();
 
             // DECIDI QUI QUALE METODO DI SALVATAGGIO E DI CATALOGO USARE
-            PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON();
             CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
+            PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON(catalogo);
+
 
             GameFactory factory = new GameFactory();
             SistemaCombattimento sistemaCombattimento = factory.creaNuovaPartitaSemplice(catalogo);

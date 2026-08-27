@@ -29,7 +29,8 @@ class PersistenzaArmamentoJSONTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        persistenza = new PersistenzaArmamentoJSON();
+        CaricatoreCatalogo catalogo=new PersistenzaCatalogoArmamentoJSON();
+        persistenza = new PersistenzaArmamentoJSON(catalogo);
         if (FILE_DATA.exists()) {
             if (BACKUP_DATA.getParentFile() != null) {
                 BACKUP_DATA.getParentFile().mkdirs();
