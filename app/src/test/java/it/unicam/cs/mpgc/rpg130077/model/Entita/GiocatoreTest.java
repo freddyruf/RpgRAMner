@@ -35,8 +35,8 @@ class GiocatoreTest {
         Giocatore g = creaGiocatore();
 
         assertEquals("Player1", g.getNome());
-        assertEquals(100, g.getMaxPV());
-        assertEquals(100, g.getPV());
+        assertEquals(100, g.getMaxPv());
+        assertEquals(100, g.getPv());
         assertEquals("player.png", g.getImage());
         assertEquals(10, g.getSpazioRAM());
         assertEquals(1, g.getHacks().size());
@@ -50,13 +50,13 @@ class GiocatoreTest {
 
         assertNotSame(originale, copia);
         assertEquals(originale.getNome(), copia.getNome());
-        assertEquals(originale.getPV(), copia.getPV());
+        assertEquals(originale.getPv(), copia.getPv());
         assertNotSame(originale.getArma(), copia.getArma());
         assertNotSame(originale.getHacks(), copia.getHacks());
 
-        copia.setPV(50);
-        assertEquals(100, originale.getPV());
-        assertEquals(50, copia.getPV());
+        copia.setPv(50);
+        assertEquals(100, originale.getPv());
+        assertEquals(50, copia.getPv());
     }
 
     @Test

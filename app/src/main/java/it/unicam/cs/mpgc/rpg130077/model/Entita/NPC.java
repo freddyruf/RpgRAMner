@@ -52,14 +52,13 @@ public class NPC extends Entita implements CombattenteAutonomo {
     /**
      * Sceglie e ritorna una mossa
      *
-     * @param sistemaCombattimento
-     * @param stato                stato della batttaglia
+     * @param stato stato della batttaglia
      * @return mossa scelta
      *
      */
     @Override
-    public Azione richiediMossa(SistemaCombattimento sistemaCombattimento, StatoBattaglia stato) {
+    public Azione richiediMossa(StatoBattaglia stato) {
+        // L'IA decide in base allo stato attuale (hp, nemici)
         return strategia.scegliMossa(this, stato);
-
     }
 }

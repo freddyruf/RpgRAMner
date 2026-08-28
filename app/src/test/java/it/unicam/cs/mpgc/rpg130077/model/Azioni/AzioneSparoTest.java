@@ -46,7 +46,7 @@ class AzioneSparoTest {
         azione.esegui(null);
 
         // 100 - 30 = 70
-        assertEquals(70, bersaglio.getPV());
+        assertEquals(70, bersaglio.getPv());
     }
 
     @Test
@@ -58,7 +58,7 @@ class AzioneSparoTest {
         azione.esegui(null);
 
         // 100 - (20 * 2) = 60
-        assertEquals(60, bersaglio.getPV());
+        assertEquals(60, bersaglio.getPv());
     }
 
     @Test

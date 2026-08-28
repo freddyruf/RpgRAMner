@@ -12,18 +12,6 @@
   ],
   "hacks": [
     {
-      "nome": "Fireball",
-      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
-      "durata": 4,
-      "effetti": [
-        {
-          "danno": 50,
-          "conclusive": true,
-          "tipoEffetto": "Danno"
-        }
-      ]
-    },
-    {
       "nome": "Acid",
       "descrizione": "Infligge 10 di danno ogni tick.",
       "durata": 10,
@@ -32,6 +20,17 @@
           "danno": 6,
           "conclusive": false,
           "tipoEffetto": "Danno"
+        }
+      ]
+    },
+    {
+      "nome": "RAM:Reverse",
+      "descrizione": "Inverte il flusso dei dati in memoria.",
+      "durata": 6,
+      "effetti": [
+        {
+          "conclusive": true,
+          "tipoEffetto": "Reverse"
         }
       ]
     },
@@ -47,13 +46,14 @@
       ]
     },
     {
-      "nome": "RAM:Reverse",
-      "descrizione": "Inverte il flusso dei dati in memoria.",
-      "durata": 6,
+      "nome": "Acid",
+      "descrizione": "Infligge 10 di danno ogni tick.",
+      "durata": 10,
       "effetti": [
         {
-          "conclusive": true,
-          "tipoEffetto": "Reverse"
+          "danno": 6,
+          "conclusive": false,
+          "tipoEffetto": "Danno"
         }
       ]
     }

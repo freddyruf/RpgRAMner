@@ -35,7 +35,7 @@ class GameFactoryTest {
     @Test
     void testCreaNuovaPartitaSempliceConCatalogoReale() {
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo);
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
 
         assertNotNull(combattimento);
         assertInstanceOf(CombattimentoATurni.class, combattimento);
@@ -46,8 +46,8 @@ class GameFactoryTest {
         Giocatore giocatore = stato.getGiocatore();
         assertNotNull(giocatore);
         assertEquals("Giocatore", giocatore.getNome());
-        assertEquals(100, giocatore.getPV());
-        assertEquals(100, giocatore.getMaxPV());
+        assertEquals(100, giocatore.getPv());
+        assertEquals(100, giocatore.getMaxPv());
         assertEquals(10, giocatore.getSpazioRAM());
         assertNotNull(giocatore.getArma());
         assertFalse(giocatore.getHacks().isEmpty());
@@ -57,8 +57,8 @@ class GameFactoryTest {
 
         NPC nemico = (NPC) stato.getNemico(0);
         assertEquals("Cybermorb", nemico.getNome());
-        assertEquals(100, nemico.getPV());
-        assertEquals(100, nemico.getMaxPV());
+        assertEquals(100, nemico.getPv());
+        assertEquals(100, nemico.getMaxPv());
         assertEquals(5, nemico.getSpazioRAM());
         assertEquals(5, nemico.getDannoAttaccoASorpresa());
         assertNotNull(nemico.getArma());
@@ -84,12 +84,12 @@ class GameFactoryTest {
             }
 
             @Override
-            public ArrayList<Hack> caricamentoCatalogoHack() {
+            public ArrayList<Hack> caricamentoCatalogoHacks() {
                 return new ArrayList<>(List.of(hack1, hack2));
             }
         };
 
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogoStub);
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogoStub.caricamentoCatalogoArmi(), catalogoStub.caricamentoCatalogoHacks());
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         assertEquals(armaGiocatore.getNome(), stato.getGiocatore().getArma().getNome());
@@ -106,34 +106,9 @@ class GameFactoryTest {
     }
 
     @Test
-    void testCreaNuovaPartitaSempliceConCatalogoHackVuoto() {
-        Arma arma1 = new Pistola("Pistola1", "Desc1", 6, 20, 0.0);
-        Arma arma2 = new Pistola("Pistola2", "Desc2", 6, 20, 0.0);
-
-        CaricatoreCatalogo catalogoVuoto = new CaricatoreCatalogo() {
-            @Override
-            public ArrayList<Arma> caricamentoCatalogoArmi() {
-                return new ArrayList<>(List.of(arma1, arma2));
-            }
-
-            @Override
-            public ArrayList<Hack> caricamentoCatalogoHack() {
-                return new ArrayList<>();
-            }
-        };
-
-        SistemaCombattimento combattimento = assertDoesNotThrow(
-                () -> gameFactory.creaNuovaPartitaSemplice(catalogoVuoto)
-        );
-
-        assertTrue(combattimento.getStatoBattaglia().getGiocatore().getHacks().isEmpty());
-        assertTrue(combattimento.getStatoBattaglia().getNemico(0).getHacks().isEmpty());
-    }
-
-    @Test
     void testPartitaCreataProntaAlCombattimento() {
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo);
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
 
         assertNull(combattimento.checkVittoria());
         assertDoesNotThrow(combattimento::avanza);

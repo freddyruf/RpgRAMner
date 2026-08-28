@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 public interface CaricatoreCatalogo {
     ArrayList<Arma> caricamentoCatalogoArmi();
-    ArrayList<Hack> caricamentoCatalogoHack();
+    ArrayList<Hack> caricamentoCatalogoHacks();
 }

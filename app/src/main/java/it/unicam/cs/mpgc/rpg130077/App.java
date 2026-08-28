@@ -2,16 +2,9 @@
 package it.unicam.cs.mpgc.rpg130077;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreMusica;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
-import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
-import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamentoJSON;
@@ -23,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class App extends Application {
 
@@ -42,7 +34,7 @@ public class App extends Application {
 
 
             GameFactory factory = new GameFactory();
-            SistemaCombattimento sistemaCombattimento = factory.creaNuovaPartitaSemplice(catalogo);
+            SistemaCombattimento sistemaCombattimento = factory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
 
             int ramTotale = sistemaCombattimento.getStatoBattaglia().getFazioneEroi().get(0).getSpazioRAM() +
                     sistemaCombattimento.getStatoBattaglia().getFazioneNemici().get(0).getSpazioRAM();
@@ -56,7 +48,7 @@ public class App extends Application {
 
             // passa le dipendenze
             SchermataInizialeFXML controller = loader.getController();
-            controller.setPersistenze(persistenza, catalogo);
+            controller.setupIniziale(persistenza, catalogo);
             controller.setSpazioRam(ramTotale);
             controller.setSistemaCombattimento(sistemaCombattimento);
             controller.setClock(clock);

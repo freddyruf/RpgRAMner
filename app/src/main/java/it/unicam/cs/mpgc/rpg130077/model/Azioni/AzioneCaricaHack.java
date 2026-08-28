@@ -10,6 +10,9 @@ public class AzioneCaricaHack implements Azione {
     private Hack hack;
 
     public AzioneCaricaHack(Entita lanciatore, Entita bersaglio, Hack hack) {
+        if (lanciatore == null || bersaglio == null || hack == null) {
+            throw new NullPointerException("Lanciatore, bersaglio e hack non possono essere nulli");
+        }
         this.lanciatore = lanciatore;
         this.bersaglio = bersaglio;
         this.hack = hack;

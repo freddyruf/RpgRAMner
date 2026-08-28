@@ -92,6 +92,6 @@ public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
 
     @Override
     public ArrayList<Hack> caricamentoCatalogoHacks() {
-        return catalogo.caricamentoCatalogoHack();
+        return catalogo.caricamentoCatalogoHacks();
     }
 }

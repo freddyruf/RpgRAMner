@@ -1,20 +1,18 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
-import it.unicam.cs.mpgc.rpg130077.App;
-import it.unicam.cs.mpgc.rpg130077.model.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 public class SceltaArmamentoFXML extends SchermataGenerica {
@@ -25,28 +23,33 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
 
     @Override
-    public void setPersistenze(PersistenzaArmamento p, CaricatoreCatalogo c) {
+    public void setupIniziale(PersistenzaArmamento p, CaricatoreCatalogo c) {
         super.persistenzaArmamento = p;
         this.caricatoreCatalogo = c;
-
         this.gestore = new GestoreArmamento(p, c);
+
+        popolaMenuDaCatalogo();
+        caricaArmamento();
     }
 
     /**
-        @param event un evento di JAVAFX
+        @param root root di JAVAFX
         @return un ArrayList di MenuButton presenti nella scena a cui è associato l'evento
      */
-    private ArrayList<MenuButton> getAllMenuButtonsFromEvent(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Pane pane = (Pane) source.getScene().getRoot();
+    private ArrayList<MenuButton> getAllMenuButtons(Parent root) {
+        ArrayList<MenuButton> result = new ArrayList<>();
+        cercaMenuButtonsRicorsivo(root, result);
+        return result;
+    }
 
-        ArrayList<MenuButton> menuButtons = new ArrayList<>();
-        for (javafx.scene.Node child : pane.getChildren()) {
-            if (child instanceof MenuButton) {
-                menuButtons.add((MenuButton) child);
+    private void cercaMenuButtonsRicorsivo(Parent parent, ArrayList<MenuButton> result) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            if (node instanceof MenuButton mb) {
+                result.add(mb);
+            } else if (node instanceof Parent nestedParent) {
+                cercaMenuButtonsRicorsivo(nestedParent, result);
             }
         }
-        return menuButtons;
     }
 
     /**
@@ -68,42 +71,29 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      */
     @FXML
     private void PulsanteEsci(ActionEvent event) {
-        if(checkArmamentoCompletamenteScelto(event)){
-            gestore.salva(getMenuButtonNames(getAllMenuButtonsFromEvent(event)));
+        if(checkArmamentoCompletamenteScelto()){
+            gestore.salva(getMenuButtonNames(getAllMenuButtons(((Node) event.getSource()).getParent())));
             goSchermataIniziale(event);
         }
     }
 
-    private boolean checkArmamentoCompletamenteScelto(ActionEvent event) {
-        ArrayList<String> menuButtonNames = getMenuButtonNames(getAllMenuButtonsFromEvent(event));
-        for(String menuButtonName : menuButtonNames) {
-            if(menuButtonName.contains("HACK") || menuButtonName.contains("Arma")) {
+    private boolean checkArmamentoCompletamenteScelto() {
+        for (MenuButton mb : getAllMenuButtonsFromThis()) {
+            if (isPlaceholder(mb.getText())) {
                 return false;
             }
         }
         return true;
+    }
+    private boolean isPlaceholder(String testo) {
+        return testo == null || testo.equals("Arma") || testo.equals("HACK 1") || testo.equals("HACK 2");
     }
 
     /**
      * Va alla schermata iniziale e passa le dipendenze alla schermata iniziale, cosi che non le perde
      */
     private void goSchermataIniziale(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml"));
-            Parent nuovaSchermata = loader.load();
-
-            SchermataInizialeFXML controller = loader.getController();
-
-            controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
-            controller.setSpazioRam(this.spazioRam);
-            controller.setSistemaCombattimento(this.sistemaCombattimento);
-            controller.setClock(this.clock);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(nuovaSchermata));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        caricaSchermata("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml", event);
     }
 
     /**
@@ -115,16 +105,12 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
         String idLabelAttesa = idBottone.replace("MenuButton", "Label");
 
-        //Cerca la Label dinamicamente nella scena (serve il casting a Label)
-        Label label = (Label) menuButton.getScene().lookup("#" + idLabelAttesa);
+        Label label = (Label) mainPane.lookup("#" + idLabelAttesa);
 
-        // Se trova la label, le assegno la descrizione presa dal Model
         if (label != null) {
-            String nomeItem = menuButton.getText(); // Es: "Fireball"
+            String nomeItem = menuButton.getText();
             String testoDescrizione = gestore.getDescrizioneItem(nomeItem);
             label.setText(testoDescrizione);
-        } else {
-            throw new RuntimeException("Errore: Label con ID #" + idLabelAttesa + " non trovata nella scena.");
         }
     }
 
@@ -157,29 +143,66 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     }
 
     /**
-     * Carica le armi e le hacks salvate nei menu button e nelle labels
+     * Popola dinamicamente i MenuButton leggendo gli oggetti dal catalogo JSON.
      */
-    public void caricaHack() {
+    public void popolaMenuDaCatalogo() {
+        if (caricatoreCatalogo == null) return;
+
+        ArrayList<Arma> catalogoArmi = caricatoreCatalogo.caricamentoCatalogoArmi();
+        ArrayList<Hack> catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHacks();
+        for (MenuButton mb : getAllMenuButtonsFromThis()) {
+            mb.getItems().clear();
+
+            if (mb.getId() != null && mb.getId().contains("Arma")) {
+                for (Arma arma : catalogoArmi) {
+                    MenuItem item = new MenuItem(arma.getNome());
+                    item.setOnAction(this::selezionaNelMenu);
+                    mb.getItems().add(item);
+                }
+            } else {
+                for (Hack hack : catalogoHacks) {
+                    MenuItem item = new MenuItem(hack.getNome());
+                    item.setOnAction(this::selezionaNelMenu);
+                    mb.getItems().add(item);
+                }
+            }
+        }
+    }
+
+    /**
+     * Carica le armi e le hacks salvate nei menu button e nelle labels.
+     */
+    public void caricaArmamento() {
+        if (persistenzaArmamento == null) return;
+
         ArrayList<MenuButton> listaMenuButton = getAllMenuButtonsFromThis();
         ArrayList<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> armiSalvate = persistenzaArmamento.getArmi();
         ArrayList<it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack> hacksSalvati = persistenzaArmamento.getHacks();
-        int indiceArma = 0;
-        int indiceHack = 0;
-        for (MenuButton menuButton : listaMenuButton) {
-            String id = menuButton.getId();
-            if (id != null && id.contains("Arma")) {
-                if (armiSalvate != null && indiceArma < armiSalvate.size()) {
-                    menuButton.setText(armiSalvate.get(indiceArma).getNome());
-                    cambiaLabel(menuButton);
-                    indiceArma++;
-                }
+
+        // 1. Divido fisicamente i bottoni Arma dai bottoni Hack per non sovrascriverli male
+        ArrayList<MenuButton> hackButtons = new ArrayList<>();
+        ArrayList<MenuButton> armaButtons = new ArrayList<>();
+
+        for (MenuButton mb : listaMenuButton) {
+            if (mb.getId() != null && mb.getId().contains("Arma")) {
+                armaButtons.add(mb);
             } else {
-                if (hacksSalvati != null && indiceHack < hacksSalvati.size()) {
-                    menuButton.setText(hacksSalvati.get(indiceHack).getNome());
-                    cambiaLabel(menuButton);
-                    indiceHack++;
-                }
+                hackButtons.add(mb);
             }
+        }
+
+        // 2. Carico le armi salvate (fermo il ciclo se finisco le armi salvate)
+        for (int i = 0; i < armaButtons.size() && armiSalvate != null && i < armiSalvate.size(); i++) {
+            MenuButton menuButton = armaButtons.get(i);
+            menuButton.setText(armiSalvate.get(i).getNome());
+            cambiaLabel(menuButton);
+        }
+
+        // 3. Carico le hacks salvate (fermo il ciclo se finisco le hack salvate)
+        for (int i = 0; i < hackButtons.size() && hacksSalvati != null && i < hacksSalvati.size(); i++) {
+            MenuButton menuButton = hackButtons.get(i);
+            menuButton.setText(hacksSalvati.get(i).getNome());
+            cambiaLabel(menuButton);
         }
     }
 }

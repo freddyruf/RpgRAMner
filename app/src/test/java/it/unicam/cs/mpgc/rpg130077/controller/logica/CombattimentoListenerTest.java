@@ -34,11 +34,17 @@ class CombattimentoListenerTest {
         boolean onVittoriaChiamato = false;
         boolean onTurnoGiocatoreChiamato = false;
         boolean aggiornaRAMChiamato = false;
+        boolean ilNemicoNonPuoAttaccareChiamato = false;
 
         StatoBattaglia ultimoStato;
         Entita ultimoVincitore;
         Entita ultimaEntita;
         RAM ultimaRAM;
+
+        @Override
+        public void ilNemicoNonPuoAttaccare() {
+            this.ilNemicoNonPuoAttaccareChiamato = true;
+        }
 
         @Override
         public void onTick(StatoBattaglia statoBattaglia) {
@@ -70,7 +76,7 @@ class CombattimentoListenerTest {
         }
 
         @Override
-        public void aggiornaRAM(RAM ram) {
+        public void onAggiornamentoRAM(RAM ram) {
             this.aggiornaRAMChiamato = true;
             this.ultimaRAM = ram;
         }
@@ -105,7 +111,7 @@ class CombattimentoListenerTest {
 
     @Test
     void testNotificaOnVitaAggiornataSuAzioneDanno() {
-        combattimento.sparare();
+        combattimento.spara(nemico);
 
         assertTrue(listener.onVitaAggiornataChiamato);
         assertSame(stato, listener.ultimoStato);
@@ -125,7 +131,7 @@ class CombattimentoListenerTest {
 
     @Test
     void testNotificaOnVittoriaQuandoNemicoSconfitto() {
-        nemico.setPV(0);
+        nemico.setPv(0);
         combattimento.checkVittoria();
 
         assertTrue(listener.onVittoriaChiamato);
@@ -134,7 +140,7 @@ class CombattimentoListenerTest {
 
     @Test
     void testNotificaOnVittoriaQuandoEroeSconfitto() {
-        giocatore.setPV(0);
+        giocatore.setPv(0);
         combattimento.checkVittoria();
 
         assertTrue(listener.onVittoriaChiamato);

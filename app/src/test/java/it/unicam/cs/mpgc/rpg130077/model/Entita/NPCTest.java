@@ -4,9 +4,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
-import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCombattimento;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -34,8 +32,8 @@ class NPCTest {
         NPC npc = creaNPC(dummyStrategia, 0.4);
 
         assertEquals("Boss", npc.getNome());
-        assertEquals(120, npc.getMaxPV());
-        assertEquals(120, npc.getPV());
+        assertEquals(120, npc.getMaxPv());
+        assertEquals(120, npc.getPv());
         assertEquals(25, npc.getDannoAttaccoASorpresa());
     }
 
@@ -91,7 +89,7 @@ class NPCTest {
         };
 
         NPC npc = creaNPC(spyStrategia, 0.2);
-        Azione mossa = npc.richiediMossa(null, null);
+        Azione mossa = npc.richiediMossa( null);
 
         assertTrue(strategiaInvocata[0]);
         assertSame(azionePrevista, mossa);

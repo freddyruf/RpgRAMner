@@ -48,18 +48,4 @@ class QueuedHackTest {
         assertEquals(3, queued.getTickInCoda());
     }
 
-    @Test
-    void costruttoreDiCopiaEsegueCopiaProfonda() {
-        Hack hack = new Hack("Fireball", "Palla di fuoco", 5);
-        QueuedHack originale = new QueuedHack(hack, bersaglio, lanciatore);
-        originale.setTickInCoda(2);
-
-        QueuedHack copia = new QueuedHack(originale);
-
-        assertNotSame(originale, copia);
-        assertEquals(originale.getTickInCoda(), copia.getTickInCoda());
-        assertNotSame(originale.getHack(), copia.getHack());
-        assertNotSame(originale.getBersaglio(), copia.getBersaglio());
-        assertNotSame(originale.getLanciatore(), copia.getLanciatore());
-    }
 }

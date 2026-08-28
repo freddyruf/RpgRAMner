@@ -8,6 +8,6 @@ import javafx.event.ActionEvent;
 public interface SchermataBattaglia {
     void onTick(StatoBattaglia statoBattaglia);
     void onVittoria(Entita vincitore);
-    void aggiornaRAM(RAM ram);
+    void onAggiornamentoRAM(RAM ram);
     void cambiaVita(Entita entita);
 }

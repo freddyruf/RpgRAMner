@@ -1,39 +1,24 @@
 package it.unicam.cs.mpgc.rpg130077.model;
 
-import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
-import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-
+import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
+import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
+import java.util.List;
 import java.util.ArrayList;
 
-/**
- * Classe che si occupa di gestire l'inizializzazione di una battaglia
- */
 public class GameFactory {
-
-    /**
-     * Funzione che restituisce un sistema di combattiento "generico" e prefatto
-     * @param catalogo
-     * @return un SistemaCombattimento pronto al uso
-     */
-    public SistemaCombattimento creaNuovaPartitaSemplice(CaricatoreCatalogo catalogo) {
-        if (catalogo == null) {
-            throw new NullPointerException("Il caricatore catalogo non può essere nullo");
+    public SistemaCombattimento creaNuovaPartitaSemplice(List<Arma> catalogoArmi, List<Hack> catalogoHack) {
+        if (catalogoArmi == null || catalogoHack == null) {
+            throw new NullPointerException("I cataloghi non possono essere nulli");
         }
-
-        ArrayList<Arma> catalogoArmi = catalogo.caricamentoCatalogoArmi();
-        ArrayList<Hack> catalogoHack = catalogo.caricamentoCatalogoHack();
-
         if (catalogoArmi.size() < 2) {
-            throw new IllegalStateException("Catalogo insufficiente per creare una partita");
+            throw new IllegalStateException("Catalogo armi insufficiente per creare una partita");
         }
-
         ArrayList<Hack> hacksGiocatore = new ArrayList<>();
         for (Hack h : catalogoHack) hacksGiocatore.add(h.copy());
 

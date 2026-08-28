@@ -46,8 +46,8 @@ class EntitaTest {
         Entita entita = new EntitaDiTest("Eroe", 100, "eroe.png", 8, hacks, arma, true);
 
         assertEquals("Eroe", entita.getNome());
-        assertEquals(100, entita.getMaxPV());
-        assertEquals(100, entita.getPV());
+        assertEquals(100, entita.getMaxPv());
+        assertEquals(100, entita.getPv());
         assertEquals("eroe.png", entita.getImage());
         assertEquals(8, entita.getSpazioRAM());
         assertSame(hacks, entita.getHacks());
@@ -69,27 +69,27 @@ class EntitaTest {
     void setPVModificaPuntiVitaNelRangeValido() {
         Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
-        entita.setPV(50);
-        assertEquals(50, entita.getPV());
+        entita.setPv(50);
+        assertEquals(50, entita.getPv());
     }
 
     @Test
     void setPVCappaAlValoreMaxPVSeSuperato() {
         Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
-        entita.setPV(150);
-        assertEquals(100, entita.getPV());
+        entita.setPv(150);
+        assertEquals(100, entita.getPv());
     }
 
     @Test
     void setPVValoriNegativiOZero() {
         Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 
-        entita.setPV(0);
-        assertEquals(0, entita.getPV());
+        entita.setPv(0);
+        assertEquals(0, entita.getPv());
 
-        entita.setPV(-20);
-        assertEquals(0, entita.getPV());
+        entita.setPv(-20);
+        assertEquals(0, entita.getPv());
     }
 
     @Test

@@ -23,22 +23,7 @@ public class SchermataInizialeFXML extends SchermataGenerica {
 
     @FXML
     private void goSceltaSetup(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/SceltaArmamento.fxml"));
-            Parent nuovaSchermata = loader.load();
-
-            SchermataGenerica controller = (SceltaArmamentoFXML)loader.getController();
-            controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
-            controller.setSpazioRam(this.spazioRam);
-            controller.setSistemaCombattimento(this.sistemaCombattimento);
-            controller.setClock(this.clock);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(nuovaSchermata));
-            ((SceltaArmamentoFXML) controller).caricaHack();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        caricaSchermata("/it/unicam/cs/mpgc/rpg130077/visual/SceltaArmamento.fxml", event);
     }
 
     @FXML
@@ -46,31 +31,12 @@ public class SchermataInizialeFXML extends SchermataGenerica {
         // Avvia la battaglia solo se l'utente ha armamento salvato valido
         boolean setupConfigurato = !persistenzaArmamento.getArmi().isEmpty() && !persistenzaArmamento.getHacks().isEmpty();
         if (!setupConfigurato) {
-            // Se non ancora configurato, instrada l'utente alla schermata di scelta
             goSceltaSetup(event);
-            return;
+        }
+        else{
+            caricaSchermata("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml", event);
         }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/it/unicam/cs/mpgc/rpg130077/visual/Battaglia.fxml"));
-            Parent nuovaSchermata = loader.load();
-
-            SchermataBattagliaFXML controller = loader.getController();
-            controller.setPersistenze(this.persistenzaArmamento, this.caricatoreCatalogo);
-            this.sistemaCombattimento.ripristina();
-
-            controller.setSistemaCombattimento(this.sistemaCombattimento);
-            controller.setSpazioRam(spazioRam);
-            controller.setClock(this.clock);
-            sistemaCombattimento.aggiungiListener(controller);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(nuovaSchermata));
-
-            clock.start();
-        } catch (IOException e) {
-            throw new RuntimeException("Errore durante l'avvio della schermata di battaglia", e);
-        }
     }
     }
 

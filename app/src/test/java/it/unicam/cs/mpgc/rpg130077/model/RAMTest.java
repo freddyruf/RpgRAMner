@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,6 +104,10 @@ class RAMTest {
         @Override public StatoBattaglia copy() { return this; }
     }
 
+    // =====================================================
+    // Test del costruttore
+    // =====================================================
+
     @Test
     void costruttoreInizializzaCapacitaECodaVuota() {
         assertEquals(10, ram.getSpazioMassimoInSecondi());
@@ -121,6 +126,10 @@ class RAMTest {
         assertEquals(0, ramCopia.getSpazioOccupato());
         assertTrue(ramCopia.getHacks().isEmpty());
     }
+
+    // =====================================================
+    // Test di inserimento
+    // =====================================================
 
     @Test
     void inserisciHackValidaSpazioEAccoda() {
@@ -166,6 +175,10 @@ class RAMTest {
         assertThrows(IllegalArgumentException.class, () -> ram.inserisci(hack2, bersaglio, lanciatore));
     }
 
+    // =====================================================
+    // Test di rimozione e FIFO
+    // =====================================================
+
     @Test
     void rimuoviEstraeInOrdineFIFO() {
         Hack hack1 = creaHackDiTest("Hack1", 2);
@@ -189,6 +202,10 @@ class RAMTest {
         assertNull(ram.rimuovi());
     }
 
+    // =====================================================
+    // Test di visualizzaTesta
+    // =====================================================
+
     @Test
     void visualizzaTestaRitornaElementoInTestaSenzaRimuoverlo() {
         Hack hack = creaHackDiTest("HackTesta", 3);
@@ -206,6 +223,10 @@ class RAMTest {
     void visualizzaTestaSuRAMVuotaRitornaNull() {
         assertNull(ram.visualizzaTesta());
     }
+
+    // =====================================================
+    // Test di reverse
+    // =====================================================
 
     @Test
     void reverseInverteOrdineDelleHack() {
@@ -240,6 +261,10 @@ class RAMTest {
         assertEquals("HackSingola", ram.visualizzaTesta().getHack().getNome());
     }
 
+    // =====================================================
+    // Test di sort con Comparator
+    // =====================================================
+
     @Test
     void sortOrdinaCodaConComparator() {
         RAM ram20 = new RAM(20);
@@ -256,6 +281,41 @@ class RAMTest {
         assertEquals("Hack5", ram20.rimuovi().getHack().getNome());
         assertEquals("Hack8", ram20.rimuovi().getHack().getNome());
     }
+
+    @Test
+    void sortSenzaComparatorOrdinaPerTickInCoda() {
+        RAM ram20 = new RAM(20);
+        Hack hack7 = creaHackDiTest("Hack7", 7);
+        Hack hack1 = creaHackDiTest("Hack1", 1);
+        Hack hack4 = creaHackDiTest("Hack4", 4);
+        ram20.inserisci(hack7, bersaglio, lanciatore);
+        ram20.inserisci(hack1, bersaglio, lanciatore);
+        ram20.inserisci(hack4, bersaglio, lanciatore);
+
+        ram20.sort(); // Overload senza parametri: ordina per tickInCoda
+
+        assertEquals("Hack1", ram20.rimuovi().getHack().getNome());
+        assertEquals("Hack4", ram20.rimuovi().getHack().getNome());
+        assertEquals("Hack7", ram20.rimuovi().getHack().getNome());
+    }
+
+    @Test
+    void sortConComparatorNullUsaOrdinamentoDiFallback() {
+        RAM ram20 = new RAM(20);
+        Hack hack9 = creaHackDiTest("Hack9", 9);
+        Hack hack3 = creaHackDiTest("Hack3", 3);
+        ram20.inserisci(hack9, bersaglio, lanciatore);
+        ram20.inserisci(hack3, bersaglio, lanciatore);
+
+        ram20.sort(null); // null → fallback a comparingInt(tickInCoda)
+
+        assertEquals("Hack3", ram20.rimuovi().getHack().getNome());
+        assertEquals("Hack9", ram20.rimuovi().getHack().getNome());
+    }
+
+    // =====================================================
+    // Test di avanza (tick engine)
+    // =====================================================
 
     @Test
     void avanzaSuRAMVuotaNonProduceErrori() {
@@ -321,15 +381,73 @@ class RAMTest {
         ram.avanza(fakeStato);
 
         // Solo la testa viene decrementata: 2 - 1 = 1, la seconda resta a 3
-        assertEquals(1, ram.getHacks().get(0).getTickInCoda());
-        assertEquals(3, ram.getHacks().get(1).getTickInCoda());
+        List<QueuedHack> hackList = ram.getHacks();
+        assertEquals(1, hackList.get(0).getTickInCoda());
+        assertEquals(3, hackList.get(1).getTickInCoda());
         // 1 + 3 = 4
         assertEquals(4, ram.getSpazioOccupato());
     }
 
+    // =====================================================
+    // Test di getHacks — incapsulamento (Scheda 2)
+    // =====================================================
+
     @Test
-    void getHacksRitornaListaHacks() {
+    void getHacksRitornaListaNonNull() {
         assertNotNull(ram.getHacks());
+        assertTrue(ram.getHacks().isEmpty());
+    }
+
+    @Test
+    void getHacksNonEsponeLaListaInterna() {
+        Hack hack = creaHackDiTest("HackTest", 3);
+        ram.inserisci(hack, bersaglio, lanciatore);
+
+        List<QueuedHack> vista1 = ram.getHacks();
+        List<QueuedHack> vista2 = ram.getHacks();
+
+        // Ogni chiamata ritorna una copia distinta
+        assertEquals(vista1, vista2);
+        assertNotSame(vista1, vista2);
+
+        // Modificare la copia NON altera la RAM interna
+        assertEquals(1, ram.getHacks().size());
+    }
+
+    // =====================================================
+    // Test di spazioOccupato dopo operazioni multiple
+    // =====================================================
+
+    @Test
+    void spazioOccupatoSiAggiornaDopoRimozione() {
+        Hack hack1 = creaHackDiTest("Hack1", 3);
+        Hack hack2 = creaHackDiTest("Hack2", 4);
+        ram.inserisci(hack1, bersaglio, lanciatore);
+        ram.inserisci(hack2, bersaglio, lanciatore);
+
+        assertEquals(7, ram.getSpazioOccupato());
+
+        ram.rimuovi();
+        assertEquals(4, ram.getSpazioOccupato());
+
+        ram.rimuovi();
+        assertEquals(0, ram.getSpazioOccupato());
+    }
+
+    @Test
+    void spazioOccupatoDopoAvanzaConsecutive() {
+        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
+        Hack hack = creaHackDiTest("HackTick", 3);
+        ram.inserisci(hack, bersaglio, lanciatore);
+
+        ram.avanza(fakeStato); // tick 3 → 2
+        assertEquals(2, ram.getSpazioOccupato());
+
+        ram.avanza(fakeStato); // tick 2 → 1
+        assertEquals(1, ram.getSpazioOccupato());
+
+        ram.avanza(fakeStato); // tick 1 → 0, rimosso
+        assertEquals(0, ram.getSpazioOccupato());
         assertTrue(ram.getHacks().isEmpty());
     }
 }
