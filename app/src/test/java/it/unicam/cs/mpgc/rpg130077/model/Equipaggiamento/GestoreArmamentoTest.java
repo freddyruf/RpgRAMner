@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
-import it.unicam.cs.mpgc.rpg130077.model.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
@@ -51,7 +51,7 @@ class GestoreArmamentoTest {
         }
 
         @Override
-        public ArrayList<Hack> caricamentoCatalogoHack() {
+        public ArrayList<Hack> caricamentoCatalogoHacks() {
             return new ArrayList<>(hacks);
         }
     }

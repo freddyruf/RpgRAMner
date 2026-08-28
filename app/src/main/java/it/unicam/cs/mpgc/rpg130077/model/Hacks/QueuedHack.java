@@ -6,10 +6,10 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
  * Contenitore di una hack che serve ad "adattarla" al essere dentro una RAM
  */
 public class QueuedHack {
-    Hack hack;
-    int tickInCoda;
-    Entita bersaglio;
-    Entita lanciatore;
+    private Hack hack;
+    private int tickInCoda;
+    private Entita bersaglio;
+    private Entita lanciatore;
 
 
     public QueuedHack(Hack hack, Entita bersaglio, Entita lanciatore) {
@@ -21,8 +21,8 @@ public class QueuedHack {
     public QueuedHack(QueuedHack queuedHack) {
         this.hack = queuedHack.hack.copy();
         this.tickInCoda = queuedHack.tickInCoda;
-        this.bersaglio = queuedHack.bersaglio.copy();
-        this.lanciatore = queuedHack.lanciatore.copy();
+        this.bersaglio = queuedHack.bersaglio;
+        this.lanciatore = queuedHack.lanciatore;
     }
 
     public int getTickInCoda() {

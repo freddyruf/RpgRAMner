@@ -10,18 +10,11 @@
 
 <Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@menuStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130077.controller.UI.SceltaArmamentoFXML">
    <children>
-      <MenuButton fx:id="MenuButton1" layoutX="255.0" layoutY="16.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 1">
-        <items>
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
-        </items>
-         <font>
-            <Font size="50.0" />
-         </font>
-      </MenuButton>
+       <MenuButton fx:id="MenuButton1" layoutX="255.0" layoutY="16.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 1">
+           <font>
+               <Font size="50.0" />
+           </font>
+       </MenuButton>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="308.0" layoutX="243.0" layoutY="232.0" stroke="BLACK" strokeType="INSIDE" width="508.0" />
       <Label fx:id="Label1" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="282.0" layoutY="262.0" prefHeight="247.0" prefWidth="436.0" text="Label" wrapText="true">
          <font>
@@ -29,13 +22,6 @@
          </font>
       </Label>
       <MenuButton fx:id="MenuButton2" layoutX="860.0" layoutY="8.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
-         <items>
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
-         </items>
          <font>
             <Font size="50.0" />
          </font>
@@ -47,13 +33,6 @@
          </font>
       </Label>
       <MenuButton fx:id="MenuButton3" layoutX="245.0" layoutY="546.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
-         <items>
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
-         </items>
          <font>
             <Font size="50.0" />
          </font>
@@ -65,13 +44,6 @@
          </font>
       </Label>
       <MenuButton fx:id="MenuButton4" layoutX="866.0" layoutY="556.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="HACK 2">
-         <items>
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Fireball" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Firewall" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Acid" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Sort" />
-             <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="RAM:Reverse" />
-         </items>
          <font>
             <Font size="50.0" />
          </font>
@@ -88,10 +60,6 @@
          </font>
       </Button>
       <MenuButton fx:id="MenuButtonArma" layoutX="1402.0" layoutY="237.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="490.0" text="Arma">
-         <items>
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Pistola" />
-            <MenuItem mnemonicParsing="false" onAction="#selezionaNelMenu" text="Mitragliatrice" />
-         </items>
          <font>
             <Font size="50.0" />
          </font>

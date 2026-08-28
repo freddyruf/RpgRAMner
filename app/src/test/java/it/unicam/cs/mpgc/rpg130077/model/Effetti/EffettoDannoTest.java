@@ -43,7 +43,7 @@ class EffettoDannoTest {
         effetto.eseguiEffetto(null, lanciatore, bersaglio);
 
         // 100 - 35 = 65
-        assertEquals(65, bersaglio.getPV());
+        assertEquals(65, bersaglio.getPv());
     }
 
     @Test
@@ -51,7 +51,7 @@ class EffettoDannoTest {
         EffettoDanno effetto = new EffettoDanno(35, true);
         effetto.eseguiEffetto(null, lanciatore, bersaglio);
 
-        assertEquals(100, lanciatore.getPV());
+        assertEquals(100, lanciatore.getPv());
     }
 
     @Test

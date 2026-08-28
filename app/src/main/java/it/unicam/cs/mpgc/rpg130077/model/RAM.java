@@ -7,6 +7,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -19,6 +20,9 @@ public class RAM {
     private LinkedList<QueuedHack> hacks;
 
     public RAM(int spazioMassimoInSecondi){
+        if(spazioMassimoInSecondi <= 0){
+            throw new IllegalArgumentException("Massimo In Secondi non valido");
+        }
         this.spazioMassimoInSecondi = spazioMassimoInSecondi;
         hacks = new LinkedList<QueuedHack>();
     }
@@ -46,21 +50,21 @@ public class RAM {
         }
 
         //se un caricamento si e' concluso
-        if(queuedHack.getTickInCoda()<=0){
-            hacks.remove(queuedHack); // Rimuove PRIMA di eseguire gli effetti conclusivi che potrebbero alterare l'ordine (es. reverse)
-            for(Effetto effetto : effetti){
-                if(effetto.isConclusive()){
-                    effetto.eseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
+        if (queuedHack.getTickInCoda() <= 0) {
+            hacks.poll();
+            for (Effetto effetto : effetti) {
+                if (effetto.isConclusive()) {
+                    effetto.eseguiEffetto(statoBattaglia, queuedHack.getLanciatore(), queuedHack.getBersaglio());
                 }
             }
         }
     }
 
-    public int getSpazioMassimoInSecondi() {
+    public synchronized int getSpazioMassimoInSecondi() {
         return spazioMassimoInSecondi;
     }
 
-    public int getSpazioOccupato(){
+    public synchronized int getSpazioOccupato(){
         int spazioOccupato = 0;
         for(QueuedHack hack : hacks){
             spazioOccupato += hack.getTickInCoda();
@@ -80,27 +84,34 @@ public class RAM {
         }
     }
 
-    public QueuedHack rimuovi() {
+    public synchronized QueuedHack rimuovi() {
         return hacks.poll();
     }
 
-    public QueuedHack visualizzaTesta(){
+    public synchronized QueuedHack visualizzaTesta(){
         return hacks.peek();
     }
 
-    public void sort(Comparator<QueuedHack> comparator){
-        hacks.sort(comparator);
+    public synchronized void sort(Comparator<QueuedHack> comparator) {
+        if (comparator != null) {
+            hacks.sort(comparator);
+        } else {
+            hacks.sort(Comparator.comparingInt(QueuedHack::getTickInCoda));
+        }
+    }
+    public synchronized void sort() {
+        sort(null);
     }
 
     /**
      * Inverte l'ordine delle hack in coda
      */
-    public void reverse(){
+    public synchronized void reverse(){
         java.util.Collections.reverse(hacks);
     }
 
-    public synchronized LinkedList<QueuedHack> getHacks(){
-        return hacks;
+    public synchronized ArrayList<QueuedHack> getHacks() {
+        return new ArrayList<>(hacks);
     }
 
 

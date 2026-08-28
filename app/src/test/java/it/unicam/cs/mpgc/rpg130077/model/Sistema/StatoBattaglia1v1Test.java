@@ -78,8 +78,8 @@ class StatoBattaglia1v1Test {
         assertNotSame(originale.getNemico(0), copia.getNemico(0));
         assertNotSame(originale.getRamCondivisa(), copia.getRamCondivisa());
 
-        copia.getGiocatore().setPV(20);
-        assertEquals(100, originale.getGiocatore().getPV());
-        assertEquals(20, copia.getGiocatore().getPV());
+        copia.getGiocatore().setPv(20);
+        assertEquals(100, originale.getGiocatore().getPv());
+        assertEquals(20, copia.getGiocatore().getPv());
     }
 }

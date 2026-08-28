@@ -39,31 +39,31 @@ class EffettoCuraTest {
 
     @Test
     void eseguiEffettoAumentaPVDelLanciatore() {
-        lanciatore.setPV(50);
+        lanciatore.setPv(50);
         EffettoCura effetto = new EffettoCura(30, true);
         effetto.eseguiEffetto(null, lanciatore, bersaglio);
 
         // 50 + 30 = 80
-        assertEquals(80, lanciatore.getPV());
+        assertEquals(80, lanciatore.getPv());
     }
 
     @Test
     void eseguiEffettoNonSuperaMaxPVDelLanciatore() {
-        lanciatore.setPV(90);
+        lanciatore.setPv(90);
         EffettoCura effetto = new EffettoCura(25, true);
         effetto.eseguiEffetto(null, lanciatore, bersaglio);
 
         // 90 + 25 = 115 -> cappa a 100 (MaxPV)
-        assertEquals(100, lanciatore.getPV());
+        assertEquals(100, lanciatore.getPv());
     }
 
     @Test
     void eseguiEffettoNonModificaPVDelBersaglio() {
-        lanciatore.setPV(50);
+        lanciatore.setPv(50);
         EffettoCura effetto = new EffettoCura(30, true);
         effetto.eseguiEffetto(null, lanciatore, bersaglio);
 
-        assertEquals(100, bersaglio.getPV());
+        assertEquals(100, bersaglio.getPv());
     }
 
     @Test

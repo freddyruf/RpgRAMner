@@ -5,7 +5,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.CombattenteAutonomo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
 
@@ -83,8 +82,13 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         Entita entitaInCorso=getEntitaInCorso();
 
         if(entitaInCorso instanceof CombattenteAutonomo){ //il nemico fa una mossa
-            Azione a=((CombattenteAutonomo)entitaInCorso).richiediMossa(this,stato);
-            eseguiMossa(a);
+            Azione a=((CombattenteAutonomo)entitaInCorso).richiediMossa(stato);
+            if(a==null){
+                for(CombattimentoListener listener : listeners){
+                    listener.ilNemicoNonPuoAttaccare();
+                }
+            }
+            else eseguiMossa(a);
         }
     }
 
@@ -93,29 +97,32 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         return stato;
     }
 
-    public void sparare(){
-        Azione azione=new AzioneSparo(getEntitaInCorso(),getStatoBattaglia().getNemico(0));
-        eseguiMossa(azione);
+    public void spara(Entita bersaglio) {
+        if (bersaglio == null) {
+            throw new NullPointerException("Il bersaglio non può essere nullo");
+        }
+        eseguiMossa(new AzioneSparo(getEntitaInCorso(), bersaglio));
     }
 
-    public void caricaHack(Hack hack) {
-        Azione azione = new AzioneCaricaHack(getEntitaInCorso(), getStatoBattaglia().getNemico(0), hack);
-        eseguiMossa(azione);
+    public void caricaHack(Hack hack, Entita bersaglio) {
+        if (hack == null || bersaglio == null) {
+            throw new NullPointerException("Hack e bersaglio non possono essere nulli");
+        }
+        eseguiMossa(new AzioneCaricaHack(getEntitaInCorso(), bersaglio, hack));
     }
 
     public void eseguiMossa(Azione azione) {
         azione.esegui(stato);
-
+        if(azione instanceof AzioneCaricaHack) {
+            for(CombattimentoListener combattimentoListener : listeners){
+                combattimentoListener.onAggiornamentoRAM(stato.getRamCondivisa());
+            }
+        }
         //se l'azione fa danno o cura
         if(azione.isDamageDealer() || azione.isHealDealer()){
             //aggiorno le barre della vita
             for(CombattimentoListener combattimentoListener : listeners){
                 combattimentoListener.onVitaAggiornata(stato);
-            }
-        }
-        else{
-            for(CombattimentoListener combattimentoListener : listeners){
-                combattimentoListener.aggiornaRAM(stato.getRamCondivisa());
             }
         }
         if (checkVittoria() == null) {
@@ -127,10 +134,10 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
 
     /**
-     * Controlla se il giocatore ha vinto o perso lo scontro.
-     * @return true se il giocatore ha vinto, false se ha perso o null se non ha vinto nessuno ancora
+     * Controlla se una delle fazioni ha vinto lo scontro.
+     *
+     * @return L'istanza di Entita vincitrice, o null se lo scontro è ancora in corso.
      */
-    @Override
     public Entita checkVittoria() {
         ArrayList<Entita> eroi = stato.getFazioneEroi();
         ArrayList<Entita> nemici = stato.getFazioneNemici();
@@ -140,41 +147,44 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
         // Controlla se c'è almeno un eroe vivo
         for (Entita eroe : eroi) {
-            if (eroe.getPV() > 0) {
+            if (eroe.getPv() > 0) {
                 eroiSconfitti = false;
                 break;
             }
         }
-
         // Controlla se c'è almeno un nemico vivo
         for (Entita nemico : nemici) {
-            if (nemico.getPV() > 0) {
+            if (nemico.getPv() > 0) {
                 nemiciSconfitti = false;
                 break;
             }
         }
 
-
-        // Determina il risultato
-        if (eroiSconfitti) {
+        if (eroiSconfitti && nemiciSconfitti) { //pareggio
             if (!vittoriaNotificata) {
                 vittoriaNotificata = true;
-                for (CombattimentoListener listener : listeners) {
-                    listener.onVittoria(nemici.get(0));
+                for (CombattimentoListener l : listeners) {
+                    l.onVittoria(null);
+                }
+            }
+            return null;
+        } else if (eroiSconfitti) { //sconfitta
+            if (!vittoriaNotificata) {
+                vittoriaNotificata = true;
+                for (CombattimentoListener l : listeners) {
+                    l.onVittoria(nemici.get(0));
                 }
             }
             return nemici.get(0);
-        } else if (nemiciSconfitti) {
+        } else if (nemiciSconfitti) { //vittoria
             if (!vittoriaNotificata) {
                 vittoriaNotificata = true;
-                for (CombattimentoListener listener : listeners) {
-                    listener.onVittoria(eroi.get(0));
+                for (CombattimentoListener l : listeners) {
+                    l.onVittoria(eroi.get(0));
                 }
             }
             return eroi.get(0);
         }
-
-
         // Nessuno ha ancora vinto, lo scontro continua
         return null;
     }

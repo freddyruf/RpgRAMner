@@ -39,7 +39,8 @@ class CombattimentoATurniTest {
         @Override public void onVittoria(Entita vincitore) { this.vincitoreNotificato = vincitore; }
         @Override public void onVitaAggiornata(StatoBattaglia statoBattaglia) { conteggioVitaAggiornata++; }
         @Override public void onTurnoGiocatore() {}
-        @Override public void aggiornaRAM(RAM ram) { conteggioAggiornaRAM++; }
+        @Override public void onAggiornamentoRAM(RAM ram) { conteggioAggiornaRAM++; }
+        @Override public void ilNemicoNonPuoAttaccare(){}
     }
 
     @BeforeEach
@@ -63,12 +64,12 @@ class CombattimentoATurniTest {
     @Test
     void testEseguiMossaSparoDanneggiaNemicoEInnescaTurnoNemico() {
         // Eroe spara (20 danni al nemico), poi il nemico risponde automaticamente (10 danni all'eroe)
-        combattimento.sparare();
+        combattimento.spara(nemico);
 
         // 100 - 20 = 80 per il nemico
-        assertEquals(80, nemico.getPV());
+        assertEquals(80, nemico.getPv());
         // 100 - 10 = 90 per l'eroe
-        assertEquals(90, giocatore.getPV());
+        assertEquals(90, giocatore.getPv());
         // Il controllo torna all'eroe
         assertTrue(combattimento.isPlayerTurn());
     }
@@ -80,7 +81,7 @@ class CombattimentoATurniTest {
 
         Hack hack = new Hack("Fireball", "Danno", 3);
         hack.addEffetto(new EffettoDanno(40, true));
-        combattimento.caricaHack(hack);
+        combattimento.caricaHack(hack, nemico);
 
         assertEquals(1, stato.getRamCondivisa().getHacks().size());
         assertEquals("Fireball", stato.getRamCondivisa().visualizzaTesta().getHack().getNome());
@@ -107,7 +108,7 @@ class CombattimentoATurniTest {
         SpyCombattimentoListener spy = new SpyCombattimentoListener();
         combattimento.aggiungiListener(spy);
 
-        nemico.setPV(0);
+        nemico.setPv(0);
         Entita vincitore = combattimento.checkVittoria();
 
         assertSame(giocatore, vincitore);
@@ -119,7 +120,7 @@ class CombattimentoATurniTest {
         SpyCombattimentoListener spy = new SpyCombattimentoListener();
         combattimento.aggiungiListener(spy);
 
-        giocatore.setPV(0);
+        giocatore.setPv(0);
         Entita vincitore = combattimento.checkVittoria();
 
         assertSame(nemico, vincitore);
@@ -133,14 +134,14 @@ class CombattimentoATurniTest {
 
     @Test
     void testRipristinaRiportaStatoOriginario() {
-        combattimento.sparare();
-        assertEquals(80, nemico.getPV());
-        assertEquals(90, giocatore.getPV());
+        combattimento.spara(nemico);
+        assertEquals(80, nemico.getPv());
+        assertEquals(90, giocatore.getPv());
 
         combattimento.ripristina();
 
-        assertEquals(100, combattimento.getStatoBattaglia().getNemico(0).getPV());
-        assertEquals(100, combattimento.getStatoBattaglia().getEroe(0).getPV());
+        assertEquals(100, combattimento.getStatoBattaglia().getNemico(0).getPv());
+        assertEquals(100, combattimento.getStatoBattaglia().getEroe(0).getPv());
         assertTrue(combattimento.isPlayerTurn());
     }
 

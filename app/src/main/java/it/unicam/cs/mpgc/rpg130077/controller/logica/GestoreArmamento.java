@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130077.model;
+package it.unicam.cs.mpgc.rpg130077.controller.logica;
 
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
@@ -7,6 +7,9 @@ import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 
 import java.util.ArrayList;
 
+/**
+ * Classe che gestisce l'armamento del giocatore, inclusi armi e hack. Fornisce metodi per ottenere descrizioni degli oggetti e per salvare l'equipaggiamento scelto.
+ */
 public class GestoreArmamento {
     private final ArrayList<Arma> catalogoArmi;
     private final ArrayList<Hack> catalogoHacks;
@@ -15,12 +18,12 @@ public class GestoreArmamento {
 
     public GestoreArmamento(PersistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
         this.catalogoArmi = caricatoreCatalogo.caricamentoCatalogoArmi();
-        this.catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHack();
+        this.catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHacks();
         this.gestoreSalvataggi = gestoreSalvataggi;
     }
 
     /**
-     *
+     * Restituisce la descrizione di un item dato il suo nome.
      * @param nomeItem
      * @return
      */

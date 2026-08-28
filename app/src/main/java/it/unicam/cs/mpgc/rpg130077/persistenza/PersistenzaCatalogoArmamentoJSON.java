@@ -30,7 +30,7 @@ public class PersistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
     }
 
     @Override
-    public ArrayList<Hack> caricamentoCatalogoHack() {
+    public ArrayList<Hack> caricamentoCatalogoHacks() {
         return caricaDaResources(CATALOGO_HACKS_PATH, new TypeToken<ArrayList<Hack>>(){}.getType());
     }
 

@@ -10,7 +10,7 @@ public class Clock {
         this.inEsecuzione = false;
     }
 
-    public void start() {
+    public synchronized void start() {
         if (inEsecuzione) {
             return;
         }
@@ -36,7 +36,7 @@ public class Clock {
         threadTimer.start();
     }
 
-    public void stop() {
+    public synchronized void stop() {
         inEsecuzione = false;
         if (threadTimer != null) {
             threadTimer.interrupt();

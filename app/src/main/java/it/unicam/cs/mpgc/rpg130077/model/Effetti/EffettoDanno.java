@@ -21,7 +21,7 @@ public class EffettoDanno implements Effetto {
 
     @Override
     public void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
-        bersaglio.setPV(bersaglio.getPV() - danno);
+        bersaglio.setPv(bersaglio.getPv() - danno);
     }
 
     @Override

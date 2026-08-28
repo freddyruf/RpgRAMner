@@ -51,7 +51,7 @@ class PersistenzaCatalogoArmamentoJSONTest {
 
     @Test
     void testCaricamentoCatalogoHackDaResourcesNonVuoto() {
-        ArrayList<Hack> hacks = persistenza.caricamentoCatalogoHack();
+        ArrayList<Hack> hacks = persistenza.caricamentoCatalogoHacks();
 
         assertNotNull(hacks);
         assertFalse(hacks.isEmpty());
@@ -60,7 +60,7 @@ class PersistenzaCatalogoArmamentoJSONTest {
 
     @Test
     void testCaricamentoCatalogoHackVerificaEffettiNidificati() {
-        ArrayList<Hack> hacks = persistenza.caricamentoCatalogoHack();
+        ArrayList<Hack> hacks = persistenza.caricamentoCatalogoHacks();
 
         boolean trovatoDanno = false;
         boolean trovataCura = false;

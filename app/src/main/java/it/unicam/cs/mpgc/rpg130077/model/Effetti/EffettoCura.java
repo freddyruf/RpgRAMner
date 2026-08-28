@@ -22,7 +22,7 @@ public class EffettoCura implements Effetto {
 
     @Override
     public void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio) {
-        lanciatore.setPV(lanciatore.getPV() + cura);
+        lanciatore.setPv(lanciatore.getPv() + cura);
     }
 
     @Override
