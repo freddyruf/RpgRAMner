@@ -33,30 +33,11 @@ public class RAM {
 
     /**
      * Si attiva a ogni tick
-     * @param statoBattaglia
      */
-    public synchronized void avanza(StatoBattaglia statoBattaglia) {
-        QueuedHack queuedHack = visualizzaTesta();
-        if (queuedHack == null) return;
-        queuedHack.setTickInCoda(queuedHack.getTickInCoda()-1);
-        Hack hack = queuedHack.getHack();
-        ArrayList<Effetto> effetti= hack.getEffetti();
-
-        // Esegue gli effetti non conclusivi
-        for (Effetto effetto : effetti) {
-            if(!effetto.isConclusive()){
-                effetto.eseguiEffetto(statoBattaglia,queuedHack.getLanciatore(),queuedHack.getBersaglio());
-            }
-        }
-
-        //se un caricamento si e' concluso
-        if (queuedHack.getTickInCoda() <= 0) {
-            hacks.poll();
-            for (Effetto effetto : effetti) {
-                if (effetto.isConclusive()) {
-                    effetto.eseguiEffetto(statoBattaglia, queuedHack.getLanciatore(), queuedHack.getBersaglio());
-                }
-            }
+    public synchronized void decrementaTesta() {
+        QueuedHack testa = visualizzaTesta();
+        if (testa != null) {
+            testa.setTickInCoda(testa.getTickInCoda() - 1);
         }
     }
 

@@ -1,8 +1,13 @@
 package it.unicam.cs.mpgc.rpg130077.model.Azioni;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
+
+import java.util.EnumSet;
+import java.util.Set;
+
 
 public class AzioneCaricaHack implements Azione {
     private Entita lanciatore;
@@ -18,11 +23,10 @@ public class AzioneCaricaHack implements Azione {
         this.hack = hack;
 
     }
-    public boolean isDamageDealer() {
-        return hack.isDamageDealer();
-    }
-    public boolean isHealDealer() {
-        return hack.isHealDealer();
+
+    @Override
+    public Set<EffectType> getEffectTypes() {
+        return hack.getEffectTypes();
     }
 
     public Hack getHack() {

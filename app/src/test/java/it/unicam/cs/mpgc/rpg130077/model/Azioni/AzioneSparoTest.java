@@ -29,15 +29,15 @@ class AzioneSparoTest {
     }
 
     @Test
-    void isDamageDealerRitornaTrue() {
+    void effectTypeContieneDamage() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
-        assertTrue(azione.isDamageDealer());
+        assertTrue(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
     }
 
     @Test
-    void isHealDealerRitornaFalse() {
+    void effectTypeNonContieneHeal() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
-        assertFalse(azione.isHealDealer());
+        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
     }
 
     @Test

@@ -58,7 +58,7 @@ class GsonProviderTest {
         assertEquals("Fireball", hackFireball.getNome());
         assertEquals(1, hackFireball.getEffetti().size());
         assertTrue(hackFireball.getEffetti().get(0) instanceof EffettoDanno);
-        assertTrue(hackFireball.isDamageDealer());
+        assertTrue(hackFireball.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
 
         Hack firewall = new Hack("Firewall", "Muro di difesa", 4);
         firewall.addEffetto(new EffettoCura(30, true));
@@ -66,7 +66,7 @@ class GsonProviderTest {
         String jsonFirewall = gson.toJson(firewall, Hack.class);
         Hack hackFirewall2 = gson.fromJson(jsonFirewall, Hack.class);
 
-        assertTrue(hackFirewall2.isHealDealer());
+        assertTrue(hackFirewall2.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
     }
 
     @Test

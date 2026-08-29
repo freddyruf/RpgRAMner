@@ -1,10 +1,12 @@
 package it.unicam.cs.mpgc.rpg130077.model.Hacks;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Classe che rappresenta il concetto di Hack: Software che interagisce con la battaglia. E' l'equivalente di un incantesimo per i classici RPG
@@ -53,26 +55,12 @@ public class Hack {
      * Dice se la hack fa danno
      * @return true se causa danni false se non
      */
-    public boolean isDamageDealer() {
-        for (Effetto effetto : effetti) {
-            if (effetto.isDamageDealer())
-                return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Dice se la hack cura
-     * @return true se cura e false se non
-     */
-    public boolean isHealDealer(){
+    public Set<EffectType> getEffectTypes() {
+        Set<EffectType> effectTypes = new java.util.HashSet<>();
         for(Effetto effetto : effetti){
-            if(effetto.isHealDealer())
-                return true;
+            effectTypes.add(effetto.getEffectType());
         }
-        return false;
+        return effectTypes;
     }
-
-
 }
+

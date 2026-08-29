@@ -59,13 +59,11 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
 
     @Override
     public Entita getEroe(int n) {
-        if (n != 0) throw new IndexOutOfBoundsException("Indice eroe non valido per scontro 1v1: " + n);
         return giocatore;
     }
 
     @Override
     public Entita getNemico(int n) {
-        if (n != 0) throw new IndexOutOfBoundsException("Indice nemico non valido per scontro 1v1: " + n);
         return avversario;
     }
 

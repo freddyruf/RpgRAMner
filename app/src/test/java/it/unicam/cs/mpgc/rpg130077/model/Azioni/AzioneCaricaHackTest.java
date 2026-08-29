@@ -46,32 +46,32 @@ class AzioneCaricaHackTest {
     }
 
     @Test
-    void isDamageDealerRitornaTrueSeHackHaEffettoDanno() {
+    void effectTypeRestituisceDannoSeHackHaEffettoDanno() {
         Hack hack = new Hack("Fireball", "Danno", 4);
         hack.addEffetto(new EffettoDanno(50, true));
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hack);
 
-        assertTrue(azione.isDamageDealer());
-        assertFalse(azione.isHealDealer());
+        assertTrue(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
+        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
     }
 
     @Test
-    void isHealDealerRitornaTrueSeHackHaEffettoCura() {
+    void effectTypeRestituisceCuraSeHackHaEffettoCura() {
         Hack hack = new Hack("Firewall", "Cura", 4);
         hack.addEffetto(new EffettoCura(30, true));
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hack);
 
-        assertTrue(azione.isHealDealer());
-        assertFalse(azione.isDamageDealer());
+        assertTrue(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
+        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
     }
 
     @Test
-    void isDamageDealerEHealDealerRitornanoFalsePerHackDiUtilita() {
+    void effectTypeEVuotoPerHackDiUtilita() {
         Hack hack = new Hack("RAM:Reverse", "Inversione", 6);
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hack);
 
-        assertFalse(azione.isDamageDealer());
-        assertFalse(azione.isHealDealer());
+        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
+        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
     }
 
     @Test

@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130077.controller.UI;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import javafx.event.ActionEvent;
@@ -16,18 +17,13 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 
 public class SceltaArmamentoFXML extends SchermataGenerica {
-    protected GestoreArmamento gestore;
 
     @FXML
     Pane mainPane;
 
-
     @Override
-    public void setupIniziale(PersistenzaArmamento p, CaricatoreCatalogo c) {
-        super.persistenzaArmamento = p;
-        this.caricatoreCatalogo = c;
-        this.gestore = new GestoreArmamento(p, c);
-
+    public void setSessione(SessionState s) {
+        super.setSessione(s);
         popolaMenuDaCatalogo();
         caricaArmamento();
     }
@@ -72,7 +68,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
     @FXML
     private void PulsanteEsci(ActionEvent event) {
         if(checkArmamentoCompletamenteScelto()){
-            gestore.salva(getMenuButtonNames(getAllMenuButtons(((Node) event.getSource()).getParent())));
+            sessionState.gestoreArmamento.salva(getMenuButtonNames(getAllMenuButtons(((Node) event.getSource()).getParent())));
             goSchermataIniziale(event);
         }
     }
@@ -109,7 +105,7 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
 
         if (label != null) {
             String nomeItem = menuButton.getText();
-            String testoDescrizione = gestore.getDescrizioneItem(nomeItem);
+            String testoDescrizione = sessionState.gestoreArmamento.getDescrizioneItem(nomeItem);
             label.setText(testoDescrizione);
         }
     }
@@ -146,10 +142,10 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Popola dinamicamente i MenuButton leggendo gli oggetti dal catalogo JSON.
      */
     public void popolaMenuDaCatalogo() {
-        if (caricatoreCatalogo == null) return;
+        if (sessionState.gestoreArmamento == null) return;
 
-        ArrayList<Arma> catalogoArmi = caricatoreCatalogo.caricamentoCatalogoArmi();
-        ArrayList<Hack> catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHacks();
+        ArrayList<Arma> catalogoArmi = sessionState.gestoreArmamento.getCatalogoArmi();
+        ArrayList<Hack> catalogoHacks = sessionState.gestoreArmamento.getCatalogoHacks();
         for (MenuButton mb : getAllMenuButtonsFromThis()) {
             mb.getItems().clear();
 
@@ -173,11 +169,13 @@ public class SceltaArmamentoFXML extends SchermataGenerica {
      * Carica le armi e le hacks salvate nei menu button e nelle labels.
      */
     public void caricaArmamento() {
-        if (persistenzaArmamento == null) return;
+        if (sessionState.gestoreArmamento == null){
+            throw new NullPointerException("GestoreArmamento non trovata");
+        }
 
         ArrayList<MenuButton> listaMenuButton = getAllMenuButtonsFromThis();
-        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> armiSalvate = persistenzaArmamento.getArmi();
-        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack> hacksSalvati = persistenzaArmamento.getHacks();
+        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> armiSalvate = sessionState.gestoreArmamento.getArmiSalvate();
+        ArrayList<it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack> hacksSalvati = sessionState.gestoreArmamento.getHacksSalvati();
 
         // 1. Divido fisicamente i bottoni Arma dai bottoni Hack per non sovrascriverli male
         ArrayList<MenuButton> hackButtons = new ArrayList<>();

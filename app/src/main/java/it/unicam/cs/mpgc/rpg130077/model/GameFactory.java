@@ -12,22 +12,26 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class GameFactory {
-    public SistemaCombattimento creaNuovaPartitaSemplice(List<Arma> catalogoArmi, List<Hack> catalogoHack) {
-        if (catalogoArmi == null || catalogoHack == null) {
-            throw new NullPointerException("I cataloghi non possono essere nulli");
+    public SistemaCombattimento creaNuovaPartitaSemplice(List<Arma> equipaggiamentoGiocatoreArmi, List<Hack> equipaggiamentoGiocatoreHacks, List<Arma> catalogoArmi, List<Hack> catalogoHack) {
+        if (equipaggiamentoGiocatoreArmi == null || equipaggiamentoGiocatoreHacks == null || catalogoArmi == null || catalogoHack == null) {
+            throw new NullPointerException("I cataloghi o l'equipaggiamento non possono essere nulli");
+        }
+        if (equipaggiamentoGiocatoreArmi.isEmpty()) {
+            throw new IllegalStateException("Armi giocatore insufficienti");
         }
         if (catalogoArmi.size() < 2) {
             throw new IllegalStateException("Catalogo armi insufficiente per creare una partita");
         }
+
         ArrayList<Hack> hacksGiocatore = new ArrayList<>();
-        for (Hack h : catalogoHack) hacksGiocatore.add(h.copy());
+        for (Hack h : equipaggiamentoGiocatoreHacks) hacksGiocatore.add(h.copy());
 
         ArrayList<Hack> hacksNemico = new ArrayList<>();
         for (int i = 1; i < catalogoHack.size(); i++) {
             hacksNemico.add(catalogoHack.get(i).copy());
         }
 
-        Arma armaG = catalogoArmi.get(0).copy();
+        Arma armaG = equipaggiamentoGiocatoreArmi.get(0).copy();
         Arma armaN = catalogoArmi.get(1).copy();
 
         Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10, hacksGiocatore, armaG, true);

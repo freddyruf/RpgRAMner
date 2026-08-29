@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130077.model.IA;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class StrategiaCasuale implements StrategiaCombattimento {
 
     @Override
-    public Azione scegliMossa(NPC npc, StatoBattaglia stato) {
+    public Azione scegliMossa(Entita npc, StatoBattaglia stato) {
         if (npc == null || stato == null) {
             throw new NullPointerException("Parametri non validi");
         }
@@ -36,7 +37,7 @@ public class StrategiaCasuale implements StrategiaCombattimento {
         }
 
         if (puoCaricareHack && (npc.getArma() == null || Math.random() < 0.5)) {
-            Entita target = hackSelezionato.isHealDealer() ? npc : entitaBersaglio;
+            Entita target = hackSelezionato.getEffectTypes().contains(EffectType.HEAL) ? npc : entitaBersaglio;
             return new AzioneCaricaHack(npc, target, hackSelezionato);
         } else if (npc.getArma() != null) {
             return new AzioneSparo(npc, entitaBersaglio);

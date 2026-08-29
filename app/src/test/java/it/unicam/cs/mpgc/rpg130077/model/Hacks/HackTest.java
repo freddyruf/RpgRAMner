@@ -28,12 +28,12 @@ class HackTest {
         hack.addEffetto(danno);
 
         assertEquals(1, hack.getEffetti().size());
-        assertTrue(hack.isDamageDealer());
-        assertFalse(hack.isHealDealer());
+        assertTrue(hack.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
+        assertFalse(hack.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
 
         hack.removeEffetto(danno);
         assertEquals(0, hack.getEffetti().size());
-        assertFalse(hack.isDamageDealer());
+        assertFalse(hack.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
     }
 
     @Test
@@ -42,8 +42,8 @@ class HackTest {
         Hack hack = new Hack("HealPatch", "Desc", 1);
         hack.addEffetto(new EffettoCura(30, true));
 
-        assertTrue(hack.isHealDealer());
-        assertFalse(hack.isDamageDealer());
+        assertTrue(hack.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
+        assertFalse(hack.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
     }
 
     @Test

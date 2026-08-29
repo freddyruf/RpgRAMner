@@ -78,14 +78,15 @@ class GestoreArmamentoTest {
             this.hacksSalvati = hacks;
         }
 
-        @Override
-        public ArrayList<Arma> caricamentoCatalogoArmi() {
-            return new ArrayList<>();
-        }
 
+
+        private CaricatoreCatalogo catalogo;
+        public SpyPersistenzaArmamento(CaricatoreCatalogo catalogo) {
+            this.catalogo = catalogo;
+        }
         @Override
-        public ArrayList<Hack> caricamentoCatalogoHacks() {
-            return new ArrayList<>();
+        public CaricatoreCatalogo getCatalogo() {
+            return catalogo;
         }
     }
 
@@ -95,9 +96,9 @@ class GestoreArmamentoTest {
 
     @BeforeEach
     void setUp() {
-        spyPersistenza = new SpyPersistenzaArmamento();
         fakeCaricatore = new FakeCaricatoreCatalogo();
-        gestore = new GestoreArmamento(spyPersistenza, fakeCaricatore);
+        spyPersistenza = new SpyPersistenzaArmamento(fakeCaricatore);
+        gestore = new GestoreArmamento(spyPersistenza);
     }
 
     @Test

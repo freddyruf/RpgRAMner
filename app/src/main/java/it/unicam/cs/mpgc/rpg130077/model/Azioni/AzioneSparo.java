@@ -1,7 +1,10 @@
 package it.unicam.cs.mpgc.rpg130077.model.Azioni;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
+
+import java.util.Set;
 
 public class AzioneSparo implements Azione {
     private Entita lanciatore;
@@ -11,12 +14,6 @@ public class AzioneSparo implements Azione {
         this.lanciatore = lanciatore;
         this.bersaglio = bersaglio;
     }
-    public boolean isDamageDealer() {
-        return true;
-    }
-    public boolean isHealDealer() {
-        return false;
-    }
 
     @Override
     public void esegui( StatoBattaglia stato) {
@@ -24,5 +21,10 @@ public class AzioneSparo implements Azione {
             throw new NullPointerException("Lanciatore o Bersaglio nullo");
         }
         bersaglio.setPv(bersaglio.getPv()-lanciatore.getArma().calcolaDanno());
+    }
+
+    @Override
+    public Set<EffectType> getEffectTypes() {
+        return Set.of(EffectType.DAMAGE);
     }
 }

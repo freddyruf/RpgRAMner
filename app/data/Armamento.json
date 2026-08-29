@@ -12,47 +12,49 @@
   ],
   "hacks": [
     {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 10,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
-          "danno": 6,
-          "conclusive": false,
+          "danno": 50,
+          "conclusive": true,
           "tipoEffetto": "Danno"
         }
       ]
     },
     {
-      "nome": "RAM:Reverse",
-      "descrizione": "Inverte il flusso dei dati in memoria.",
-      "durata": 6,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
+          "danno": 50,
           "conclusive": true,
-          "tipoEffetto": "Reverse"
+          "tipoEffetto": "Danno"
         }
       ]
     },
     {
-      "nome": "RAM:Sort",
-      "descrizione": "Riordina le Hack nella RAM.",
-      "durata": 6,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
+          "danno": 50,
           "conclusive": true,
-          "tipoEffetto": "Sort"
+          "tipoEffetto": "Danno"
         }
       ]
     },
     {
-      "nome": "Acid",
-      "descrizione": "Infligge 10 di danno ogni tick.",
-      "durata": 10,
+      "nome": "Fireball",
+      "descrizione": "Un potente attacco esplosivo a bersaglio singolo.",
+      "durata": 4,
       "effetti": [
         {
-          "danno": 6,
-          "conclusive": false,
+          "danno": 50,
+          "conclusive": true,
           "tipoEffetto": "Danno"
         }
       ]
