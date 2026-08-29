@@ -27,6 +27,7 @@ public interface PersistenzaArmamento {
 
     void salvaEquipaggiamentoScelto(ArrayList<Arma> armi, ArrayList<Hack> hacks);
 
-    ArrayList<Arma> caricamentoCatalogoArmi();
-    ArrayList<Hack> caricamentoCatalogoHacks();
+    CaricatoreCatalogo getCatalogo();
+
+
 }

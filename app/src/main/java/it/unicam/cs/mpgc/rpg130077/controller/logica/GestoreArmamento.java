@@ -16,9 +16,9 @@ public class GestoreArmamento {
     private final PersistenzaArmamento gestoreSalvataggi;
 
 
-    public GestoreArmamento(PersistenzaArmamento gestoreSalvataggi, CaricatoreCatalogo caricatoreCatalogo) {
-        this.catalogoArmi = caricatoreCatalogo.caricamentoCatalogoArmi();
-        this.catalogoHacks = caricatoreCatalogo.caricamentoCatalogoHacks();
+    public GestoreArmamento(PersistenzaArmamento gestoreSalvataggi) {
+        this.catalogoArmi = gestoreSalvataggi.getCatalogo().caricamentoCatalogoArmi();
+        this.catalogoHacks = gestoreSalvataggi.getCatalogo().caricamentoCatalogoHacks();
         this.gestoreSalvataggi = gestoreSalvataggi;
     }
 
@@ -64,4 +64,26 @@ public class GestoreArmamento {
         // Delego tutto al nuovo metodo unificato!
         gestoreSalvataggi.salvaEquipaggiamentoScelto(armi, hacks);
     }
+
+    /**
+     * Controlla se l'utente ha salvato una configurazione valida.
+     */
+    public boolean hasConfigurazioneSalvata() {
+        return !gestoreSalvataggi.getArmi().isEmpty() && !gestoreSalvataggi.getHacks().isEmpty();
+    }
+    public ArrayList<Arma> getArmiSalvate() {
+        return gestoreSalvataggi.getArmi();
+    }
+
+    public ArrayList<Hack> getHacksSalvati() {
+        return gestoreSalvataggi.getHacks();
+    }
+    public ArrayList<Arma> getCatalogoArmi() {
+        return catalogoArmi;
+    }
+    public ArrayList<Hack> getCatalogoHacks() {
+        return catalogoHacks;
+    }
+
+
 }

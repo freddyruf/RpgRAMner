@@ -3,10 +3,13 @@ package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneCaricaHack;
 import it.unicam.cs.mpgc.rpg130077.model.Azioni.AzioneSparo;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.CombattenteAutonomo;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-
+import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
+import it.unicam.cs.mpgc.rpg130077.model.RAM;
 
 
 import java.util.ArrayList;
@@ -30,10 +33,34 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         return statoTurni.getTurno() < stato.getFazioneEroi().size();
     }
 
-    public void onTick(){
-        stato.getRamCondivisa().avanza(stato);
+    public void onTick() {
+        RAM ram = stato.getRamCondivisa();
+        QueuedHack testa = ram.visualizzaTesta();
+
+        if (testa != null) {
+            ram.decrementaTesta();
+            Hack hack = testa.getHack();
+
+            // Esegue gli effetti continui (es. danni nel tempo) ad ogni tick
+            for (Effetto effetto : hack.getEffetti()) {
+                if (!effetto.isConclusive()) {
+                    effetto.eseguiEffetto(stato, testa.getLanciatore(), testa.getBersaglio());
+                }
+            }
+
+            // Se il programma ha finito il caricamento esegue gli effetti finali
+            if (testa.getTickInCoda() <= 0) {
+                ram.rimuovi();
+                for (Effetto effetto : hack.getEffetti()) {
+                    if (effetto.isConclusive()) {
+                        effetto.eseguiEffetto(stato, testa.getLanciatore(), testa.getBersaglio());
+                    }
+                }
+            }
+        }
+        notificaAggiornamentoRAM();
+        notificaAggiornamentoVita();
         notificaTick();
-        checkVittoria();
     }
 
     private void notificaTick(){
@@ -114,16 +141,11 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     public void eseguiMossa(Azione azione) {
         azione.esegui(stato);
         if(azione instanceof AzioneCaricaHack) {
-            for(CombattimentoListener combattimentoListener : listeners){
-                combattimentoListener.onAggiornamentoRAM(stato.getRamCondivisa());
-            }
+            notificaAggiornamentoRAM();
         }
         //se l'azione fa danno o cura
-        if(azione.isDamageDealer() || azione.isHealDealer()){
-            //aggiorno le barre della vita
-            for(CombattimentoListener combattimentoListener : listeners){
-                combattimentoListener.onVitaAggiornata(stato);
-            }
+        if(azione.getEffectTypes().contains(EffectType.DAMAGE) || azione.getEffectTypes().contains(EffectType.HEAL)){
+            notificaAggiornamentoVita();
         }
         if (checkVittoria() == null) {
             avanza();
@@ -192,6 +214,18 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     public void rimuoviListener(CombattimentoListener combattimentoListener) {
         if (combattimentoListener != null) {
             listeners.remove(combattimentoListener);
+        }
+    }
+
+    public void notificaAggiornamentoRAM() {
+        for(CombattimentoListener combattimentoListener : listeners){
+            combattimentoListener.onAggiornamentoRAM(stato.getRamCondivisa());
+        }
+    }
+
+    public void notificaAggiornamentoVita() {
+        for(CombattimentoListener combattimentoListener : listeners){
+            combattimentoListener.onVitaAggiornata(stato);
         }
     }
 }

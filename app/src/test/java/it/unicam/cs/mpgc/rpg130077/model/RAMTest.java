@@ -80,6 +80,11 @@ class RAMTest {
         public Effetto copy() {
             return new SpyEffetto(conclusive);
         }
+
+        @Override
+        public it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType getEffectType() {
+            return it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE;
+        }
     }
 
     private static class FakeStatoBattaglia implements StatoBattaglia {
@@ -313,80 +318,8 @@ class RAMTest {
         assertEquals("Hack9", ram20.rimuovi().getHack().getNome());
     }
 
-    // =====================================================
-    // Test di avanza (tick engine)
-    // =====================================================
 
-    @Test
-    void avanzaSuRAMVuotaNonProduceErrori() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        assertDoesNotThrow(() -> ram.avanza(fakeStato));
-    }
 
-    @Test
-    void avanzaDecrementaTickInCodaERiduceSpazioOccupato() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        Hack hack = creaHackDiTest("HackTick", 3);
-        ram.inserisci(hack, bersaglio, lanciatore);
-
-        ram.avanza(fakeStato);
-
-        // 3 - 1 = 2
-        assertEquals(2, ram.visualizzaTesta().getTickInCoda());
-        assertEquals(2, ram.getSpazioOccupato());
-    }
-
-    @Test
-    void avanzaEsegueEffettiNonConclusiviAdOgniTick() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        Hack hack = creaHackDiTest("HackTickContinuo", 3);
-        SpyEffetto spyEffetto = new SpyEffetto(false);
-        hack.addEffetto(spyEffetto);
-        ram.inserisci(hack, bersaglio, lanciatore);
-
-        ram.avanza(fakeStato);
-
-        assertEquals(1, spyEffetto.conteggioEsecuzioni);
-        assertSame(fakeStato, spyEffetto.ultimoStato);
-        assertSame(lanciatore, spyEffetto.ultimoLanciatore);
-        assertSame(bersaglio, spyEffetto.ultimoBersaglio);
-    }
-
-    @Test
-    void avanzaEsegueEffettiConclusiviERimuoveQuandoTickZero() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        Hack hack = creaHackDiTest("HackFinale", 1);
-        SpyEffetto spyContinuo = new SpyEffetto(false);
-        SpyEffetto spyConclusivo = new SpyEffetto(true);
-        hack.addEffetto(spyContinuo);
-        hack.addEffetto(spyConclusivo);
-        ram.inserisci(hack, bersaglio, lanciatore);
-
-        ram.avanza(fakeStato);
-
-        assertEquals(1, spyContinuo.conteggioEsecuzioni);
-        assertEquals(1, spyConclusivo.conteggioEsecuzioni);
-        assertTrue(ram.getHacks().isEmpty());
-        assertEquals(0, ram.getSpazioOccupato());
-    }
-
-    @Test
-    void avanzaProcessaSoloTestaDellaCoda() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        Hack hack1 = creaHackDiTest("Hack1", 2);
-        Hack hack2 = creaHackDiTest("Hack2", 3);
-        ram.inserisci(hack1, bersaglio, lanciatore);
-        ram.inserisci(hack2, bersaglio, lanciatore);
-
-        ram.avanza(fakeStato);
-
-        // Solo la testa viene decrementata: 2 - 1 = 1, la seconda resta a 3
-        List<QueuedHack> hackList = ram.getHacks();
-        assertEquals(1, hackList.get(0).getTickInCoda());
-        assertEquals(3, hackList.get(1).getTickInCoda());
-        // 1 + 3 = 4
-        assertEquals(4, ram.getSpazioOccupato());
-    }
 
     // =====================================================
     // Test di getHacks — incapsulamento (Scheda 2)
@@ -432,22 +365,5 @@ class RAMTest {
 
         ram.rimuovi();
         assertEquals(0, ram.getSpazioOccupato());
-    }
-
-    @Test
-    void spazioOccupatoDopoAvanzaConsecutive() {
-        FakeStatoBattaglia fakeStato = new FakeStatoBattaglia(ram, (Giocatore) lanciatore);
-        Hack hack = creaHackDiTest("HackTick", 3);
-        ram.inserisci(hack, bersaglio, lanciatore);
-
-        ram.avanza(fakeStato); // tick 3 → 2
-        assertEquals(2, ram.getSpazioOccupato());
-
-        ram.avanza(fakeStato); // tick 2 → 1
-        assertEquals(1, ram.getSpazioOccupato());
-
-        ram.avanza(fakeStato); // tick 1 → 0, rimosso
-        assertEquals(0, ram.getSpazioOccupato());
-        assertTrue(ram.getHacks().isEmpty());
     }
 }

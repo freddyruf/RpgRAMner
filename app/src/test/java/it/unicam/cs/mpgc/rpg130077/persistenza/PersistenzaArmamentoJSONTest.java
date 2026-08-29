@@ -71,14 +71,5 @@ class PersistenzaArmamentoJSONTest {
         assertEquals("FireballCustom", hacksCaricati.get(0).getNome());
     }
 
-    @Test
-    void testDelegazioneCaricamentoCataloghi() {
-        ArrayList<Arma> catalogoArmi = persistenza.caricamentoCatalogoArmi();
-        ArrayList<Hack> catalogoHacks = persistenza.caricamentoCatalogoHacks();
 
-        assertNotNull(catalogoArmi);
-        assertFalse(catalogoArmi.isEmpty());
-        assertNotNull(catalogoHacks);
-        assertFalse(catalogoHacks.isEmpty());
-    }
 }

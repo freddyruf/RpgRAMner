@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -50,6 +51,16 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         private static final double MAX_LIFEBAR_WIDTH = 668.0;
 
 
+        @Override
+        public void setSessione(SessionState s) {
+            super.setSessione(s);
+            if (s != null && s.combattimento != null) {
+                s.combattimento.aggiungiListener(this);
+                if(s.clock != null) s.clock.start(); // Risolve CRIT-02
+            }
+        }
+
+
     /**
      *
      * esce dalla schermata e torna all hompage
@@ -76,7 +87,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
         scambiaMenu();
 
         //carico le hacks
-        ArrayList<Hack> catalogo = sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks();
+        ArrayList<Hack> catalogo = sessionState.combattimento.getStatoBattaglia().getGiocatore().getHacks();
 
 
         ArrayList<Button> bottoniHacks = new ArrayList<>();
@@ -123,19 +134,19 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
 
     @FXML
     private void pulsanteSparare(ActionEvent event) {
-        if(sistemaCombattimento.isPlayerTurn()){
-            sistemaCombattimento.spara(sistemaCombattimento.getStatoBattaglia().getNemico(0));
+        if(sessionState.combattimento.isPlayerTurn()){
+            sessionState.combattimento.spara(sessionState.combattimento.getStatoBattaglia().getNemico(0));
         }
 
     }
 
     @FXML
     private void pulsanteHack(ActionEvent event) {
-        if(sistemaCombattimento.isPlayerTurn()){
+        if(sessionState.combattimento.isPlayerTurn()){
 
             Button b = (Button) event.getSource();
 
-            ArrayList<Hack> hacksDisponibili = sistemaCombattimento.getStatoBattaglia().getGiocatore().getHacks();
+            ArrayList<Hack> hacksDisponibili = sessionState.combattimento.getStatoBattaglia().getGiocatore().getHacks();
             ArrayList<Button> bottoniHacks = new ArrayList<>();
 
             for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
@@ -146,7 +157,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             for (int i = 0; i < bottoniHacks.size(); i++) {
                 if(b==bottoniHacks.get(i)) {
                     try{
-                        sistemaCombattimento.caricaHack(hacksDisponibili.get(i), sistemaCombattimento.getStatoBattaglia().getNemico(0) );
+                        sessionState.combattimento.caricaHack(hacksDisponibili.get(i), sessionState.combattimento.getStatoBattaglia().getNemico(0) );
                     } catch (IllegalArgumentException e) {
                         mostraTestoFluttuante(e.getMessage(), Color.RED);
                     }
@@ -166,7 +177,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
     public void cambiaVita(Entita entita) {
         double percentuale = Math.max(0.0, Math.min(1.0, (double) entita.getPv() / entita.getMaxPv()));
         double width = percentuale * MAX_LIFEBAR_WIDTH;
-        if (sistemaCombattimento.getStatoBattaglia().getFazioneEroi().contains(entita)) {
+        if (sessionState.combattimento.getStatoBattaglia().getFazioneEroi().contains(entita)) {
             PlayerLifeBar.setWidth(width);
         } else {
             EnemyLifeBar.setWidth(width);
@@ -184,7 +195,7 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             throw new NullPointerException("Ram nulla");
         }
 
-        RamViewHelper.disegnaBarra(this.BarraRAM, ram, sistemaCombattimento.getStatoBattaglia().getFazioneEroi());
+        RamViewHelper.disegnaBarra(this.BarraRAM, ram, sessionState.combattimento.getStatoBattaglia().getFazioneEroi());
         }
 
     /**
@@ -239,8 +250,8 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
      */
     @Override
     public void onVittoria(Entita vincitore) {
-        if(clock!=null){
-            clock.stop();
+        if(sessionState.clock!=null){
+            sessionState.clock.stop();
         }
         Platform.runLater(() -> {
             javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
@@ -255,7 +266,10 @@ public class SchermataBattagliaFXML extends SchermataGenerica implements Combatt
             alert.setContentText("Il vincitore è: " + (vincitore != null ? vincitore.getNome() : "Nessuno"));
             ButtonType btnEsci = new ButtonType("Torna al Menu", ButtonBar.ButtonData.OK_DONE);
             alert.getButtonTypes().setAll(btnEsci);
-            alert.showAndWait().ifPresent(buttonType -> goSchermataIniziale(new ActionEvent()));
+            alert.showAndWait().ifPresent(buttonType -> {
+                Stage stage = (Stage) mainPane.getScene().getWindow();
+                caricaSchermata("/it/unicam/cs/mpgc/rpg130077/visual/SchermataIniziale.fxml", stage);
+            });
         });
     }
 

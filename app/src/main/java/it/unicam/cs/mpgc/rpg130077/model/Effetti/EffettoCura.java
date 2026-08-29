@@ -31,7 +31,7 @@ public class EffettoCura implements Effetto {
     }
 
     @Override
-    public boolean isHealDealer() {
-        return true;
+    public EffectType getEffectType() {
+        return EffectType.HEAL;
     }
 }

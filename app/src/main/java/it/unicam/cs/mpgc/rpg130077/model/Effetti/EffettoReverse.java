@@ -27,4 +27,9 @@ public class EffettoReverse implements Effetto {
     public boolean isConclusive() {
         return conclusive;
     }
+
+    @Override
+    public EffectType getEffectType() {
+        return EffectType.RAM;
+    }
 }

@@ -1,9 +1,11 @@
 
 package it.unicam.cs.mpgc.rpg130077;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreMusica;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
@@ -32,26 +34,22 @@ public class App extends Application {
             CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
             PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON(catalogo);
 
+            GestoreArmamento gestoreArmamento = new GestoreArmamento(persistenza);
 
-            GameFactory factory = new GameFactory();
-            SistemaCombattimento sistemaCombattimento = factory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
-
-            int ramTotale = sistemaCombattimento.getStatoBattaglia().getFazioneEroi().get(0).getSpazioRAM() +
-                    sistemaCombattimento.getStatoBattaglia().getFazioneNemici().get(0).getSpazioRAM();
 
             // Carica l'FXML
             FXMLLoader loader = new FXMLLoader(App.class.getResource("visual/SchermataIniziale.fxml"));
             Parent root = loader.load();
 
-            //Crea il clock
-            Clock clock = new Clock(() -> sistemaCombattimento.onTick());
-
             // passa le dipendenze
             SchermataInizialeFXML controller = loader.getController();
-            controller.setupIniziale(persistenza, catalogo);
-            controller.setSpazioRam(ramTotale);
-            controller.setSistemaCombattimento(sistemaCombattimento);
-            controller.setClock(clock);
+            SessionState sessione = new SessionState();
+            sessione.gestoreArmamento = gestoreArmamento;
+            sessione.spazioRam = 15; // default o gestito dalla factory, verrò settato in battaglia
+            
+            // Il SistemaCombattimento verrà inizializzato in SchermataInizialeFXML quando si preme "Gioca"
+            
+            controller.setSessione(sessione);
 
             stage.setScene(new Scene(root));
             stage.show();

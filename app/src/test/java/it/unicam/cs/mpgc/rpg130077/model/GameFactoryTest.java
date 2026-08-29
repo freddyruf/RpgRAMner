@@ -35,7 +35,7 @@ class GameFactoryTest {
     @Test
     void testCreaNuovaPartitaSempliceConCatalogoReale() {
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks(), catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
 
         assertNotNull(combattimento);
         assertInstanceOf(CombattimentoATurni.class, combattimento);
@@ -89,7 +89,7 @@ class GameFactoryTest {
             }
         };
 
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogoStub.caricamentoCatalogoArmi(), catalogoStub.caricamentoCatalogoHacks());
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogoStub.caricamentoCatalogoArmi(), catalogoStub.caricamentoCatalogoHacks(), catalogoStub.caricamentoCatalogoArmi(), catalogoStub.caricamentoCatalogoHacks());
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         assertEquals(armaGiocatore.getNome(), stato.getGiocatore().getArma().getNome());
@@ -108,7 +108,7 @@ class GameFactoryTest {
     @Test
     void testPartitaCreataProntaAlCombattimento() {
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
+        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks(), catalogo.caricamentoCatalogoArmi(), catalogo.caricamentoCatalogoHacks());
 
         assertNull(combattimento.checkVittoria());
         assertDoesNotThrow(combattimento::avanza);

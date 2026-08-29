@@ -30,7 +30,8 @@ public class EffettoDanno implements Effetto {
     }
 
     @Override
-    public boolean isDamageDealer() {
-        return true;
+    public EffectType getEffectType() {
+        return EffectType.DAMAGE;
     }
+
 }
