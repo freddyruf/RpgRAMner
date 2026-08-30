@@ -245,7 +245,7 @@ public class SceltaArmamentoFXMLTest {
                 pulsanteEsciMethod.invoke(controller, event);
 
                 assertFalse(mockPersistenza.savedCalled, "Save should not be called when loadout is incomplete");
-                assertSame(scene, stage.getScene(), "Scene should not change");
+                assertSame(pane, stage.getScene().getRoot(), "Scene root should not change");
             } finally {
                 stage.close();
             }
@@ -293,7 +293,7 @@ public class SceltaArmamentoFXMLTest {
 
                 assertTrue(mockPersistenza.savedCalled, "Save must be called when all items are selected");
                 assertNotNull(stage.getScene());
-                assertNotSame(scene, stage.getScene(), "Scene should transition to SchermataIniziale");
+                assertNotSame(pane, stage.getScene().getRoot(), "Scene root should transition to SchermataIniziale");
             } finally {
                 stage.close();
             }
