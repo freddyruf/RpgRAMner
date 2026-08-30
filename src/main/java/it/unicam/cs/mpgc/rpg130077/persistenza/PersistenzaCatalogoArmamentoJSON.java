@@ -16,8 +16,8 @@ import java.util.ArrayList;
  */
 public class PersistenzaCatalogoArmamentoJSON implements CaricatoreCatalogo {
 
-    private static final String CATALOGO_ARMI_PATH = "/catalogo_armi.json";
-    private static final String CATALOGO_HACKS_PATH = "/catalogo_hacks.json";
+    private static final String CATALOGO_ARMI_PATH = "/it/unicam/cs/mpgc/rpg130077/catalogo_armi.json";
+    private static final String CATALOGO_HACKS_PATH = "/it/unicam/cs/mpgc/rpg130077/catalogo_hacks.json";
     private final Gson gson;
 
     public PersistenzaCatalogoArmamentoJSON() {

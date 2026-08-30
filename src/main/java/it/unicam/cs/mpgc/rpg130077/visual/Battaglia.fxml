@@ -17,12 +17,12 @@
    <children>
       <ImageView fitHeight="537.0" fitWidth="718.0" layoutX="328.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/ImmagineGiocatore.png" />
+            <Image url="@/it/unicam/cs/mpgc/rpg130077/ImmagineGiocatore.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="403.0" fitWidth="337.0" layoutX="1207.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/ImmagineNemico.png" />
+            <Image url="@/it/unicam/cs/mpgc/rpg130077/ImmagineNemico.png" />
          </image>
       </ImageView>
        <GridPane fx:id="MenuHacks" layoutX="183.0" layoutY="607.0" prefHeight="400.0" prefWidth="1567.0" visible="false">
