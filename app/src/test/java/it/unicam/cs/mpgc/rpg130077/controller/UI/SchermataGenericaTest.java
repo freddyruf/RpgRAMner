@@ -159,7 +159,7 @@ public class SchermataGenericaTest {
                 assertNotNull(controller);
                 assertSame(session, controller.sessionState);
                 assertNotNull(stage.getScene());
-                assertNotSame(scene, stage.getScene(), "Stage scene should be updated to the new loaded scene");
+                assertNotSame(root, stage.getScene().getRoot(), "Stage scene root should be updated to the new loaded root");
             } finally {
                 stage.close();
             }
