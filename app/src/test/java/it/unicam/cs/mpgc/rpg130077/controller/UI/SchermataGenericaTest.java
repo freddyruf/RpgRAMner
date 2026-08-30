@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SchermataGenericaTest {
 
-    private static class DummySchermata extends SchermataGenerica {
+    private static class DummySchermata extends SchermataGenericaJavaFX {
         public SessionState getSessionState() {
             return this.sessionState;
         }

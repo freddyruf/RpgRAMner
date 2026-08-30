@@ -1,5 +1,6 @@
 
 package it.unicam.cs.mpgc.rpg130077;
+import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataGenericaJavaFX;
 import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreMusica;
@@ -45,13 +46,12 @@ public class App extends Application {
             SchermataInizialeFXML controller = loader.getController();
             SessionState sessione = new SessionState();
             sessione.gestoreArmamento = gestoreArmamento;
-            sessione.spazioRam = 15; // default o gestito dalla factory, verrò settato in battaglia
-            
-            // Il SistemaCombattimento verrà inizializzato in SchermataInizialeFXML quando si preme "Gioca"
+            sessione.spazioRam = 15; //default
             
             controller.setSessione(sessione);
 
-            stage.setScene(new Scene(root));
+            // Applica il sistema di Scaling Dinamico per il FullScreen
+            controller.rendiSchermoInteroSicuro(stage, root);
             stage.show();
 
         } catch (IOException e) {

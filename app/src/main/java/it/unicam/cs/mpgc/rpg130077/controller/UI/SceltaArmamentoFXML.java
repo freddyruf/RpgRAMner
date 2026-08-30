@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-public class SceltaArmamentoFXML extends SchermataGenerica {
+public class SceltaArmamentoFXML extends SchermataGenericaJavaFX {
 
     @FXML
     Pane mainPane;

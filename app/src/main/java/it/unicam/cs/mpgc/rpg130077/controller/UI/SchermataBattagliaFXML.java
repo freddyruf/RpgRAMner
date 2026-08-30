@@ -29,7 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class SchermataBattagliaFXML extends SchermataGenerica implements CombattimentoListener, SchermataBattaglia {
+public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements CombattimentoListener, SchermataBattaglia {
 
         @FXML
         private GridPane MenuHacks;

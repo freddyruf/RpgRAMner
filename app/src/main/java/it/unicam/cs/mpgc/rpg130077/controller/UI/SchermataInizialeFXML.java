@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class SchermataInizialeFXML extends SchermataGenerica {
+public class SchermataInizialeFXML extends SchermataGenericaJavaFX {
 
 
     @FXML
