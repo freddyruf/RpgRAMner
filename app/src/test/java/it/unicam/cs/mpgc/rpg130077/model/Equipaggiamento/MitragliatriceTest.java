@@ -20,10 +20,23 @@ class MitragliatriceTest {
         Mitragliatrice mitragliatrice = creaMitragliatrice(0.1);
 
         assertEquals("Minigun", mitragliatrice.getNome());
+        assertEquals("Mitragliatrice a canne rotanti", mitragliatrice.getDescrizione());
         assertEquals(30, mitragliatrice.getCaricatore());
         assertEquals(30, mitragliatrice.getMaxCaricatore());
         assertEquals(10, mitragliatrice.getDanno());
     }
+
+    @Test
+    void costruttoreLanciaNullPointerExceptionSeNomeNullo() {
+        assertThrows(NullPointerException.class, () -> new Mitragliatrice(null, "Desc", 30, 10, 0.1));
+    }
+
+    @Test
+    void costruttoreLanciaIllegalArgumentExceptionSeMaxCaricatoreMinoreOUgualeAZero() {
+        assertThrows(IllegalArgumentException.class, () -> new Mitragliatrice("Minigun", "Desc", 0, 10, 0.1));
+        assertThrows(IllegalArgumentException.class, () -> new Mitragliatrice("Minigun", "Desc", -5, 10, 0.1));
+    }
+
 
     @Test
     void copyMethodCreaNuovaIstanzaIndipendente() {

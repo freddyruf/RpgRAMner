@@ -97,4 +97,10 @@ class EffettoReverseTest {
         assertNotSame(originale, copia);
         assertEquals(originale.isConclusive(), copia.isConclusive());
     }
+
+    @Test
+    void getEffectTypeRitornaRAM() {
+        EffettoReverse effetto = new EffettoReverse(true);
+        assertEquals(EffectType.RAM, effetto.getEffectType());
+    }
 }

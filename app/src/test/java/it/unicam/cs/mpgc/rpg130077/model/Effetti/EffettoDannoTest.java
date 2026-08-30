@@ -72,4 +72,19 @@ class EffettoDannoTest {
         assertNotSame(originale, copia);
         assertEquals(originale.isConclusive(), copia.isConclusive());
     }
+
+    @Test
+    void getEffectTypeRitornaDamage() {
+        EffettoDanno effetto = new EffettoDanno(25, true);
+        assertEquals(EffectType.DAMAGE, effetto.getEffectType());
+    }
+
+    @Test
+    void eseguiEffettoConDannoSuperioreAiPVRiduceACero() {
+        bersaglio.setPv(20);
+        EffettoDanno effetto = new EffettoDanno(50, true);
+        effetto.eseguiEffetto(null, lanciatore, bersaglio);
+
+        assertEquals(0, bersaglio.getPv(), "Overkill damage should clamp PV to 0");
+    }
 }

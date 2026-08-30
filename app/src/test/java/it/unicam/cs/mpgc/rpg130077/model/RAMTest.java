@@ -132,6 +132,14 @@ class RAMTest {
         assertTrue(ramCopia.getHacks().isEmpty());
     }
 
+    @Test
+    void costruttoreConCapacitaMinoreOUgualeAZeroLanciaIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new RAM(0));
+        assertThrows(IllegalArgumentException.class, () -> new RAM(-1));
+        assertThrows(IllegalArgumentException.class, () -> new RAM(-10));
+    }
+
+
     // =====================================================
     // Test di inserimento
     // =====================================================
@@ -365,5 +373,39 @@ class RAMTest {
 
         ram.rimuovi();
         assertEquals(0, ram.getSpazioOccupato());
+    }
+
+    // =====================================================
+    // Test di decrementaTesta
+    // =====================================================
+
+    @Test
+    void decrementaTestaSuRAMVuotaNonProduceErrori() {
+        assertDoesNotThrow(() -> ram.decrementaTesta());
+        assertEquals(0, ram.getSpazioOccupato());
+        assertNull(ram.visualizzaTesta());
+    }
+
+    @Test
+    void decrementaTestaDecrementaTickSoloDellaTesta() {
+        Hack hack1 = creaHackDiTest("Hack1", 5);
+        Hack hack2 = creaHackDiTest("Hack2", 3);
+        ram.inserisci(hack1, bersaglio, lanciatore);
+        ram.inserisci(hack2, bersaglio, lanciatore);
+
+        assertEquals(8, ram.getSpazioOccupato());
+        assertEquals(5, ram.visualizzaTesta().getTickInCoda());
+
+        ram.decrementaTesta();
+
+        assertEquals(4, ram.visualizzaTesta().getTickInCoda());
+        assertEquals(7, ram.getSpazioOccupato());
+
+        // L'elemento successivo non deve essere stato decrementato
+        assertEquals(3, ram.getHacks().get(1).getTickInCoda());
+
+        ram.decrementaTesta();
+        assertEquals(3, ram.visualizzaTesta().getTickInCoda());
+        assertEquals(6, ram.getSpazioOccupato());
     }
 }

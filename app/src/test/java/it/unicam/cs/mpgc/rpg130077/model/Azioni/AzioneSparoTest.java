@@ -1,20 +1,23 @@
 package it.unicam.cs.mpgc.rpg130077.model.Azioni;
 
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test per la classe {@link AzioneSparo}.
- *
- * Per la stesura di questi test sono stati utilizzati strumenti di intelligenza artificiale generativa, in accordo con le linee guida del corso.
+ * Test completi per la classe {@link AzioneSparo}.
+ * Copre la verifica degli EffectType, calcolo del danno (normale e critico),
+ * esecuzione e validazione dei parametri nulli.
  */
 class AzioneSparoTest {
 
@@ -29,19 +32,21 @@ class AzioneSparoTest {
     }
 
     @Test
-    void effectTypeContieneDamage() {
+    @DisplayName("getEffectTypes restituisce esattamente Set.of(EffectType.DAMAGE)")
+    void testEffectTypesContieneDamage() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
-        assertTrue(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.DAMAGE));
+        Set<EffectType> types = azione.getEffectTypes();
+
+        assertNotNull(types);
+        assertEquals(Set.of(EffectType.DAMAGE), types);
+        assertTrue(types.contains(EffectType.DAMAGE));
+        assertFalse(types.contains(EffectType.HEAL));
+        assertFalse(types.contains(EffectType.RAM));
     }
 
     @Test
-    void effectTypeNonContieneHeal() {
-        AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
-        assertFalse(azione.getEffectTypes().contains(it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType.HEAL));
-    }
-
-    @Test
-    void eseguiRiduceIPVDelBersaglio() {
+    @DisplayName("esegui riduce i punti vita (PV) del bersaglio in base al danno dell'arma")
+    void testEseguiRiduceIPVDelBersaglio() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
         azione.esegui(null);
 
@@ -50,7 +55,8 @@ class AzioneSparoTest {
     }
 
     @Test
-    void eseguiConArmaCriticaInfliggeDannoRaddoppiato() {
+    @DisplayName("esegui con arma a colpo critico (chance 1.0) infligge danno raddoppiato")
+    void testEseguiConArmaCriticaInfliggeDannoRaddoppiato() {
         Arma armaCritica = new Pistola("PistolaCritica", "Desc", 6, 20, 1.0);
         Entita lanciatoreCritico = new Giocatore("HeroCrit", 100, "hero.png", 8, new ArrayList<>(), armaCritica, true);
 
@@ -62,7 +68,31 @@ class AzioneSparoTest {
     }
 
     @Test
-    void eseguiNonRichiedeStatoBattagliaNonNullo() {
+    @DisplayName("esegui con lanciatore null lancia NullPointerException")
+    void testEseguiConLanciatoreNullLanciaNPE() {
+        AzioneSparo azione = new AzioneSparo(null, bersaglio);
+        NullPointerException ex = assertThrows(NullPointerException.class, () -> azione.esegui(null));
+        assertTrue(ex.getMessage().contains("Lanciatore o Bersaglio nullo"));
+    }
+
+    @Test
+    @DisplayName("esegui con bersaglio null lancia NullPointerException")
+    void testEseguiConBersaglioNullLanciaNPE() {
+        AzioneSparo azione = new AzioneSparo(lanciatore, null);
+        NullPointerException ex = assertThrows(NullPointerException.class, () -> azione.esegui(null));
+        assertTrue(ex.getMessage().contains("Lanciatore o Bersaglio nullo"));
+    }
+
+    @Test
+    @DisplayName("esegui con entrambi i parametri null lancia NullPointerException")
+    void testEseguiConEntrambiNullLanciaNPE() {
+        AzioneSparo azione = new AzioneSparo(null, null);
+        assertThrows(NullPointerException.class, () -> azione.esegui(null));
+    }
+
+    @Test
+    @DisplayName("esegui accetta StatoBattaglia null senza errori quando lanciatore e bersaglio sono validi")
+    void testEseguiNonRichiedeStatoBattagliaNonNullo() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
         assertDoesNotThrow(() -> azione.esegui(null));
     }

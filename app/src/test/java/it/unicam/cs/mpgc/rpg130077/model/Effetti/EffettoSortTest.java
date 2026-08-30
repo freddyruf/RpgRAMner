@@ -91,4 +91,10 @@ class EffettoSortTest {
         assertNotSame(originale, copia);
         assertEquals(originale.isConclusive(), copia.isConclusive());
     }
+
+    @Test
+    void getEffectTypeRitornaRAM() {
+        EffettoSort effetto = new EffettoSort(true);
+        assertEquals(EffectType.RAM, effetto.getEffectType());
+    }
 }

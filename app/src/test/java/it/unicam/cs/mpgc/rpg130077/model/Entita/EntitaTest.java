@@ -66,6 +66,37 @@ class EntitaTest {
     }
 
     @Test
+    void costruttoreLanciaIllegalArgumentExceptionSeMaxPvNegativo() {
+        Arma arma = creaArma();
+        ArrayList<Hack> hacks = creaListaHacks();
+
+        assertThrows(IllegalArgumentException.class, () -> new EntitaDiTest("Eroe", -1, "img.png", 8, hacks, arma, true));
+        assertThrows(IllegalArgumentException.class, () -> new EntitaDiTest("Eroe", -100, "img.png", 8, hacks, arma, true));
+    }
+
+    @Test
+    void costruttoreDiCopiaCreaCopiaProfonda() {
+        Arma arma = creaArma();
+        ArrayList<Hack> hacks = creaListaHacks();
+        hacks.add(new Hack("Hack1", "Desc", 3));
+        EntitaDiTest originale = new EntitaDiTest("Eroe", 100, "img.png", 8, hacks, arma, true);
+
+        EntitaDiTest copia = new EntitaDiTest(originale);
+
+        assertEquals(originale.getNome(), copia.getNome());
+        assertEquals(originale.getMaxPv(), copia.getMaxPv());
+        assertEquals(originale.getPv(), copia.getPv());
+        assertEquals(originale.getImage(), copia.getImage());
+        assertEquals(originale.getSpazioRAM(), copia.getSpazioRAM());
+        assertEquals(originale.getFazione(), copia.getFazione());
+        assertNotSame(originale.getArma(), copia.getArma(), "Weapon should be a cloned instance");
+        assertNotSame(originale.getHacks(), copia.getHacks(), "Hacks list should be a cloned instance");
+        assertEquals(originale.getHacks().size(), copia.getHacks().size());
+        assertNotSame(originale.getHacks().get(0), copia.getHacks().get(0), "Hack inside list should be cloned");
+    }
+
+
+    @Test
     void setPVModificaPuntiVitaNelRangeValido() {
         Entita entita = new EntitaDiTest("Eroe", 100, "img.png", 8, creaListaHacks(), creaArma(), true);
 

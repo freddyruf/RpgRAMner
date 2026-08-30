@@ -45,6 +45,28 @@ class NPCTest {
     }
 
     @Test
+    void costruttoreNPCLanciaEccezioneSeChanceMinoreDiZero() {
+        StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
+        assertThrows(IllegalArgumentException.class, () ->
+                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), 20, -0.1, dummyStrategia, false));
+    }
+
+    @Test
+    void costruttoreNPCLanciaNullPointerExceptionSeStrategiaNulla() {
+        assertThrows(NullPointerException.class, () ->
+                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), 20, 0.2, null, false));
+    }
+
+    @Test
+    void costruttoreNPCLanciaIllegalArgumentExceptionSeChancePositivaEDannoMinoreOUgualeAZero() {
+        StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
+        assertThrows(IllegalArgumentException.class, () ->
+                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), 0, 0.2, dummyStrategia, false));
+        assertThrows(IllegalArgumentException.class, () ->
+                new NPC("Boss", 100, "boss.png", 8, new ArrayList<>(), creaArma(), -5, 0.2, dummyStrategia, false));
+    }
+
+    @Test
     void costruttoreDiCopiaCopiaCampiSpecifici() {
         StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
         NPC originale = creaNPC(dummyStrategia, 0.3);
@@ -77,6 +99,18 @@ class NPCTest {
             assertFalse(npc.controllaAttaccoASorpresa(), "Con chance 0.0 deve restituire sempre false");
         }
     }
+
+    @Test
+    @org.junit.jupiter.api.DisplayName("Con chance 1.0 l'attacco a sorpresa deve sempre verificarsi")
+    void controllaAttaccoASorpresaConChanceUnoRitornaSempreTrue() {
+        StrategiaCombattimento dummyStrategia = (npc, stato) -> null;
+        NPC npc = creaNPC(dummyStrategia, 1.0);
+
+        for (int i = 0; i < 50; i++) {
+            assertTrue(npc.controllaAttaccoASorpresa(), "Con chance 1.0 deve restituire sempre true");
+        }
+    }
+
 
     @Test
     void richiediMossaDelegaAStrategiaCombattimento() {
