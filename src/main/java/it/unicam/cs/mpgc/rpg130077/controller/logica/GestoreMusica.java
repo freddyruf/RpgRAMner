@@ -13,7 +13,7 @@ public class GestoreMusica {
     private Player currentPlayer;
 
     public synchronized void avviaMusicaSemplice() {
-        String resourcePath = "/Nightdrive VHS Dreams.mp3";
+        String resourcePath = "/it/unicam/cs/mpgc/rpg130077/Nightdrive VHS Dreams.mp3";
         if (isPlaying) return;
         isPlaying = true;
 
