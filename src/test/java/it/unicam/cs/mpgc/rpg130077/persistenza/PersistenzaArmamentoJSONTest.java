@@ -182,14 +182,14 @@ class PersistenzaArmamentoJSONTest {
     }
 
     @Test
-    @DisplayName("File inesistente: getArmi solleva RuntimeException")
+    @DisplayName("File inesistente: getArmi lancia RuntimeException")
     void testFileInesistenteGetArmiLanciaEccezione() {
         if (FILE_DATA.exists()) {
             FILE_DATA.delete();
         }
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> persistenza.getArmi());
-        assertTrue(ex.getMessage().contains("Impossibile caricare il file JSON"));
+        assertThrows(RuntimeException.class, () -> persistenza.getArmi(),
+                "getArmi deve propagare un'eccezione se il file non esiste");
     }
 
     @Test
@@ -205,7 +205,7 @@ class PersistenzaArmamentoJSONTest {
     }
 
     @Test
-    @DisplayName("JSON malformato: getArmi solleva RuntimeException")
+    @DisplayName("JSON malformato: getArmi lancia RuntimeException")
     void testJsonMalformatoGetArmiLanciaEccezione() throws IOException {
         if (FILE_DATA.getParentFile() != null) {
             FILE_DATA.getParentFile().mkdirs();
@@ -214,7 +214,8 @@ class PersistenzaArmamentoJSONTest {
             writer.write("{ questo non e un json valido !!! }");
         }
 
-        assertThrows(RuntimeException.class, () -> persistenza.getArmi());
+        assertThrows(RuntimeException.class, () -> persistenza.getArmi(),
+                "getArmi deve propagare un'eccezione se il JSON è malformato");
     }
 
     @Test

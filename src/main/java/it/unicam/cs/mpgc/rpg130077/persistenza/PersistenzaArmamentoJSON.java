@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130077.persistenza;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
@@ -13,6 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Implementazione el interfaccia persistenzaArmamento che utilizza il formato JSON per salvare e caricare l'equipaggiamento scelto dal giocatore.
@@ -66,6 +69,9 @@ public class PersistenzaArmamentoJSON implements PersistenzaArmamento {
             System.err.println("Errore fatale di lettura JSON: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Impossibile caricare il file JSON di configurazione.", e);
+        } catch (IllegalStateException e) {
+            //L'utente non ha scelto l'armamento
+            return new ArrayList<>();
         }
     }
 
