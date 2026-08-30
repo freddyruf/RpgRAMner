@@ -48,4 +48,19 @@ class QueuedHackTest {
         assertEquals(3, queued.getTickInCoda());
     }
 
+    @Test
+    void costruttoreDiCopiaCopiaCampiEClonaHack() {
+        Hack hack = new Hack("IceBeam", "Raggio di ghiaccio", 6);
+        QueuedHack original = new QueuedHack(hack, bersaglio, lanciatore);
+        original.setTickInCoda(4);
+
+        QueuedHack copy = new QueuedHack(original);
+
+        assertEquals(4, copy.getTickInCoda());
+        assertSame(bersaglio, copy.getBersaglio());
+        assertSame(lanciatore, copy.getLanciatore());
+        assertNotNull(copy.getHack());
+        assertEquals("IceBeam", copy.getHack().getNome());
+        assertNotSame(original.getHack(), copy.getHack(), "Hack should be cloned via hack.copy()");
+    }
 }

@@ -20,6 +20,7 @@ class PistolaTest {
         Pistola pistola = creaPistola(0.2);
 
         assertEquals("Glock", pistola.getNome());
+        assertEquals("Pistola semiautomatica", pistola.getDescrizione());
         assertEquals(6, pistola.getCaricatore());
         assertEquals(6, pistola.getMaxCaricatore());
         assertEquals(15, pistola.getDanno());
@@ -29,6 +30,13 @@ class PistolaTest {
     void costruttoreLanciaNullPointerExceptionSeNomeNullo() {
         assertThrows(NullPointerException.class, () -> new Pistola(null, "Desc", 6, 15, 0.2));
     }
+
+    @Test
+    void costruttoreLanciaIllegalArgumentExceptionSeMaxCaricatoreMinoreOUgualeAZero() {
+        assertThrows(IllegalArgumentException.class, () -> new Pistola("Pistola", "Desc", 0, 15, 0.2));
+        assertThrows(IllegalArgumentException.class, () -> new Pistola("Pistola", "Desc", -1, 15, 0.2));
+    }
+
 
     @Test
     void copyMethodCreaNuovaIstanzaIndipendente() {

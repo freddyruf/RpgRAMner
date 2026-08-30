@@ -84,4 +84,18 @@ class EffettoCuraTest {
         assertNotSame(originale, copia);
         assertEquals(originale.isConclusive(), copia.isConclusive());
     }
+
+    @Test
+    void getEffectTypeRitornaHeal() {
+        EffettoCura effetto = new EffettoCura(20, true);
+        assertEquals(EffectType.HEAL, effetto.getEffectType());
+    }
+
+    @Test
+    void eseguiEffettoConCuraZeroNonModificaPV() {
+        lanciatore.setPv(50);
+        EffettoCura effetto = new EffettoCura(0, true);
+        effetto.eseguiEffetto(null, lanciatore, bersaglio);
+        assertEquals(50, lanciatore.getPv());
+    }
 }
