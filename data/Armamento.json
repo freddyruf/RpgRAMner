@@ -1,0 +1,62 @@
+{
+  "armi": [
+    {
+      "nome": "Mitragliatrice",
+      "descrizione": "Spara colpi a raffica.",
+      "maxCaricatore": 60,
+      "caricatore": 0,
+      "danno": 5,
+      "critChance": 0.1,
+      "tipo": "Mitragliatrice"
+    }
+  ],
+  "hacks": [
+    {
+      "nome": "Firewall",
+      "descrizione": "Cura il giocatore",
+      "durata": 4,
+      "effetti": [
+        {
+          "cura": 30,
+          "conclusive": true,
+          "tipoEffetto": "Cura"
+        }
+      ]
+    },
+    {
+      "nome": "Firewall",
+      "descrizione": "Cura il giocatore",
+      "durata": 4,
+      "effetti": [
+        {
+          "cura": 30,
+          "conclusive": true,
+          "tipoEffetto": "Cura"
+        }
+      ]
+    },
+    {
+      "nome": "RAM:Sort",
+      "descrizione": "Riordina le Hack nella RAM.",
+      "durata": 6,
+      "effetti": [
+        {
+          "conclusive": true,
+          "tipoEffetto": "Sort"
+        }
+      ]
+    },
+    {
+      "nome": "Acid",
+      "descrizione": "Infligge 10 di danno ogni tick.",
+      "durata": 10,
+      "effetti": [
+        {
+          "danno": 6,
+          "conclusive": false,
+          "tipoEffetto": "Danno"
+        }
+      ]
+    }
+  ]
+}
