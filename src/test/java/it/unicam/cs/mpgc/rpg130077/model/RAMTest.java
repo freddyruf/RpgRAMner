@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130077.model;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
+import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
@@ -88,8 +89,8 @@ class RAMTest {
     }
 
     private static class FakeStatoBattaglia implements StatoBattaglia {
-        private final RAM ram;
-        private final Giocatore giocatore;
+        private RAM ram;
+        private Giocatore giocatore;
 
         FakeStatoBattaglia(RAM ram, Giocatore giocatore) {
             this.ram = ram;
@@ -107,6 +108,14 @@ class RAMTest {
         @Override public Entita getEroe(int n) { return giocatore; }
         @Override public Entita getNemico(int n) { return null; }
         @Override public StatoBattaglia copy() { return this; }
+
+        @Override
+        public  void setEroe(Entita e) {
+            giocatore=(Giocatore) e;
+        }
+        @Override
+        public  void setNemico(Entita e) {
+        }
     }
 
     // =====================================================

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 
 /**
@@ -11,4 +12,5 @@ public class SessionState { // Da creare nel package model/Sistema/
     public Clock clock;
     public int spazioRam;
     public GestoreArmamento gestoreArmamento;
+    public GameFactory gameFactory;
 }

@@ -5,6 +5,8 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaCatalogoArmamentoJSON;
@@ -192,6 +194,7 @@ public class SchermataInizialeFXMLTest {
                 GestoreArmamento gestore = new GestoreArmamento(new StubPersistenzaArmamento(armiSalvate, hacksSalvati));
 
                 session.gestoreArmamento = gestore;
+                session.gameFactory = new GameFactory(new StatoBattaglia1v1());
                 controller.setSessione(session);
 
                 Method goBattagliaMethod = SchermataInizialeFXML.class.getDeclaredMethod("goBattaglia", ActionEvent.class);

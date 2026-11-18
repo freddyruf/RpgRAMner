@@ -16,7 +16,7 @@ public class Mitragliatrice extends Arma {
     public int calcolaDanno() {
         int dannoCalcolato=0;
         for (int i=0;i<5; i++){ //dato che è una mitragliatrice, spara piu volte
-            if(Math.random()<critChance){
+            if(random.getDouble()<critChance){
                 dannoCalcolato+=(danno*2);
             }
             else dannoCalcolato+=danno;

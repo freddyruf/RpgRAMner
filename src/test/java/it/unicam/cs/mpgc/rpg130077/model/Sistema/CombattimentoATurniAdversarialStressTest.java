@@ -13,6 +13,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
@@ -253,6 +254,14 @@ public class CombattimentoATurniAdversarialStressTest {
                 @Override public Entita getEroe(int n) { return eroi.get(n); }
                 @Override public Entita getNemico(int n) { return nemici.get(n); }
                 @Override public StatoBattaglia copy() { return this; }
+                @Override
+                public  void setEroe(Entita e) {
+                    eroi.add(e);
+                }
+                @Override
+                public  void setNemico(Entita e) {
+                    nemici.add(e);
+                }
             }
 
             DynamicStato stato = new DynamicStato(ram);
@@ -312,6 +321,14 @@ public class CombattimentoATurniAdversarialStressTest {
                 @Override public Entita getEroe(int n) { return eroi.get(n); }
                 @Override public Entita getNemico(int n) { return null; }
                 @Override public StatoBattaglia copy() { return this; }
+                @Override
+                public  void setEroe(Entita e) {
+                    eroi.add((Giocatore) e);
+                }
+                @Override
+                public  void setNemico(Entita e) {
+
+                }
             }
 
             MultiHeroStato stato = new MultiHeroStato();
@@ -350,7 +367,7 @@ public class CombattimentoATurniAdversarialStressTest {
         @Test
         @DisplayName("GameFactory deep-copies all items and preserves isolation against external list mutation")
         void testGameFactoryMutationIsolation() {
-            GameFactory factory = new GameFactory();
+            GameFactory factory = new GameFactory(new StatoBattaglia1v1());
 
             List<Arma> playerWeapons = new ArrayList<>(List.of(
                     new Pistola("P1", "D1", 6, 20, 0.1)
@@ -366,8 +383,16 @@ public class CombattimentoATurniAdversarialStressTest {
                     new Hack("CatH0", "D", 1),
                     new Hack("CatH1", "Enemy hack", 3)
             ));
-
-            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice(playerWeapons, playerHacks, catalogWeapons, catalogHacks);
+            factory.setCatalogoArmi(catalogWeapons);
+            factory.setCatalogoHack(catalogHacks);
+            factory.setEquipaggiamentoGiocatoreArmi(playerWeapons);
+            factory.setEquipaggiamentoGiocatoreHacks(playerHacks);
+            List<Arma> enemyWeapons = new ArrayList<>(List.of(catalogWeapons.get(1)));
+            List<Hack> enemyHacks = new ArrayList<>(List.of(catalogHacks.get(1)));
+            factory.setEquipaggiamentoNemicoArmi(enemyWeapons);
+            factory.setEquipaggiamentoNemicoHacks(enemyHacks);
+            factory.setStrategia(new StrategiaCasuale());
+            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice();
             StatoBattaglia stato = combat.getStatoBattaglia();
 
             // Mutate input lists after creation
@@ -375,6 +400,8 @@ public class CombattimentoATurniAdversarialStressTest {
             playerHacks.clear();
             catalogWeapons.clear();
             catalogHacks.clear();
+            enemyWeapons.clear();
+            enemyHacks.clear();
 
             // Assert state inside combat is fully populated and intact
             assertNotNull(stato.getGiocatore().getArma());

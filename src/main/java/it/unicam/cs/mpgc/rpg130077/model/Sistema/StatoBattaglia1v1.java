@@ -22,6 +22,10 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
         this.avversario = avversario;
         this.ram=new RAM(giocatore.getSpazioRAM()+avversario.getSpazioRAM());
     }
+    public StatoBattaglia1v1(){
+        this.giocatore = null;
+        this.avversario = null;
+    }
     public StatoBattaglia1v1(StatoBattaglia1v1 s){
         this.giocatore=(Giocatore) s.giocatore.copy();
         this.avversario=(NPC) s.avversario.copy();
@@ -65,6 +69,24 @@ public class StatoBattaglia1v1 implements StatoBattaglia {
     @Override
     public Entita getNemico(int n) {
         return avversario;
+    }
+
+    @Override
+    public  void setEroe(Entita e) {
+        giocatore=(Giocatore) e;
+        aggiornaRam();
+    }
+    @Override
+    public  void setNemico(Entita e) {
+        avversario=(NPC) e;
+        aggiornaRam();
+    }
+
+    /** Ricrea la RAM condivisa quando entrambe le entita sono presenti. */
+    private void aggiornaRam() {
+        if (giocatore != null && avversario != null) {
+            ram = new RAM(giocatore.getSpazioRAM() + avversario.getSpazioRAM());
+        }
     }
 
 

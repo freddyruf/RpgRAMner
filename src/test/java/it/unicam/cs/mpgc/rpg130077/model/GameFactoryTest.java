@@ -5,9 +5,11 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
+import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaCatalogoArmamentoJSON;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GameFactoryTest {
 
-    private GameFactory gameFactory;
+    private GameFactory factory;
     private List<Arma> armiGiocatore;
     private List<Hack> hacksGiocatore;
     private List<Arma> catalogoArmi;
@@ -34,7 +36,7 @@ class GameFactoryTest {
 
     @BeforeEach
     void setUp() {
-        gameFactory = new GameFactory();
+        factory = new GameFactory(new StatoBattaglia1v1());
 
         armiGiocatore = new ArrayList<>(List.of(
                 new Pistola("PistolaPlayer", "Arma eroe", 6, 25, 0.0)
@@ -61,8 +63,12 @@ class GameFactoryTest {
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
         List<Arma> armi = catalogo.caricamentoCatalogoArmi();
         List<Hack> hacks = catalogo.caricamentoCatalogoHacks();
-
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(armi, hacks, armi, hacks);
+        factory.setCatalogoArmi(armi);
+        factory.setCatalogoHack(hacks);
+        factory.setEquipaggiamentoGiocatoreArmi(armi);
+        factory.setEquipaggiamentoGiocatoreHacks(hacks);
+        factory.setStrategia(new StrategiaCasuale());
+        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
 
         assertNotNull(combattimento);
         assertInstanceOf(CombattimentoATurni.class, combattimento);
@@ -90,8 +96,12 @@ class GameFactoryTest {
         assertEquals(5, nemico.getDannoAttaccoASorpresa());
         assertNotNull(nemico.getArma());
 
-        // Il nemico riceve gli hack a partire dall'indice 1 del catalogo (size - 1)
-        assertEquals(hacks.size() - 1, nemico.getHacks().size());
+        // Il nemico riceve fino a MAX_HACK_NEMICO hack distinti scelti a caso dal catalogo
+        assertEquals(Math.min(GameFactory.MAX_HACK_NEMICO, hacks.size()), nemico.getHacks().size());
+        List<String> nomiCatalogo = hacks.stream().map(Hack::getNome).toList();
+        List<String> nomiNemico = nemico.getHacks().stream().map(Hack::getNome).toList();
+        assertTrue(nomiCatalogo.containsAll(nomiNemico));
+        assertEquals(nomiNemico.size(), nomiNemico.stream().distinct().count());
 
         // La RAM condivisa ha capacita pari a 10 + 5 = 15
         assertEquals(15, stato.getRamCondivisa().getSpazioMassimoInSecondi());
@@ -100,7 +110,14 @@ class GameFactoryTest {
     @Test
     @DisplayName("Crea partita semplice mappando correttamente gli oggetti forniti")
     void testCreaNuovaPartitaSempliceConListeConfigurate() {
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, catalogoHacks);
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoHacks);
+        factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+        factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+        factory.setEquipaggiamentoNemicoArmi(List.of(catalogoArmi.get(1)));
+        factory.setEquipaggiamentoNemicoHacks(List.of(catalogoHacks.get(1), catalogoHacks.get(2)));
+        factory.setStrategia(new StrategiaCasuale());
+        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         Giocatore eroe = stato.getGiocatore();
@@ -108,7 +125,7 @@ class GameFactoryTest {
 
         // Verifica arma eroe da armiGiocatore.get(0)
         assertEquals("PistolaPlayer", eroe.getArma().getNome());
-        // Verifica arma nemico da catalogoArmi.get(1)
+        // Verifica arma nemico impostata esplicitamente (catalogoArmi.get(1))
         assertEquals("PistolaCat1", nemico.getArma().getNome());
 
         // Verifica hack eroe
@@ -116,55 +133,23 @@ class GameFactoryTest {
         assertEquals("PlayerHack1", eroe.getHacks().get(0).getNome());
         assertEquals("PlayerHack2", eroe.getHacks().get(1).getNome());
 
-        // Verifica hack nemico (dal catalogo indice 1 in poi)
+        // Verifica hack nemico impostati esplicitamente
         assertEquals(2, nemico.getHacks().size());
         assertEquals("CatHack1", nemico.getHacks().get(0).getNome());
         assertEquals("CatHack2", nemico.getHacks().get(1).getNome());
     }
 
     @Test
-    @DisplayName("Lancia NullPointerException se uno qualsiasi dei 4 parametri e null")
-    void testCreaNuovaPartitaParametriNullLanciaNPE() {
-        assertThrows(NullPointerException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(null, hacksGiocatore, catalogoArmi, catalogoHacks));
-        assertThrows(NullPointerException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiGiocatore, null, catalogoArmi, catalogoHacks));
-        assertThrows(NullPointerException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, null, catalogoHacks));
-        assertThrows(NullPointerException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, null));
-    }
-
-    @Test
-    @DisplayName("Lancia IllegalStateException se la lista armi del giocatore e vuota")
-    void testCreaNuovaPartitaArmiGiocatoreVuotaLanciaISE() {
-        List<Arma> armiVuote = new ArrayList<>();
-
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiVuote, hacksGiocatore, catalogoArmi, catalogoHacks));
-        assertTrue(ex.getMessage().contains("Armi giocatore insufficienti"));
-    }
-
-    @Test
-    @DisplayName("Lancia IllegalStateException se il catalogo armi ha meno di 2 armi")
-    void testCreaNuovaPartitaCatalogoArmiInsufficienteLanciaISE() {
-        // Catalogo vuoto
-        assertThrows(IllegalStateException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, new ArrayList<>(), catalogoHacks));
-
-        // Catalogo con solo 1 arma
-        List<Arma> catalogoUnaSolaArma = new ArrayList<>(List.of(
-                new Pistola("UnicaArma", "Desc", 6, 10, 0.0)
-        ));
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
-                gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoUnaSolaArma, catalogoHacks));
-        assertTrue(ex.getMessage().contains("Catalogo armi insufficiente"));
-    }
-
-    @Test
     @DisplayName("Verifica che le armi e gli hack assegnati siano copie profonde (deep copy)")
     void testCreaNuovaPartitaDeepCopyEquipaggiamento() {
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, catalogoHacks);
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoHacks);
+        factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+        factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+        factory.setEquipaggiamentoNemicoArmi(List.of(catalogoArmi.get(1)));
+        factory.setEquipaggiamentoNemicoHacks(List.of(catalogoHacks.get(1), catalogoHacks.get(2)));
+        factory.setStrategia(new StrategiaCasuale());
+        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         Giocatore eroe = stato.getGiocatore();
@@ -181,23 +166,33 @@ class GameFactoryTest {
     }
 
     @Test
-    @DisplayName("Crea partita con catalogo hack di 1 solo elemento genera nemico senza hack")
+    @DisplayName("Crea partita con catalogo hack di 1 solo elemento genera nemico con quell'unico hack")
     void testCreaNuovaPartitaCatalogoHackMinimo() {
         List<Hack> catalogoUnSoloHack = new ArrayList<>(List.of(
                 new Hack("SoloHack0", "Desc", 2)
         ));
-
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, catalogoUnSoloHack);
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoUnSoloHack);
+        factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+        factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+        factory.setStrategia(new StrategiaCasuale());
+        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
         NPC nemico = (NPC) combattimento.getStatoBattaglia().getNemico(0);
 
-        // Dal momento che l'indice 0 viene scartato per il nemico, la lista deve essere vuota
-        assertTrue(nemico.getHacks().isEmpty());
+        // Il nemico prende al massimo tanti hack quanti ne offre il catalogo, senza ripetizioni
+        assertEquals(1, nemico.getHacks().size());
+        assertEquals("SoloHack0", nemico.getHacks().get(0).getNome());
     }
 
     @Test
     @DisplayName("La partita creata e pronta al combattimento")
     void testPartitaCreataProntaAlCombattimento() {
-        SistemaCombattimento combattimento = gameFactory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, catalogoHacks);
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoHacks);
+        factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+        factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+        factory.setStrategia(new StrategiaCasuale());
+        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
 
         assertNull(combattimento.checkVittoria());
         assertDoesNotThrow(combattimento::avanza);

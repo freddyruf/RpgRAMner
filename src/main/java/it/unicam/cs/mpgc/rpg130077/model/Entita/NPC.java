@@ -3,6 +3,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCombattimento;
+import it.unicam.cs.mpgc.rpg130077.model.RandomNumbersGenerator;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
@@ -12,6 +13,7 @@ public class NPC extends Entita implements CombattenteAutonomo {
     int dannoAttaccoASorpresa;
     double chanceAttaccoASorpresa; // Min 0 MAX 0.4, dopo 0.4 diventa troppo frequente
     StrategiaCombattimento strategia;
+    RandomNumbersGenerator random = new RandomNumbersGenerator();
 
     public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia, boolean fazione) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma, fazione);
@@ -34,6 +36,7 @@ public class NPC extends Entita implements CombattenteAutonomo {
         this.dannoAttaccoASorpresa = npc.dannoAttaccoASorpresa;
         this.chanceAttaccoASorpresa = npc.chanceAttaccoASorpresa;
         this.strategia = npc.strategia;
+        this.random = npc.random;
     }
 
 
@@ -43,7 +46,12 @@ public class NPC extends Entita implements CombattenteAutonomo {
     }
 
     public boolean controllaAttaccoASorpresa(){
-        return Math.random() < chanceAttaccoASorpresa;
+        return random.getDouble() < chanceAttaccoASorpresa;
+    }
+
+    public void setRandom(RandomNumbersGenerator random) {
+        if (random == null) throw new NullPointerException("Il generatore random non può essere nullo");
+        this.random = random;
     }
     public int getDannoAttaccoASorpresa() {
         return dannoAttaccoASorpresa;

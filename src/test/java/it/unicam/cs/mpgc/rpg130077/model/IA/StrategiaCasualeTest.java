@@ -59,6 +59,14 @@ class StrategiaCasualeTest {
         @Override public Entita getEroe(int n) { return eroi.get(n); }
         @Override public Entita getNemico(int n) { return nemici.get(n); }
         @Override public StatoBattaglia copy() { return this; }
+        @Override
+        public  void setEroe(Entita e) {
+            eroi.add(e);
+        }
+        @Override
+        public  void setNemico(Entita e) {
+            nemici.add(e);
+        }
     }
 
     private static class NPCSenzaArma extends NPC {

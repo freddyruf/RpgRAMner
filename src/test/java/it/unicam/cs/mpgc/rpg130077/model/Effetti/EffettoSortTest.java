@@ -35,6 +35,12 @@ class EffettoSortTest {
         @Override public Entita getEroe(int n) { return null; }
         @Override public Entita getNemico(int n) { return null; }
         @Override public StatoBattaglia copy() { return this; }
+        @Override
+        public  void setEroe(Entita e) {
+        }
+        @Override
+        public  void setNemico(Entita e) {
+        }
     }
 
     @BeforeEach

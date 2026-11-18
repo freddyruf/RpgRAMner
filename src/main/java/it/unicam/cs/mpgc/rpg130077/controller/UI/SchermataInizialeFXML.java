@@ -36,7 +36,10 @@ public class SchermataInizialeFXML extends SchermataGenericaJavaFX {
         else{
             // Crea la nuova partita leggendo l'equipaggiamento dal Gestore (quello scelto dal giocatore)
             // e leggendo il catalogo (per generare l'equipaggiamento del nemico)
-            it.unicam.cs.mpgc.rpg130077.model.GameFactory factory = new it.unicam.cs.mpgc.rpg130077.model.GameFactory();
+            it.unicam.cs.mpgc.rpg130077.model.GameFactory factory = sessionState.gameFactory;
+            if (factory == null) {
+                throw new IllegalStateException("GameFactory non configurata nella sessione");
+            }
             
             // Reperiamo l'equipaggiamento SALVATO dal giocatore
             java.util.List<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> armiGiocatore = sessionState.gestoreArmamento.getArmiSalvate();
@@ -46,8 +49,12 @@ public class SchermataInizialeFXML extends SchermataGenericaJavaFX {
             it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo caricatore = new it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaCatalogoArmamentoJSON();
             java.util.List<it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma> catalogoArmi = caricatore.caricamentoCatalogoArmi();
             java.util.List<it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack> catalogoHacks = caricatore.caricamentoCatalogoHacks();
-            
-            it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice(armiGiocatore, hacksGiocatore, catalogoArmi, catalogoHacks);
+
+            factory.setCatalogoArmi(catalogoArmi);
+            factory.setCatalogoHack(catalogoHacks);
+            factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+            factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+            it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
             
             // Aggiorna lo stato della sessione per la schermata di battaglia
             sessionState.combattimento = combattimento;
@@ -60,4 +67,3 @@ public class SchermataInizialeFXML extends SchermataGenericaJavaFX {
 
     }
     }
-

@@ -34,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdversarialModelStressTest {
 
     private static class StubStatoBattaglia implements StatoBattaglia {
-        private final RAM ram;
-        private final Giocatore giocatore;
+        private RAM ram;
+        private Giocatore giocatore;
 
         StubStatoBattaglia(RAM ram, Giocatore giocatore) {
             this.ram = ram;
@@ -53,6 +53,14 @@ public class AdversarialModelStressTest {
         @Override public Entita getEroe(int n) { return giocatore; }
         @Override public Entita getNemico(int n) { return null; }
         @Override public StatoBattaglia copy() { return this; }
+        @Override
+        public  void setEroe(Entita e) {
+            giocatore=(Giocatore) e;
+        }
+        @Override
+        public  void setNemico(Entita e) {
+
+        }
     }
 
     private Giocatore createPlayer(String name, int pv, int ramSize) {

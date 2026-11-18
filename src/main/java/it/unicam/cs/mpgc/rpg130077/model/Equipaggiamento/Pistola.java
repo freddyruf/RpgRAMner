@@ -16,7 +16,7 @@ public class Pistola extends Arma {
 
     @Override
     public int calcolaDanno() {
-        if(Math.random()<critChance){
+        if(random.getDouble()<critChance){
             return danno*2;
         }
         else return danno;

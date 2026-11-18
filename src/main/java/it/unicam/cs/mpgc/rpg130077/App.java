@@ -5,9 +5,8 @@ import it.unicam.cs.mpgc.rpg130077.controller.UI.SchermataInizialeFXML;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreMusica;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamentoJSON;
@@ -46,6 +45,7 @@ public class App extends Application {
             SchermataInizialeFXML controller = loader.getController();
             SessionState sessione = new SessionState();
             sessione.gestoreArmamento = gestoreArmamento;
+            sessione.gameFactory = new GameFactory(new StatoBattaglia1v1());
             sessione.spazioRam = 15; //default
             
             controller.setSessione(sessione);

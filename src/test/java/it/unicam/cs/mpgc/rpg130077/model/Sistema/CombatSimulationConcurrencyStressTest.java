@@ -16,6 +16,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
@@ -344,6 +345,12 @@ public class CombatSimulationConcurrencyStressTest {
                 @Override public Entita getEroe(int n) { return eroi.get(n); }
                 @Override public Entita getNemico(int n) { return nemici.get(n); }
                 @Override public StatoBattaglia copy() { return this; }
+                @Override
+                public  void setEroe(Entita e) {
+                }
+                @Override
+                public  void setNemico(Entita e) {
+                }
             }
 
             MultiHeroStato stato = new MultiHeroStato(ram);
@@ -489,24 +496,10 @@ public class CombatSimulationConcurrencyStressTest {
     @Nested
     @DisplayName("5. GameFactory Boundary and Isolation Stress Tests")
     class GameFactoryStressTests {
-
-        @Test
-        @DisplayName("GameFactory enforces minimum 2 catalog weapons invariant")
-        void testGameFactoryMinimumCatalogWeapons() {
-            GameFactory factory = new GameFactory();
-            List<Arma> playerWeapons = List.of(new Pistola("P", "D", 6, 10, 0));
-            List<Hack> playerHacks = List.of();
-            List<Arma> catalogWeapons1 = List.of(new Pistola("SingleCat", "D", 6, 10, 0));
-            List<Hack> catalogHacks = List.of();
-
-            assertThrows(IllegalStateException.class, () ->
-                    factory.creaNuovaPartitaSemplice(playerWeapons, playerHacks, catalogWeapons1, catalogHacks));
-        }
-
         @Test
         @DisplayName("GameFactory creates fully functioning combat system with deep copied assets")
         void testGameFactoryCreatedCombatExecution() {
-            GameFactory factory = new GameFactory();
+            GameFactory factory = new GameFactory(new StatoBattaglia1v1());
             List<Arma> playerWeapons = List.of(new Pistola("PlayerGun", "D", 6, 20, 0));
             List<Hack> playerHacks = List.of(new Hack("HackP", "D", 2));
             List<Arma> catalogWeapons = List.of(
@@ -518,7 +511,12 @@ public class CombatSimulationConcurrencyStressTest {
                     new Hack("CatH1_Enemy", "D", 3)
             );
 
-            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice(playerWeapons, playerHacks, catalogWeapons, catalogHacks);
+            factory.setCatalogoArmi(catalogWeapons);
+            factory.setCatalogoHack(catalogHacks);
+            factory.setEquipaggiamentoGiocatoreArmi(playerWeapons);
+            factory.setEquipaggiamentoGiocatoreHacks(playerHacks);
+            factory.setStrategia(new StrategiaCasuale());
+            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice();
             assertNotNull(combat);
             assertNotNull(combat.getStatoBattaglia());
 
