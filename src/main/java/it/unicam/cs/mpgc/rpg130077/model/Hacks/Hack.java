@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Classe che rappresenta il concetto di Hack: Software che interagisce con la battaglia. E' l'equivalente di un incantesimo per i classici RPG
@@ -26,10 +27,11 @@ public class Hack {
         this.nome = hack.getNome();
         this.descrizione = hack.getDescrizione();
         this.durata = hack.getDurata();
-        this.effetti = new ArrayList<>();
-        for(Effetto effetto : hack.getEffetti()) {
-            this.effetti.add(effetto.copy());
-        }
+        this.effetti = hack.getEffetti().stream()
+                // Crea una copia indipendente di ogni effetto.
+                .map(Effetto::copy)
+                // Raccoglie le copie in una nuova ArrayList.
+                .collect(Collectors.toCollection(ArrayList::new));
     }
     public Hack copy(){
         return new Hack(this);
@@ -55,13 +57,14 @@ public class Hack {
      * @return true se causa danni false se non
      */
     public ArrayList<EffectType> getEffectTypes() {
-        ArrayList<EffectType> effectTypes = new ArrayList<>();
-        for(Effetto effetto : effetti){
-            EffectType effectType = effetto.getEffectType();
-            if (!effectTypes.contains(effectType)) {
-                effectTypes.add(effectType);
-            }
-        }
+        ArrayList<EffectType> effectTypes = effetti.stream()
+                // Converte ogni effetto nel relativo tipo.
+                .map(Effetto::getEffectType)
+                // Elimina i tipi duplicati mantenendo il primo trovato.
+                .distinct()
+                // Raccoglie i risultati in una nuova ArrayList.
+                .collect(Collectors.toCollection(ArrayList::new));
+
         if (!effectTypes.contains(EffectType.RAM)) {
             effectTypes.add(EffectType.RAM);
         }

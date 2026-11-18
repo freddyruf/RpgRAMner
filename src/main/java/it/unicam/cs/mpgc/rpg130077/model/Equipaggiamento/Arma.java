@@ -5,11 +5,12 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Classe astratta che rappresenta un'arma nel gioco.
  */
-public abstract class Arma implements Equipaggiamento {
+public abstract class  Arma implements Equipaggiamento {
     String nome;
     String descrizione;
     int maxCaricatore;
@@ -42,9 +43,11 @@ public abstract class Arma implements Equipaggiamento {
         this.random = arma.random;
         this.effetti = new ArrayList<>();
         if (arma.effetti != null) {
-            for (Effetto effetto : arma.effetti) {
-                this.effetti.add(effetto.copy());
-            }
+            this.effetti = arma.effetti.stream()
+                    // Crea una copia indipendente di ogni effetto.
+                    .map(Effetto::copy)
+                    // Raccoglie le copie nella lista dell'arma.
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
     }
 
@@ -111,13 +114,12 @@ public abstract class Arma implements Equipaggiamento {
             return new ArrayList<>(java.util.Arrays.asList(EffectType.DAMAGE));
         }
 
-        ArrayList<EffectType> effectTypes = new ArrayList<>();
-        for (Effetto effetto : effetti) {
-            EffectType effectType = effetto.getEffectType();
-            if (!effectTypes.contains(effectType)) {
-                effectTypes.add(effectType);
-            }
-        }
-        return effectTypes;
+        return effetti.stream()
+                // Converte ogni effetto nel relativo tipo.
+                .map(Effetto::getEffectType)
+                // Elimina i tipi duplicati mantenendo il primo trovato.
+                .distinct()
+                // Raccoglie i risultati in una nuova ArrayList.
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

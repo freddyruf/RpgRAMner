@@ -178,23 +178,13 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         ArrayList<Entita> eroi = stato.getFazioneEroi();
         ArrayList<Entita> nemici = stato.getFazioneNemici();
 
-        boolean eroiSconfitti = true;
-        boolean nemiciSconfitti = true;
+        // Verifica che nessun eroe abbia ancora punti vita.
+        boolean eroiSconfitti = eroi.stream()
+                .noneMatch(eroe -> eroe.getPv() > 0);
 
-        // Controlla se c'è almeno un eroe vivo
-        for (Entita eroe : eroi) {
-            if (eroe.getPv() > 0) {
-                eroiSconfitti = false;
-                break;
-            }
-        }
-        // Controlla se c'è almeno un nemico vivo
-        for (Entita nemico : nemici) {
-            if (nemico.getPv() > 0) {
-                nemiciSconfitti = false;
-                break;
-            }
-        }
+        // Verifica che nessun nemico abbia ancora punti vita.
+        boolean nemiciSconfitti = nemici.stream()
+                .noneMatch(nemico -> nemico.getPv() > 0);
 
         if (eroiSconfitti && nemiciSconfitti) { //pareggio
             if (!vittoriaNotificata) {

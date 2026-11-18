@@ -13,6 +13,7 @@ import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCombattimento;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Crea una nuova partita a partire dall'equipaggiamento del giocatore e dai cataloghi.
@@ -101,9 +102,11 @@ public class GameFactory {
     }
 
     private static ArrayList<Hack> copiaHacks(List<Hack> hacks) {
-        ArrayList<Hack> copie = new ArrayList<>();
-        for (Hack h : hacks) copie.add(h.copy());
-        return copie;
+        return hacks.stream()
+                // Crea una copia indipendente di ogni hack.
+                .map(Hack::copy)
+                // Raccoglie le copie in una nuova ArrayList.
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void setEquipaggiamentoGiocatoreArmi(List<Arma> equipaggiamentoGiocatoreArmi) {

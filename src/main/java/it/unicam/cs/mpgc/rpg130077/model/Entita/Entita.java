@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Classe che astrae il concetto di "Entita": Essere vivente, o perlomeno, dotato di una coscienza
@@ -40,10 +41,11 @@ public abstract class Entita {
         this.pv =entita.pv;
         this.image = entita.image;
         this.spazioRAM = entita.spazioRAM;
-        this.hacks = new ArrayList<Hack>(entita.hacks.size());
-        for (Hack hack : entita.hacks) {
-            this.hacks.add(hack.copy());
-        }
+        this.hacks = entita.hacks.stream()
+                // Crea una copia indipendente di ogni hack.
+                .map(Hack::copy)
+                // Raccoglie le copie in una nuova ArrayList.
+                .collect(Collectors.toCollection(ArrayList::new));
         this.arma = entita.arma.copy();
         this.fazione = entita.fazione;
     }

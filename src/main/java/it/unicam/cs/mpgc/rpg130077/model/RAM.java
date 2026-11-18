@@ -46,11 +46,11 @@ public class RAM {
     }
 
     public synchronized int getSpazioOccupato(){
-        int spazioOccupato = 0;
-        for(QueuedHack hack : hacks){
-            spazioOccupato += hack.getTickInCoda();
-        }
-        return spazioOccupato;
+        return hacks.stream()
+                // Estrae i tick occupati da ogni hack in coda.
+                .mapToInt(QueuedHack::getTickInCoda)
+                // Somma tutti i tick.
+                .sum();
     }
 
     public synchronized void inserisci(Hack hack, Entita bersaglio, Entita lanciatore) {
