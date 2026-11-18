@@ -5,12 +5,14 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,13 +34,13 @@ class AzioneSparoTest {
     }
 
     @Test
-    @DisplayName("getEffectTypes restituisce esattamente Set.of(EffectType.DAMAGE)")
+    @DisplayName("getEffectTypes restituisce una lista immutabile con EffectType.DAMAGE")
     void testEffectTypesContieneDamage() {
         AzioneSparo azione = new AzioneSparo(lanciatore, bersaglio);
-        Set<EffectType> types = azione.getEffectTypes();
+        ArrayList<EffectType> types = azione.getEffectTypes();
 
         assertNotNull(types);
-        assertEquals(Set.of(EffectType.DAMAGE), types);
+        assertEquals(new ArrayList<>(java.util.Arrays.asList(EffectType.DAMAGE)), types);
         assertTrue(types.contains(EffectType.DAMAGE));
         assertFalse(types.contains(EffectType.HEAL));
         assertFalse(types.contains(EffectType.RAM));
@@ -88,6 +90,36 @@ class AzioneSparoTest {
     void testEseguiConEntrambiNullLanciaNPE() {
         AzioneSparo azione = new AzioneSparo(null, null);
         assertThrows(NullPointerException.class, () -> azione.esegui(null));
+    }
+
+    @Test
+    @DisplayName("arma con effetto cura applica prima il danno diretto e poi cura il lanciatore")
+    void testArmaConEffettoCura() {
+        Arma armaCurativa = new Pistola("PistolaCura", "Desc", 6, 30, 0.0);
+        armaCurativa.addEffetto(new EffettoCura(25, true));
+        Entita lanciatoreCurativo = new Giocatore("Healer", 100, "", 8,
+                new ArrayList<>(), armaCurativa, true);
+        lanciatoreCurativo.setPv(50);
+
+        AzioneSparo azione = new AzioneSparo(lanciatoreCurativo, lanciatoreCurativo);
+        azione.esegui(null);
+
+        assertEquals(45, lanciatoreCurativo.getPv());
+    }
+
+    @Test
+    @DisplayName("arma con effetto danno espone DAMAGE ed esegue l'effetto")
+    void testArmaConEffettoDanno() {
+        Arma armaConEffetto = new Pistola("PistolaEffetto", "Desc", 6, 30, 0.0);
+        armaConEffetto.addEffetto(new EffettoDanno(40, true));
+        Entita lanciatoreEffetto = new Giocatore("Caster", 100, "", 8,
+                new ArrayList<>(), armaConEffetto, true);
+
+        AzioneSparo azione = new AzioneSparo(lanciatoreEffetto, bersaglio);
+        azione.esegui(null);
+
+        assertTrue(azione.getEffectTypes().contains(EffectType.DAMAGE));
+        assertEquals(30, bersaglio.getPv());
     }
 
     @Test

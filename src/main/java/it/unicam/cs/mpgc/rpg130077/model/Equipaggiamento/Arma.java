@@ -1,6 +1,10 @@
 package it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento;
 
 import it.unicam.cs.mpgc.rpg130077.model.RandomNumbersGenerator;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
+
+import java.util.ArrayList;
 
 /**
  * Classe astratta che rappresenta un'arma nel gioco.
@@ -13,6 +17,7 @@ public abstract class Arma implements Equipaggiamento {
     int danno;
     double critChance; //min 0 max 1
     protected RandomNumbersGenerator random = new RandomNumbersGenerator();
+    protected ArrayList<Effetto> effetti;
 
     public Arma(String nome,String descrizione, int maxCaricatore, int danno, double critChance) {
         if(nome == null) {
@@ -25,6 +30,7 @@ public abstract class Arma implements Equipaggiamento {
         this.danno = danno;
         this.critChance = critChance;
         this.descrizione = descrizione;
+        this.effetti = new ArrayList<>();
     }
     public Arma(Arma arma) {
         this.nome = arma.nome;
@@ -34,11 +40,24 @@ public abstract class Arma implements Equipaggiamento {
         this.danno = arma.danno;
         this.critChance = arma.critChance;
         this.random = arma.random;
+        this.effetti = new ArrayList<>();
+        if (arma.effetti != null) {
+            for (Effetto effetto : arma.effetti) {
+                this.effetti.add(effetto.copy());
+            }
+        }
     }
 
     public void setRandom(RandomNumbersGenerator random) {
         if (random == null) throw new NullPointerException("Il generatore random non può essere nullo");
         this.random = random;
+    }
+
+    protected RandomNumbersGenerator getRandom() {
+        if (random == null) {
+            random = new RandomNumbersGenerator();
+        }
+        return random;
     }
     public abstract Arma copy();
 
@@ -69,6 +88,36 @@ public abstract class Arma implements Equipaggiamento {
 
     public abstract int calcolaDanno();
 
+    public ArrayList<Effetto> getEffetti() {
+        if (effetti == null) {
+            effetti = new ArrayList<>();
+        }
+        return effetti;
+    }
 
+    public void addEffetto(Effetto effetto) {
+        if (effetto == null) {
+            throw new NullPointerException("L'effetto non può essere nullo");
+        }
+        effetti.add(effetto);
+    }
 
+    public void removeEffetto(Effetto effetto) {
+        effetti.remove(effetto);
+    }
+
+    public ArrayList<EffectType> getEffectTypes() {
+        if (effetti == null || effetti.isEmpty()) {
+            return new ArrayList<>(java.util.Arrays.asList(EffectType.DAMAGE));
+        }
+
+        ArrayList<EffectType> effectTypes = new ArrayList<>();
+        for (Effetto effetto : effetti) {
+            EffectType effectType = effetto.getEffectType();
+            if (!effectTypes.contains(effectType)) {
+                effectTypes.add(effectType);
+            }
+        }
+        return effectTypes;
+    }
 }

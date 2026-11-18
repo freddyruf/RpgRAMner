@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 
 /**
- * Interfaccia che astrae il concetto di combattimento nella sua interezza
+ * Interfaccia che astrae il concetto di combattimento nella sua interezza, contenendo sia metodi di esecuzione che dati con la classe Statobattaglia
  */
 public interface SistemaCombattimento {
     /**
@@ -49,6 +49,8 @@ public interface SistemaCombattimento {
      * Ripristina il combattimento allo stato originario
      */
     void ripristina();
+
+    void setStato(StatoBattaglia stato);
 
 }
 

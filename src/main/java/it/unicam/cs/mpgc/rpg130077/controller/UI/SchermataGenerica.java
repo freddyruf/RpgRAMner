@@ -1,28 +1,16 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
-import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
-import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public abstract class SchermataGenerica {
     SessionState sessionState;
 
 
-
-    public void setSpazioRam(int spazioRam){
-        sessionState.spazioRam = spazioRam;
-    }
 
     /**
      * Carica una nuova schermata FXML, le passa tutte le dipendenze condivise
@@ -38,11 +26,11 @@ public abstract class SchermataGenerica {
     }
 
     public void setSistemaCombattimento(SistemaCombattimento s) {
-        sessionState.combattimento = s;
+        sessionState.setCombattimento(s);
     }
 
     public void setClock(Clock clock) {
-        sessionState.clock = clock;
+        sessionState.setClock(clock);
     }
 
     /**

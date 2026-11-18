@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * Interfaccia che astrae il concetto di Azione: Entita X compie una azione
@@ -12,5 +12,5 @@ import java.util.Set;
 
 public interface Azione {
     void esegui(StatoBattaglia statoBattaglia);
-    Set<EffectType> getEffectTypes();
+    ArrayList<EffectType> getEffectTypes();
 }

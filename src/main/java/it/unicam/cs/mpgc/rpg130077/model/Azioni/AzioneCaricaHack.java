@@ -5,8 +5,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 
 public class AzioneCaricaHack implements Azione {
@@ -25,7 +24,7 @@ public class AzioneCaricaHack implements Azione {
     }
 
     @Override
-    public Set<EffectType> getEffectTypes() {
+    public ArrayList<EffectType> getEffectTypes() {
         return hack.getEffectTypes();
     }
 

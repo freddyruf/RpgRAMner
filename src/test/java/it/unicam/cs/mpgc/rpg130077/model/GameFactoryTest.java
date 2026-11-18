@@ -57,6 +57,12 @@ class GameFactoryTest {
         ));
     }
 
+    private SistemaCombattimento creaCombattimento() {
+        SistemaCombattimento combattimento = new CombattimentoATurni();
+        factory.creaNuovaPartitaSemplice(combattimento);
+        return combattimento;
+    }
+
     @Test
     @DisplayName("Crea partita semplice con catalogo reale da file JSON")
     void testCreaNuovaPartitaSempliceConCatalogoReale() {
@@ -68,7 +74,7 @@ class GameFactoryTest {
         factory.setEquipaggiamentoGiocatoreArmi(armi);
         factory.setEquipaggiamentoGiocatoreHacks(hacks);
         factory.setStrategia(new StrategiaCasuale());
-        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
+        SistemaCombattimento combattimento = creaCombattimento();
 
         assertNotNull(combattimento);
         assertInstanceOf(CombattimentoATurni.class, combattimento);
@@ -117,7 +123,7 @@ class GameFactoryTest {
         factory.setEquipaggiamentoNemicoArmi(List.of(catalogoArmi.get(1)));
         factory.setEquipaggiamentoNemicoHacks(List.of(catalogoHacks.get(1), catalogoHacks.get(2)));
         factory.setStrategia(new StrategiaCasuale());
-        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
+        SistemaCombattimento combattimento = creaCombattimento();
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         Giocatore eroe = stato.getGiocatore();
@@ -149,7 +155,7 @@ class GameFactoryTest {
         factory.setEquipaggiamentoNemicoArmi(List.of(catalogoArmi.get(1)));
         factory.setEquipaggiamentoNemicoHacks(List.of(catalogoHacks.get(1), catalogoHacks.get(2)));
         factory.setStrategia(new StrategiaCasuale());
-        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
+        SistemaCombattimento combattimento = creaCombattimento();
         StatoBattaglia stato = combattimento.getStatoBattaglia();
 
         Giocatore eroe = stato.getGiocatore();
@@ -176,7 +182,7 @@ class GameFactoryTest {
         factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
         factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
         factory.setStrategia(new StrategiaCasuale());
-        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
+        SistemaCombattimento combattimento = creaCombattimento();
         NPC nemico = (NPC) combattimento.getStatoBattaglia().getNemico(0);
 
         // Il nemico prende al massimo tanti hack quanti ne offre il catalogo, senza ripetizioni
@@ -192,7 +198,7 @@ class GameFactoryTest {
         factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
         factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
         factory.setStrategia(new StrategiaCasuale());
-        SistemaCombattimento combattimento = factory.creaNuovaPartitaSemplice();
+        SistemaCombattimento combattimento = creaCombattimento();
 
         assertNull(combattimento.checkVittoria());
         assertDoesNotThrow(combattimento::avanza);

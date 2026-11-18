@@ -6,7 +6,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import javafx.event.ActionEvent;
@@ -54,17 +54,6 @@ public class SchermataGenericaTest {
     }
 
     @Test
-    @DisplayName("setSpazioRam mutates sessionState.spazioRam")
-    public void testSetSpazioRam() {
-        DummySchermata schermata = new DummySchermata();
-        SessionState session = new SessionState();
-        schermata.setSessione(session);
-
-        schermata.setSpazioRam(32);
-        assertEquals(32, session.spazioRam);
-    }
-
-    @Test
     @DisplayName("setSistemaCombattimento mutates sessionState.combattimento")
     public void testSetSistemaCombattimento() {
         DummySchermata schermata = new DummySchermata();
@@ -77,7 +66,7 @@ public class SchermataGenericaTest {
                 new Pistola("P2", "D2", 6, 10, 0.1), 5, 0.1, new StrategiaCasuale(), false);
         SistemaCombattimento dummyCombat = new CombattimentoATurni(new StatoBattaglia1v1(hero, enemy));
         schermata.setSistemaCombattimento(dummyCombat);
-        assertSame(dummyCombat, session.combattimento);
+        assertSame(dummyCombat, session.getCombattimento());
     }
 
     @Test
@@ -89,7 +78,7 @@ public class SchermataGenericaTest {
 
         Clock clock = new Clock(() -> {});
         schermata.setClock(clock);
-        assertSame(clock, session.clock);
+        assertSame(clock, session.getClock());
     }
 
     @Test
@@ -116,7 +105,6 @@ public class SchermataGenericaTest {
     public void testCaricaSchermataValida() throws Exception {
         DummySchermata schermata = new DummySchermata();
         SessionState session = new SessionState();
-        session.spazioRam = 25;
         schermata.setSessione(session);
 
         JavaFXTestHelper.runOnFxThread(() -> {

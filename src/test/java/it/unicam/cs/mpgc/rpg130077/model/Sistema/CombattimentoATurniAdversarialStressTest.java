@@ -392,7 +392,8 @@ public class CombattimentoATurniAdversarialStressTest {
             factory.setEquipaggiamentoNemicoArmi(enemyWeapons);
             factory.setEquipaggiamentoNemicoHacks(enemyHacks);
             factory.setStrategia(new StrategiaCasuale());
-            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice();
+            SistemaCombattimento combat = new CombattimentoATurni();
+            factory.creaNuovaPartitaSemplice(combat);
             StatoBattaglia stato = combat.getStatoBattaglia();
 
             // Mutate input lists after creation

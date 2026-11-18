@@ -1,10 +1,11 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreEquipaggiamento;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import javafx.event.ActionEvent;
@@ -13,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -102,12 +101,12 @@ public class SceltaArmamentoFXMLTest {
         SceltaArmamentoFXML controller = new SceltaArmamentoFXML();
         controller.mainPane = new Pane();
         SessionState session = new SessionState();
-        session.gestoreArmamento = null;
+        session.setGestoreEquipaggiamento(null);
 
         NullPointerException npe = assertThrows(NullPointerException.class, () -> {
             controller.setSessione(session);
         });
-        assertEquals("GestoreArmamento non trovata", npe.getMessage());
+        assertEquals("GestoreEquipaggiamento non trovato", npe.getMessage());
     }
 
     @Test
@@ -132,9 +131,9 @@ public class SceltaArmamentoFXMLTest {
             mockPersistenza.catalogo.hacks.add(new Hack("HackShield", "Scudo protettivo", 3));
             mockPersistenza.catalogo.hacks.add(new Hack("HackDrain", "Drena energia", 4));
 
-            GestoreArmamento gestore = new GestoreArmamento(mockPersistenza);
+            GestoreEquipaggiamento gestore = new GestoreArmamento(mockPersistenza);
             SessionState session = new SessionState();
-            session.gestoreArmamento = gestore;
+            session.setGestoreEquipaggiamento(gestore);
             controller.sessionState = session;
 
             controller.popolaMenuDaCatalogo();
@@ -178,9 +177,9 @@ public class SceltaArmamentoFXMLTest {
             mockPersistenza.armiSalvate.add(savedPistola);
             mockPersistenza.hacksSalvati.add(savedHack);
 
-            GestoreArmamento gestore = new GestoreArmamento(mockPersistenza);
+            GestoreEquipaggiamento gestore = new GestoreArmamento(mockPersistenza);
             SessionState session = new SessionState();
-            session.gestoreArmamento = gestore;
+            session.setGestoreEquipaggiamento(gestore);
             controller.sessionState = session;
 
             controller.caricaArmamento();
@@ -233,9 +232,9 @@ public class SceltaArmamentoFXMLTest {
                 stage.show();
 
                 MockPersistenzaArmamento mockPersistenza = new MockPersistenzaArmamento();
-                GestoreArmamento gestore = new GestoreArmamento(mockPersistenza);
+                GestoreEquipaggiamento gestore = new GestoreArmamento(mockPersistenza);
                 SessionState session = new SessionState();
-                session.gestoreArmamento = gestore;
+                session.setGestoreEquipaggiamento(gestore);
                 controller.sessionState = session;
 
                 Method pulsanteEsciMethod = SceltaArmamentoFXML.class.getDeclaredMethod("PulsanteEsci", ActionEvent.class);
@@ -280,9 +279,9 @@ public class SceltaArmamentoFXMLTest {
                 mockPersistenza.catalogo.armi.add(savedPistola);
                 mockPersistenza.catalogo.hacks.add(savedHack);
 
-                GestoreArmamento gestore = new GestoreArmamento(mockPersistenza);
+                GestoreEquipaggiamento gestore = new GestoreArmamento(mockPersistenza);
                 SessionState session = new SessionState();
-                session.gestoreArmamento = gestore;
+                session.setGestoreEquipaggiamento(gestore);
                 controller.sessionState = session;
 
                 Method pulsanteEsciMethod = SceltaArmamentoFXML.class.getDeclaredMethod("PulsanteEsci", ActionEvent.class);

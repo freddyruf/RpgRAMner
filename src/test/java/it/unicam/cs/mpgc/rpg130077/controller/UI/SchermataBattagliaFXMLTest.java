@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
-import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.NPC;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
@@ -10,7 +9,7 @@ import it.unicam.cs.mpgc.rpg130077.model.IA.StrategiaCasuale;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.SistemaCombattimento;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import javafx.event.ActionEvent;
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,9 +96,8 @@ public class SchermataBattagliaFXMLTest {
         clock = new Clock(() -> combattimento.onTick());
 
         sessionState = new SessionState();
-        sessionState.combattimento = combattimento;
-        sessionState.clock = clock;
-        sessionState.spazioRam = 30;
+        sessionState.setCombattimento(combattimento);
+        sessionState.setClock(clock);
 
         controller.setSessione(sessionState);
     }

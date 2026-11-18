@@ -34,16 +34,15 @@ public class GameFactory {
     private List<Hack> catalogoHack = new ArrayList<>();
     private NPC nemico;
     private StatoBattaglia statoBattaglia;
-    private final StatoBattaglia statoBattagliaConfigurato;
     private StrategiaCombattimento strategia;
     private RandomNumbersGenerator random = new RandomNumbersGenerator();
 
     public GameFactory(StatoBattaglia statoBattaglia) {
-        this.statoBattagliaConfigurato = Objects.requireNonNull(statoBattaglia,
+        this.statoBattaglia = Objects.requireNonNull(statoBattaglia,
                 "Lo stato della battaglia non puo essere nullo");
     }
 
-    public SistemaCombattimento creaNuovaPartitaSemplice() {
+    public void creaNuovaPartitaSemplice(SistemaCombattimento sistemaCombattimento) {
         if (equipaggiamentoGiocatoreArmi == null || equipaggiamentoGiocatoreHacks == null) {
             throw new NullPointerException("L'equipaggiamento del giocatore non puo essere nullo");
         }
@@ -55,15 +54,15 @@ public class GameFactory {
                 copiaHacks(equipaggiamentoGiocatoreHacks), equipaggiamentoGiocatoreArmi.get(0).copy(), true);
         NPC avversario = nemico != null ? (NPC) nemico.copy() : creaNemico();
 
-        StatoBattaglia stato = statoBattagliaConfigurato != null
-                ? statoBattagliaConfigurato
+        StatoBattaglia stato = statoBattaglia != null
+                ? statoBattaglia
                 : statoBattaglia;
         if (stato == null) {
             throw new IllegalStateException("Lo stato della battaglia deve essere configurato");
         }
         stato.setEroe(giocatore);
         stato.setNemico(avversario);
-        return new CombattimentoATurni(stato);
+        sistemaCombattimento.setStato(stato);
     }
 
     private NPC creaNemico() {

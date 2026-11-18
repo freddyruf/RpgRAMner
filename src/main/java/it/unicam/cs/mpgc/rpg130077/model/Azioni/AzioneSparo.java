@@ -2,9 +2,11 @@ package it.unicam.cs.mpgc.rpg130077.model.Azioni;
 
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffectType;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
+import it.unicam.cs.mpgc.rpg130077.model.Effetti.Effetto;
+import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 public class AzioneSparo implements Azione {
     private Entita lanciatore;
@@ -20,11 +22,19 @@ public class AzioneSparo implements Azione {
         if(lanciatore==null || bersaglio==null){
             throw new NullPointerException("Lanciatore o Bersaglio nullo");
         }
-        bersaglio.setPv(bersaglio.getPv()-lanciatore.getArma().calcolaDanno());
+        Arma arma = lanciatore.getArma();
+        bersaglio.setPv(bersaglio.getPv() - arma.calcolaDanno());
+
+        for (Effetto effetto : arma.getEffetti()) {
+            effetto.eseguiEffetto(stato, lanciatore, bersaglio);
+        }
     }
 
     @Override
-    public Set<EffectType> getEffectTypes() {
-        return Set.of(EffectType.DAMAGE);
+    public ArrayList<EffectType> getEffectTypes() {
+        return lanciatore != null && lanciatore.getArma() != null
+                ? lanciatore.getArma().getEffectTypes()
+                : new ArrayList<>(java.util.Arrays.asList(EffectType.DAMAGE));
     }
+
 }

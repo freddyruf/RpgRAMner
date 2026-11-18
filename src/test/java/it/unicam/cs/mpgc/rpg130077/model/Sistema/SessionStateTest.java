@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreEquipaggiamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamentoJSON;
@@ -16,10 +18,10 @@ class SessionStateTest {
     @DisplayName("SessionState default constructor initializes fields to default null and zero")
     void testDefaultInitialization() {
         SessionState sessione = new SessionState();
-        assertNull(sessione.combattimento, "combattimento should be null by default");
-        assertNull(sessione.clock, "clock should be null by default");
-        assertNull(sessione.gestoreArmamento, "gestoreArmamento should be null by default");
-        assertEquals(0, sessione.spazioRam, "spazioRam should be 0 by default");
+        assertNull(sessione.getCombattimento(), "combattimento should be null by default");
+        assertNull(sessione.getClock(), "clock should be null by default");
+        assertNull(sessione.getGestoreEquipaggiamento(), "gestoreEquipaggiamento should be null by default");
+        assertEquals(0, sessione.getMaxSpazioRam(), "spazioRam should be 0 by default");
     }
 
     @Test
@@ -27,25 +29,22 @@ class SessionStateTest {
     void testFieldAssignmentAndRetrieval() {
         SessionState sessione = new SessionState();
 
-        sessione.spazioRam = 15;
-        assertEquals(15, sessione.spazioRam);
-
         Clock clock = new Clock(() -> {});
-        sessione.clock = clock;
-        assertSame(clock, sessione.clock);
+        sessione.setClock(clock);
+        assertSame(clock, sessione.getClock());
 
 
         CaricatoreCatalogo catalogo = new PersistenzaCatalogoArmamentoJSON();
         PersistenzaArmamento persistenza = new PersistenzaArmamentoJSON(catalogo);
-        GestoreArmamento gestore = new GestoreArmamento(persistenza);
-        sessione.gestoreArmamento = gestore;
-        assertSame(gestore, sessione.gestoreArmamento);
+        GestoreEquipaggiamento gestore = new GestoreArmamento(persistenza);
+        sessione.setGestoreEquipaggiamento(gestore);
+        assertSame(gestore, sessione.getGestoreEquipaggiamento());
 
         // Test reassignment to null
-        sessione.clock = null;
-        assertNull(sessione.clock);
-        sessione.gestoreArmamento = null;
-        assertNull(sessione.gestoreArmamento);
+        sessione.setClock(null);
+        assertNull(sessione.getClock());
+        sessione.setGestoreEquipaggiamento(null);
+        assertNull(sessione.getGestoreEquipaggiamento());
     }
 
     @Test
@@ -54,11 +53,7 @@ class SessionStateTest {
         SessionState session1 = new SessionState();
         SessionState session2 = new SessionState();
 
-        session1.spazioRam = 10;
-        session2.spazioRam = 20;
-
-        assertEquals(10, session1.spazioRam);
-        assertEquals(20, session2.spazioRam);
-        assertNotEquals(session1.spazioRam, session2.spazioRam);
+        assertEquals(0, session1.getMaxSpazioRam());
+        assertEquals(0, session2.getMaxSpazioRam());
     }
 }

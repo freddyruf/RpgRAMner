@@ -19,7 +19,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,10 +80,10 @@ class AzioneCaricaHackTest {
         hack.addEffetto(new EffettoDanno(50, true));
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hack);
 
-        Set<EffectType> types = azione.getEffectTypes();
+        ArrayList<EffectType> types = azione.getEffectTypes();
         assertTrue(types.contains(EffectType.DAMAGE));
         assertFalse(types.contains(EffectType.HEAL));
-        assertFalse(types.contains(EffectType.RAM));
+        assertTrue(types.contains(EffectType.RAM));
     }
 
     @Test
@@ -93,10 +93,10 @@ class AzioneCaricaHackTest {
         hack.addEffetto(new EffettoCura(30, true));
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hack);
 
-        Set<EffectType> types = azione.getEffectTypes();
+        ArrayList<EffectType> types = azione.getEffectTypes();
         assertTrue(types.contains(EffectType.HEAL));
         assertFalse(types.contains(EffectType.DAMAGE));
-        assertFalse(types.contains(EffectType.RAM));
+        assertTrue(types.contains(EffectType.RAM));
     }
 
     @Test
@@ -126,18 +126,20 @@ class AzioneCaricaHackTest {
         hackMultiplo.addEffetto(new EffettoReverse(true));
 
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hackMultiplo);
-        Set<EffectType> types = azione.getEffectTypes();
+        ArrayList<EffectType> types = azione.getEffectTypes();
 
-        assertEquals(Set.of(EffectType.DAMAGE, EffectType.HEAL, EffectType.RAM), types);
+        assertEquals(new ArrayList<>(java.util.Arrays.asList(
+                EffectType.DAMAGE, EffectType.HEAL, EffectType.RAM)), types);
     }
 
     @Test
-    @DisplayName("getEffectTypes restituisce un set vuoto per hack senza effetti")
+    @DisplayName("getEffectTypes contiene RAM per hack senza effetti")
     void testEffectTypeVuotoPerHackSenzaEffetti() {
         Hack hackVuoto = new Hack("EmptyHack", "Nessun effetto", 2);
         AzioneCaricaHack azione = new AzioneCaricaHack(lanciatore, bersaglio, hackVuoto);
 
-        assertTrue(azione.getEffectTypes().isEmpty());
+        assertEquals(new ArrayList<>(java.util.Arrays.asList(EffectType.RAM)),
+                azione.getEffectTypes());
     }
 
     @Test

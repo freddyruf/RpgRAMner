@@ -6,7 +6,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoCura;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.EffettoDanno;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Classe che rappresenta il concetto di Hack: Software che interagisce con la battaglia. E' l'equivalente di un incantesimo per i classici RPG
@@ -55,12 +54,17 @@ public class Hack {
      * Dice se la hack fa danno
      * @return true se causa danni false se non
      */
-    public Set<EffectType> getEffectTypes() {
-        Set<EffectType> effectTypes = new java.util.HashSet<>();
+    public ArrayList<EffectType> getEffectTypes() {
+        ArrayList<EffectType> effectTypes = new ArrayList<>();
         for(Effetto effetto : effetti){
-            effectTypes.add(effetto.getEffectType());
+            EffectType effectType = effetto.getEffectType();
+            if (!effectTypes.contains(effectType)) {
+                effectTypes.add(effectType);
+            }
+        }
+        if (!effectTypes.contains(EffectType.RAM)) {
+            effectTypes.add(EffectType.RAM);
         }
         return effectTypes;
     }
 }
-

@@ -1,11 +1,14 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
 import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreEquipaggiamento;
+import it.unicam.cs.mpgc.rpg130077.controller.logica.GestorePartita;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Arma;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.GameFactory;
+import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoATurni;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.persistenza.CaricatoreCatalogo;
 import it.unicam.cs.mpgc.rpg130077.persistenza.PersistenzaArmamento;
@@ -23,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -126,7 +128,7 @@ public class SchermataInizialeFXMLTest {
 
                 SchermataInizialeFXML controller = new SchermataInizialeFXML();
                 SessionState session = new SessionState();
-                session.gestoreArmamento = new GestoreArmamento(new StubPersistenzaArmamento(null, null));
+                session.setGestoreEquipaggiamento(new GestoreArmamento(new StubPersistenzaArmamento(null, null)));
                 controller.setSessione(session);
 
                 Method goSceltaSetupMethod = SchermataInizialeFXML.class.getDeclaredMethod("goSceltaSetup", ActionEvent.class);
@@ -156,7 +158,7 @@ public class SchermataInizialeFXMLTest {
 
                 SchermataInizialeFXML controller = new SchermataInizialeFXML();
                 SessionState session = new SessionState();
-                session.gestoreArmamento = new GestoreArmamento(new StubPersistenzaArmamento(null, null));
+                session.setGestoreEquipaggiamento(new GestoreArmamento(new StubPersistenzaArmamento(null, null)));
                 controller.setSessione(session);
 
                 Method goBattagliaMethod = SchermataInizialeFXML.class.getDeclaredMethod("goBattaglia", ActionEvent.class);
@@ -165,8 +167,8 @@ public class SchermataInizialeFXMLTest {
                 ActionEvent event = new ActionEvent(btn, null);
                 goBattagliaMethod.invoke(controller, event);
 
-                assertNull(session.combattimento, "Combat should not be initialized when setup is missing");
-                assertNull(session.clock, "Clock should not be initialized when setup is missing");
+                assertNull(session.getCombattimento(), "Combat should not be initialized when setup is missing");
+                assertNull(session.getClock(), "Clock should not be initialized when setup is missing");
             } catch (Exception e) {
                 fail("Exception during goBattaglia redirection: " + e.getMessage());
             }
@@ -191,10 +193,14 @@ public class SchermataInizialeFXMLTest {
                 armiSalvate.add(new Pistola("Pistola Plasma", "Desc", 6, 20, 1.0));
                 ArrayList<Hack> hacksSalvati = new ArrayList<>();
                 hacksSalvati.add(new Hack("Overclock", "Aumenta velocita", 3));
-                GestoreArmamento gestore = new GestoreArmamento(new StubPersistenzaArmamento(armiSalvate, hacksSalvati));
+                GestoreEquipaggiamento gestore = new GestoreArmamento(new StubPersistenzaArmamento(armiSalvate, hacksSalvati));
 
-                session.gestoreArmamento = gestore;
-                session.gameFactory = new GameFactory(new StatoBattaglia1v1());
+                session.setGestoreEquipaggiamento(gestore);
+                session.setCombattimento(new CombattimentoATurni());
+                session.setGestorePartita(new GestorePartita(
+                        gestore,
+                        new GameFactory(new StatoBattaglia1v1()),
+                        new PersistenzaCatalogoArmamentoJSON()));
                 controller.setSessione(session);
 
                 Method goBattagliaMethod = SchermataInizialeFXML.class.getDeclaredMethod("goBattaglia", ActionEvent.class);
@@ -203,14 +209,14 @@ public class SchermataInizialeFXMLTest {
                 ActionEvent event = new ActionEvent(btn, null);
                 goBattagliaMethod.invoke(controller, event);
 
-                assertNotNull(session.combattimento, "Combat system must be created");
-                assertNotNull(session.clock, "Clock must be created");
+                assertNotNull(session.getCombattimento(), "Combat system must be created");
+                assertNotNull(session.getClock(), "Clock must be created");
                 // Hero RAM (10) + Enemy RAM (5) from GameFactory = 15
-                assertEquals(15, session.spazioRam, "Spazio RAM must equal hero (10) + enemy (5)");
+                assertEquals(15, session.getMaxSpazioRam(), "Spazio RAM must equal hero (10) + enemy (5)");
 
                 // Clean up clock to prevent timer threads leaking
-                if (session.clock != null) {
-                    session.clock.stop();
+                if (session.getClock() != null) {
+                    session.getClock().stop();
                 }
             } catch (Exception e) {
                 fail("Exception during goBattaglia with setup: " + e.getMessage());

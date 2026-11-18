@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Classe che gestisce l'armamento del giocatore, inclusi armi e hack. Fornisce metodi per ottenere descrizioni degli oggetti e per salvare l'equipaggiamento scelto.
  */
-public class GestoreArmamento {
+public class GestoreArmamento implements GestoreEquipaggiamento {
     private final ArrayList<Arma> catalogoArmi;
     private final ArrayList<Hack> catalogoHacks;
     private final PersistenzaArmamento gestoreSalvataggi;

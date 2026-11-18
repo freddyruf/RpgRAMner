@@ -1,19 +1,15 @@
 package it.unicam.cs.mpgc.rpg130077.controller.UI;
 
-import it.unicam.cs.mpgc.rpg130077.App;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.CombattimentoListener;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.RAM;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
@@ -23,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
@@ -54,9 +49,9 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
         @Override
         public void setSessione(SessionState s) {
             super.setSessione(s);
-            if (s != null && s.combattimento != null) {
-                s.combattimento.aggiungiListener(this);
-                if(s.clock != null) s.clock.start(); // Risolve CRIT-02
+            if (s != null && s.getCombattimento() != null) {
+                s.getCombattimento().aggiungiListener(this);
+                if(s.getClock() != null) s.getClock().start(); // Risolve CRIT-02
             }
         }
 
@@ -87,7 +82,7 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
         scambiaMenu();
 
         //carico le hacks
-        ArrayList<Hack> catalogo = sessionState.combattimento.getStatoBattaglia().getGiocatore().getHacks();
+        ArrayList<Hack> catalogo = sessionState.getCombattimento().getStatoBattaglia().getGiocatore().getHacks();
 
 
         ArrayList<Button> bottoniHacks = new ArrayList<>();
@@ -134,19 +129,19 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
 
     @FXML
     private void pulsanteSparare(ActionEvent event) {
-        if(sessionState.combattimento.isPlayerTurn()){
-            sessionState.combattimento.spara(sessionState.combattimento.getStatoBattaglia().getNemico(0));
+        if(sessionState.getCombattimento().isPlayerTurn()){
+            sessionState.getCombattimento().spara(sessionState.getCombattimento().getStatoBattaglia().getNemico(0));
         }
 
     }
 
     @FXML
     private void pulsanteHack(ActionEvent event) {
-        if(sessionState.combattimento.isPlayerTurn()){
+        if(sessionState.getCombattimento().isPlayerTurn()){
 
             Button b = (Button) event.getSource();
 
-            ArrayList<Hack> hacksDisponibili = sessionState.combattimento.getStatoBattaglia().getGiocatore().getHacks();
+            ArrayList<Hack> hacksDisponibili = sessionState.getCombattimento().getStatoBattaglia().getGiocatore().getHacks();
             ArrayList<Button> bottoniHacks = new ArrayList<>();
 
             for (javafx.scene.Node nodo : MenuHacks.getChildren()) {
@@ -157,7 +152,7 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
             for (int i = 0; i < bottoniHacks.size(); i++) {
                 if(b==bottoniHacks.get(i)) {
                     try{
-                        sessionState.combattimento.caricaHack(hacksDisponibili.get(i), sessionState.combattimento.getStatoBattaglia().getNemico(0) );
+                        sessionState.getCombattimento().caricaHack(hacksDisponibili.get(i), sessionState.getCombattimento().getStatoBattaglia().getNemico(0) );
                     } catch (IllegalArgumentException e) {
                         mostraTestoFluttuante(e.getMessage(), Color.RED);
                     }
@@ -177,7 +172,7 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
     public void cambiaVita(Entita entita) {
         double percentuale = Math.max(0.0, Math.min(1.0, (double) entita.getPv() / entita.getMaxPv()));
         double width = percentuale * MAX_LIFEBAR_WIDTH;
-        if (sessionState.combattimento.getStatoBattaglia().getFazioneEroi().contains(entita)) {
+        if (sessionState.getCombattimento().getStatoBattaglia().getFazioneEroi().contains(entita)) {
             PlayerLifeBar.setWidth(width);
         } else {
             EnemyLifeBar.setWidth(width);
@@ -195,7 +190,7 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
             throw new NullPointerException("Ram nulla");
         }
 
-        RamViewHelper.disegnaBarra(this.BarraRAM, ram, sessionState.combattimento.getStatoBattaglia().getFazioneEroi());
+        RamViewHelper.disegnaBarra(this.BarraRAM, ram, sessionState.getCombattimento().getStatoBattaglia().getFazioneEroi());
         }
 
     /**
@@ -250,8 +245,8 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
      */
     @Override
     public void onVittoria(Entita vincitore) {
-        if(sessionState.clock!=null){
-            sessionState.clock.stop();
+        if(sessionState.getClock()!=null){
+            sessionState.getClock().stop();
         }
         Platform.runLater(() -> {
             javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);

@@ -10,7 +10,6 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Mitragliatrice;
 import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia1v1;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoTurni;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;

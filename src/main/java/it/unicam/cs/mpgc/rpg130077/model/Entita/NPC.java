@@ -46,7 +46,7 @@ public class NPC extends Entita implements CombattenteAutonomo {
     }
 
     public boolean controllaAttaccoASorpresa(){
-        return random.getDouble() < chanceAttaccoASorpresa;
+        return random.getRandom() < chanceAttaccoASorpresa;
     }
 
     public void setRandom(RandomNumbersGenerator random) {

@@ -47,7 +47,7 @@ public class StrategiaCasuale implements StrategiaCombattimento {
             }
         }
 
-        if (puoCaricareHack && (npc.getArma() == null || random.getDouble() < 0.5)) {
+        if (puoCaricareHack && (npc.getArma() == null || random.getRandom() < 0.5)) {
             Entita target = hackSelezionato.getEffectTypes().contains(EffectType.HEAL) ? npc : entitaBersaglio;
             return new AzioneCaricaHack(npc, target, hackSelezionato);
         } else if (npc.getArma() != null) {

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -356,9 +355,10 @@ class CombattimentoATurniTest {
             public void esegui(StatoBattaglia stato) {}
 
             @Override
-            public Set<EffectType> getEffectTypes() {
-                return Set.of(EffectType.RAM);
+            public ArrayList<EffectType> getEffectTypes() {
+                return new ArrayList<>(java.util.Arrays.asList(EffectType.RAM));
             }
+
         };
 
         combattimentoPassivo.eseguiMossa(azioneNeutro);

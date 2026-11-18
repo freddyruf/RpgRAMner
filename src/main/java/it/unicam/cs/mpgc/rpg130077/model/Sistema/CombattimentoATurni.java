@@ -20,6 +20,29 @@ public class CombattimentoATurni  implements SistemaCombattimento {
     private StatoTurni statoTurni;
     private boolean vittoriaNotificata=false;
 
+    public CombattimentoATurni(StatoBattaglia stato) {
+        this.stato = stato;
+        statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
+
+        //clono il combattimento per salvarlo allo stato originario
+        backup = new CombattimentoATurni(this);
+    }
+    public CombattimentoATurni(CombattimentoATurni combattimentoATurni){
+        this.stato=combattimentoATurni.stato.copy();
+        this.statoTurni=new StatoTurni(combattimentoATurni.statoTurni);
+    }
+
+    public CombattimentoATurni(){};
+
+    @Override
+    public void setStato(StatoBattaglia stato){
+        this.stato=stato;
+        if (stato != null) {
+            this.statoTurni = new StatoTurni(
+                    stato.getFazioneEroi().size(),
+                    stato.getFazioneNemici().size());
+        }
+    }
 
     private ArrayList<CombattimentoListener> listeners= new ArrayList<>();
 
@@ -58,6 +81,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
                 }
             }
         }
+        checkVittoria();
         notificaAggiornamentoRAM();
         notificaAggiornamentoVita();
         notificaTick();
@@ -70,17 +94,7 @@ public class CombattimentoATurni  implements SistemaCombattimento {
         }
     }
 
-    public CombattimentoATurni(StatoBattaglia stato) {
-        this.stato = stato;
-        statoTurni=new StatoTurni(stato.getFazioneEroi().size(), stato.getFazioneNemici().size());
 
-        //clono il combattimento per salvarlo allo stato originario
-        backup = new CombattimentoATurni(this);
-    }
-    public CombattimentoATurni(CombattimentoATurni combattimentoATurni){
-        this.stato=combattimentoATurni.stato.copy();
-        this.statoTurni=new StatoTurni(combattimentoATurni.statoTurni);
-    }
     public void ripristina(){
 
         this.stato=backup.getStatoBattaglia().copy();
@@ -140,11 +154,11 @@ public class CombattimentoATurni  implements SistemaCombattimento {
 
     public void eseguiMossa(Azione azione) {
         azione.esegui(stato);
-        if(azione instanceof AzioneCaricaHack) {
+        if (azione.getEffectTypes().contains(EffectType.RAM)) {
             notificaAggiornamentoRAM();
         }
-        //se l'azione fa danno o cura
-        if(azione.getEffectTypes().contains(EffectType.DAMAGE) || azione.getEffectTypes().contains(EffectType.HEAL)){
+        if (azione.getEffectTypes().contains(EffectType.DAMAGE)
+                || azione.getEffectTypes().contains(EffectType.HEAL)) {
             notificaAggiornamentoVita();
         }
         if (checkVittoria() == null) {

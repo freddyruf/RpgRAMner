@@ -516,7 +516,8 @@ public class CombatSimulationConcurrencyStressTest {
             factory.setEquipaggiamentoGiocatoreArmi(playerWeapons);
             factory.setEquipaggiamentoGiocatoreHacks(playerHacks);
             factory.setStrategia(new StrategiaCasuale());
-            SistemaCombattimento combat = factory.creaNuovaPartitaSemplice();
+            SistemaCombattimento combat = new CombattimentoATurni();
+            factory.creaNuovaPartitaSemplice(combat);
             assertNotNull(combat);
             assertNotNull(combat.getStatoBattaglia());
 

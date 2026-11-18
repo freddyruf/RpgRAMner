@@ -1,7 +1,5 @@
 package it.unicam.cs.mpgc.rpg130077.model;
 
-import it.unicam.cs.mpgc.rpg130077.controller.logica.GestoreArmamento;
-import it.unicam.cs.mpgc.rpg130077.model.Azioni.Azione;
 import it.unicam.cs.mpgc.rpg130077.model.Effetti.*;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Entita;
 import it.unicam.cs.mpgc.rpg130077.model.Entita.Giocatore;
@@ -12,17 +10,13 @@ import it.unicam.cs.mpgc.rpg130077.model.Equipaggiamento.Pistola;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.Hack;
 import it.unicam.cs.mpgc.rpg130077.model.Hacks.QueuedHack;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.Clock;
-import it.unicam.cs.mpgc.rpg130077.model.Sistema.SessionState;
+import it.unicam.cs.mpgc.rpg130077.controller.SessionState;
 import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -420,18 +414,15 @@ public class AdversarialModelStressTest {
             SessionState s1 = new SessionState();
             SessionState s2 = new SessionState();
 
-            s1.spazioRam = 12;
-            s2.spazioRam = 24;
-
             Clock c1 = new Clock(() -> {});
             Clock c2 = new Clock(() -> {});
-            s1.clock = c1;
-            s2.clock = c2;
+            s1.setClock(c1);
+            s2.setClock(c2);
 
-            assertEquals(12, s1.spazioRam);
-            assertEquals(24, s2.spazioRam);
-            assertSame(c1, s1.clock);
-            assertSame(c2, s2.clock);
+            assertEquals(0, s1.getMaxSpazioRam());
+            assertEquals(0, s2.getMaxSpazioRam());
+            assertSame(c1, s1.getClock());
+            assertSame(c2, s2.getClock());
         }
     }
 }

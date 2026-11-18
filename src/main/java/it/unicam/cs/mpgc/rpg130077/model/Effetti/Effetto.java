@@ -6,7 +6,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import java.util.Set;
 
 /**
- * Interfaccia che astrae il concetto di Effetto: Avvenimento/propieta che influenza la battaglia
+ * Interfaccia che astrae il concetto di Effetto: Avvenimento/propieta che influenza la battaglia, sono un tipo non fisico(Lo si puo immaginare come 'magico')
  */
 public interface Effetto {
         void eseguiEffetto(StatoBattaglia b, Entita lanciatore, Entita bersaglio);
