@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130077.model.Sistema;
 
 public class Clock {
+    private static final long INTERVALLO_TICK_MILLIS = 1000;
     private Thread threadTimer;
     private volatile boolean inEsecuzione;
     private final Runnable runnable;
@@ -20,7 +21,7 @@ public class Clock {
         threadTimer = new Thread(() -> {
             while (inEsecuzione) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(INTERVALLO_TICK_MILLIS);
                 } catch (InterruptedException e) {
                     // Se il thread viene fermato mentre dorme, esce dal ciclo
                     break;

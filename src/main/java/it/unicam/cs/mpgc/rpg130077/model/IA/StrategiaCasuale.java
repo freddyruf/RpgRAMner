@@ -13,6 +13,7 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import java.util.ArrayList;
 
 public class StrategiaCasuale implements StrategiaCombattimento {
+    private static final double SOGLIA_SCELTA_HACK = 0.5;
     private final RandomNumbersGenerator random;
 
     public StrategiaCasuale() {
@@ -47,7 +48,7 @@ public class StrategiaCasuale implements StrategiaCombattimento {
             }
         }
 
-        if (puoCaricareHack && (npc.getArma() == null || random.getRandom() < 0.5)) {
+        if (puoCaricareHack && (npc.getArma() == null || random.getRandom() < SOGLIA_SCELTA_HACK)) {
             Entita target = hackSelezionato.getEffectTypes().contains(EffectType.HEAL) ? npc : entitaBersaglio;
             return new AzioneCaricaHack(npc, target, hackSelezionato);
         } else if (npc.getArma() != null) {

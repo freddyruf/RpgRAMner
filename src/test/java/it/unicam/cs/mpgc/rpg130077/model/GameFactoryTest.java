@@ -146,6 +146,54 @@ class GameFactoryTest {
     }
 
     @Test
+    @DisplayName("Sostituisce giocatore e nemico solo passando entita complete")
+    void testCreaNuovaPartitaConGiocatoreENemicoCompleti() {
+        Giocatore giocatoreConfigurato = new Giocatore(
+                "EroePersonalizzato",
+                80,
+                "eroe.png",
+                12,
+                new ArrayList<>(List.of(new Hack("HackEroe", "Hack personalizzato", 3))),
+                armiGiocatore.get(0).copy(),
+                true);
+        NPC nemicoConfigurato = new NPC(
+                "NemicoPersonalizzato",
+                60,
+                "nemico.png",
+                7,
+                new ArrayList<>(List.of(new Hack("HackNemico", "Hack personalizzato", 2))),
+                catalogoArmi.get(2).copy(),
+                8,
+                0.25,
+                new StrategiaCasuale(),
+                false);
+
+        factory.setGiocatore(giocatoreConfigurato);
+        factory.setNemico(nemicoConfigurato);
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoHacks);
+
+        SistemaCombattimento combattimento = creaCombattimento();
+        StatoBattaglia stato = combattimento.getStatoBattaglia();
+        Giocatore eroe = stato.getGiocatore();
+        NPC nemico = (NPC) stato.getNemico(0);
+
+        assertEquals("EroePersonalizzato", eroe.getNome());
+        assertEquals(80, eroe.getMaxPv());
+        assertEquals(12, eroe.getSpazioRAM());
+        assertEquals("NemicoPersonalizzato", nemico.getNome());
+        assertEquals(60, nemico.getMaxPv());
+        assertEquals(7, nemico.getSpazioRAM());
+        assertEquals(8, nemico.getDannoAttaccoASorpresa());
+        assertEquals(19, stato.getRamCondivisa().getSpazioMassimoInSecondi());
+
+        assertNotSame(giocatoreConfigurato, eroe);
+        assertNotSame(giocatoreConfigurato.getArma(), eroe.getArma());
+        assertNotSame(nemicoConfigurato, nemico);
+        assertNotSame(nemicoConfigurato.getArma(), nemico.getArma());
+    }
+
+    @Test
     @DisplayName("Verifica che le armi e gli hack assegnati siano copie profonde (deep copy)")
     void testCreaNuovaPartitaDeepCopyEquipaggiamento() {
         factory.setCatalogoArmi(catalogoArmi);
@@ -169,6 +217,24 @@ class GameFactoryTest {
         assertNotSame(catalogoArmi.get(1), nemico.getArma());
         assertNotSame(catalogoHacks.get(1), nemico.getHacks().get(0));
         assertNotSame(catalogoHacks.get(2), nemico.getHacks().get(1));
+    }
+
+    @Test
+    @DisplayName("Permette di cambiare il massimo degli hack assegnati al nemico")
+    void testCambiaMassimoHackNemico() {
+        factory.setCatalogoArmi(catalogoArmi);
+        factory.setCatalogoHack(catalogoHacks);
+        factory.setEquipaggiamentoGiocatoreArmi(armiGiocatore);
+        factory.setEquipaggiamentoGiocatoreHacks(hacksGiocatore);
+        factory.setMaxHackNemico(2);
+
+        NPC nemico = (NPC) creaCombattimento().getStatoBattaglia().getNemico(0);
+
+        assertEquals(2, nemico.getHacks().size());
+        assertEquals(2, nemico.getHacks().stream().distinct().count());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> factory.setMaxHackNemico(-1));
     }
 
     @Test

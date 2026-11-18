@@ -16,6 +16,9 @@ import java.util.ArrayList;
  * Classe che serve a essere un delegato per la creazione e i calcoli della costruzione della barra della RAM graficamente
  */
 public class RamViewHelper {
+    private static final double PADDING = 12.5;
+    private static final double SPACING = 5.0;
+    private static final double LARGHEZZA_BLOCCO_HACK = 110;
 
     /**
      * Disegna la barra della RAM
@@ -29,14 +32,11 @@ public class RamViewHelper {
             barraRAM.getChildren().clear();
 
             double altezzaTotale = barraRAM.getPrefHeight();
-            double padding = 12.5;
-            double spacing = 5.0;
+            barraRAM.setSpacing(SPACING);
+            barraRAM.setPadding(new javafx.geometry.Insets(PADDING, PADDING, PADDING, PADDING));
 
-            barraRAM.setSpacing(spacing);
-            barraRAM.setPadding(new javafx.geometry.Insets(padding, padding, padding, padding));
-
-            double spazioExtraGaps = Math.max(0, (ram.getHacks().size() - 1) * spacing);
-            double altezzaUtile = altezzaTotale - (padding * 2) - spazioExtraGaps;
+            double spazioExtraGaps = Math.max(0, (ram.getHacks().size() - 1) * SPACING);
+            double altezzaUtile = altezzaTotale - (PADDING * 2) - spazioExtraGaps;
             int spazioMassimo = ram.getSpazioMassimoInSecondi();
 
             for (QueuedHack queuedHack : ram.getHacks()) {
@@ -44,7 +44,7 @@ public class RamViewHelper {
                 double altezzaTeorica = proporzione * altezzaUtile;
                 double altezzaReale = Math.max(0.0, altezzaTeorica);
 
-                Rectangle hackRectangle = new Rectangle(110, altezzaReale);
+                Rectangle hackRectangle = new Rectangle(LARGHEZZA_BLOCCO_HACK, altezzaReale);
                 Text hackText = new Text(queuedHack.getHack().getNome());
 
                 if (eroi.contains(queuedHack.getLanciatore())) {

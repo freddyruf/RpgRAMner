@@ -44,6 +44,11 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
         private Pane mainPane;
 
         private static final double MAX_LIFEBAR_WIDTH = 668.0;
+        private static final double DURATA_TESTO_FLUTTUANTE_SECONDS = 2.0;
+        private static final double OFFSET_TESTO_X = 150.0;
+        private static final double OFFSET_TESTO_Y = 50.0;
+        private static final double DIMENSIONE_FONT_TESTO = 28.0;
+        private static final double SPESSORE_BORDO_TESTO = 2.0;
 
 
         @Override
@@ -282,14 +287,14 @@ public class SchermataBattagliaFXML extends SchermataGenericaJavaFX implements C
     private void mostraTestoFluttuante(String messaggio, Color colore) {
         Text testo = new Text(messaggio);
         testo.setFill(colore);
-        testo.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-border-color: black; -fx-border-width: 2px;");
+        testo.setStyle("-fx-font-size: " + DIMENSIONE_FONT_TESTO + "px; -fx-font-weight: bold; -fx-border-color: black; -fx-border-width: " + SPESSORE_BORDO_TESTO + "px;");
 
-        testo.setLayoutX(mainPane.getWidth() / 2 - 150);
-        testo.setLayoutY(mainPane.getHeight() / 2 +50);
+        testo.setLayoutX(mainPane.getWidth() / 2 - OFFSET_TESTO_X);
+        testo.setLayoutY(mainPane.getHeight() / 2 + OFFSET_TESTO_Y);
 
         mainPane.getChildren().add(testo);
 
-        PauseTransition ritardo = new PauseTransition(Duration.seconds(2));
+        PauseTransition ritardo = new PauseTransition(Duration.seconds(DURATA_TESTO_FLUTTUANTE_SECONDS));
 
         ritardo.setOnFinished(e -> mainPane.getChildren().remove(testo));
 

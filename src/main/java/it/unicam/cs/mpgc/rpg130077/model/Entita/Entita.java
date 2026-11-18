@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
  * Classe che astrae il concetto di "Entita": Essere vivente, o perlomeno, dotato di una coscienza
  */
 public abstract class Entita {
+    private static final int PV_MINIMI = 0;
     private String nome;
     private int pv;
     private int maxPv;
@@ -87,8 +88,8 @@ public abstract class Entita {
         if(newPV > maxPv){
             this.pv = maxPv;
         }
-        else if(newPV < 0){
-            this.pv = 0;
+        else if(newPV < PV_MINIMI){
+            this.pv = PV_MINIMI;
         }
         else {
             this.pv = newPV;

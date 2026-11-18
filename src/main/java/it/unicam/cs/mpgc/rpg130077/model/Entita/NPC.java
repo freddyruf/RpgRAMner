@@ -10,6 +10,8 @@ import it.unicam.cs.mpgc.rpg130077.model.Sistema.StatoBattaglia;
 import java.util.ArrayList;
 
 public class NPC extends Entita implements CombattenteAutonomo {
+    private static final double PROBABILITA_MINIMA_ATTACCO_SORPRESA = 0.0;
+    private static final double PROBABILITA_MASSIMA_ATTACCO_SORPRESA = 1.0;
     int dannoAttaccoASorpresa;
     double chanceAttaccoASorpresa; // Min 0 MAX 0.4, dopo 0.4 diventa troppo frequente
     StrategiaCombattimento strategia;
@@ -17,7 +19,8 @@ public class NPC extends Entita implements CombattenteAutonomo {
 
     public NPC(String nome, int MaxPV, String image, int spazioRAM, ArrayList<Hack> hacks, Arma arma, int dannoAttaccoASorpresa, double chanceAttaccoASorpresa,  StrategiaCombattimento strategia, boolean fazione) {
         super(nome, MaxPV, image, spazioRAM, hacks, arma, fazione);
-        if (chanceAttaccoASorpresa < 0.0 || chanceAttaccoASorpresa > 1.0) {
+        if (chanceAttaccoASorpresa < PROBABILITA_MINIMA_ATTACCO_SORPRESA
+                || chanceAttaccoASorpresa > PROBABILITA_MASSIMA_ATTACCO_SORPRESA) {
             throw new IllegalArgumentException("La probabilità di attacco a sorpresa deve essere tra 0.0 e 1.0");
         }
         if (strategia == null) {

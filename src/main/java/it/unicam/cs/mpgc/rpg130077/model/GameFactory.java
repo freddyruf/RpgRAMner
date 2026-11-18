@@ -26,6 +26,14 @@ import java.util.stream.Collectors;
  */
 public class GameFactory {
     public static final int MAX_HACK_NEMICO = 4;
+    private static final String DEFAULT_PLAYER_NAME = "Giocatore";
+    private static final int DEFAULT_PLAYER_MAX_PV = 100;
+    private static final int DEFAULT_PLAYER_RAM = 10;
+    private static final String DEFAULT_NPC_NAME = "Cybermorb";
+    private static final int DEFAULT_NPC_MAX_PV = 100;
+    private static final int DEFAULT_NPC_RAM = 5;
+    private static final int DEFAULT_NPC_SURPRISE_DAMAGE = 5;
+    private static final double DEFAULT_NPC_SURPRISE_CHANCE = 0.1;
 
     private List<Arma> equipaggiamentoGiocatoreArmi;
     private List<Hack> equipaggiamentoGiocatoreHacks;
@@ -33,10 +41,12 @@ public class GameFactory {
     private List<Hack> equipaggiamentoNemicoHacks = new ArrayList<>();
     private List<Arma> catalogoArmi = new ArrayList<>();
     private List<Hack> catalogoHack = new ArrayList<>();
+    private Giocatore giocatore;
     private NPC nemico;
     private StatoBattaglia statoBattaglia;
     private StrategiaCombattimento strategia;
     private RandomNumbersGenerator random = new RandomNumbersGenerator();
+    private int maxHackNemico = MAX_HACK_NEMICO;
 
     public GameFactory(StatoBattaglia statoBattaglia) {
         this.statoBattaglia = Objects.requireNonNull(statoBattaglia,
@@ -44,15 +54,9 @@ public class GameFactory {
     }
 
     public void creaNuovaPartitaSemplice(SistemaCombattimento sistemaCombattimento) {
-        if (equipaggiamentoGiocatoreArmi == null || equipaggiamentoGiocatoreHacks == null) {
-            throw new NullPointerException("L'equipaggiamento del giocatore non puo essere nullo");
-        }
-        if (equipaggiamentoGiocatoreArmi.isEmpty()) {
-            throw new IllegalStateException("Armi giocatore insufficienti");
-        }
-
-        Giocatore giocatore = new Giocatore("Giocatore", 100, "", 10,
-                copiaHacks(equipaggiamentoGiocatoreHacks), equipaggiamentoGiocatoreArmi.get(0).copy(), true);
+        Giocatore eroe = giocatore != null
+                ? (Giocatore) giocatore.copy()
+                : creaGiocatorePredefinito();
         NPC avversario = nemico != null ? (NPC) nemico.copy() : creaNemico();
 
         StatoBattaglia stato = statoBattaglia != null
@@ -61,9 +65,22 @@ public class GameFactory {
         if (stato == null) {
             throw new IllegalStateException("Lo stato della battaglia deve essere configurato");
         }
-        stato.setEroe(giocatore);
+        stato.setEroe(eroe);
         stato.setNemico(avversario);
         sistemaCombattimento.setStato(stato);
+    }
+
+    private Giocatore creaGiocatorePredefinito() {
+        if (equipaggiamentoGiocatoreArmi == null || equipaggiamentoGiocatoreHacks == null) {
+            throw new NullPointerException("L'equipaggiamento del giocatore non puo essere nullo");
+        }
+        if (equipaggiamentoGiocatoreArmi.isEmpty()) {
+            throw new IllegalStateException("Armi giocatore insufficienti");
+        }
+        return new Giocatore(DEFAULT_PLAYER_NAME, DEFAULT_PLAYER_MAX_PV, "", DEFAULT_PLAYER_RAM,
+                copiaHacks(equipaggiamentoGiocatoreHacks),
+                equipaggiamentoGiocatoreArmi.get(0).copy(),
+                true);
     }
 
     private NPC creaNemico() {
@@ -87,14 +104,16 @@ public class GameFactory {
         }
 
         StrategiaCombattimento s = strategia != null ? strategia : new StrategiaCasuale();
-        return new NPC("Cybermorb", 100, "", 5, hacksNemico, armaNemico, 5, 0.1, s, false);
+        return new NPC(DEFAULT_NPC_NAME, DEFAULT_NPC_MAX_PV, "", DEFAULT_NPC_RAM,
+                hacksNemico, armaNemico, DEFAULT_NPC_SURPRISE_DAMAGE,
+                DEFAULT_NPC_SURPRISE_CHANCE, s, false);
     }
 
     /** Sceglie fino a MAX_HACK_NEMICO hack distinti dal catalogo, senza ripetizioni. */
     private ArrayList<Hack> scegliHackCasuali() {
         List<Hack> disponibili = new ArrayList<>(catalogoHack);
         ArrayList<Hack> scelti = new ArrayList<>();
-        int quanti = Math.min(MAX_HACK_NEMICO, disponibili.size());
+        int quanti = Math.min(maxHackNemico, disponibili.size());
         for (int i = 0; i < quanti; i++) {
             scelti.add(disponibili.remove(random.getInt(0, disponibili.size())).copy());
         }
@@ -127,11 +146,22 @@ public class GameFactory {
     public void setCatalogoHack(List<Hack> catalogoHack) {
         this.catalogoHack = catalogoHack != null ? catalogoHack : new ArrayList<>();
     }
+    public void setMaxHackNemico(int maxHackNemico) {
+        if (maxHackNemico < 0) {
+            throw new IllegalArgumentException("Il massimo degli hack del nemico non puo essere negativo");
+        }
+        this.maxHackNemico = maxHackNemico;
+    }
+    public void setGiocatore(Giocatore giocatore) {
+        this.giocatore = giocatore != null
+                ? (Giocatore) giocatore.copy()
+                : null;
+    }
     public void setStrategia(StrategiaCombattimento strategia) {
         this.strategia = strategia;
     }
     public void setNemico(NPC nemico) {
-        this.nemico = nemico;
+        this.nemico = nemico != null ? (NPC) nemico.copy() : null;
     }
     public void setRandom(RandomNumbersGenerator random) {
         this.random = random;
