@@ -10,7 +10,7 @@ Il progetto è stato realizzato per il corso di Metodologie di Programmazione e 
 ## Come eseguire
 
 ```
-git clone https://github.com/<tuo-username>/RpgRAMner.git
+git clone https://github.com/freddyruf/RpgRAMner.git
 cd RpgRAMner
 ```
 
@@ -44,8 +44,9 @@ cd RpgRAMner
 ```
 it.unicam.cs.mpgc.rpg130077
 ├── controller
+│   ├── SessionState.java       # Stato condiviso tra le schermate
 │   ├── UI          # Controller delle schermate JavaFX
-│   └── logica      # Gestione armamento e musica
+│   └── logica      # Equipaggiamento, avvio partita e musica
 ├── model
 │   ├── Azioni      # Comandi di combattimento (sparo, carica hack)
 │   ├── Effetti     # Effetti degli hack (danno, cura, reverse, sort)
@@ -68,7 +69,7 @@ L'uso più intenso è concentrato in punti precisi: **tutti i file di test** son
 
 Ogni suggerimento è stato letto, capito e verificato prima di essere integrato. Le decisioni progettuali sono state prese da me.
 
-📌 Per la dichiarazione dettagliata, vedere la pagina [Uso dell'AI](../../wiki/Uso-AI) della Wiki.
+📌 Per la dichiarazione dettagliata, vedere la pagina [Uso dell'AI](../../wiki/Uso-dell%27AI) della Wiki.
 
 ## Documentazione
 
